@@ -1,0 +1,251 @@
+/* Caminho: src/index.css */
+
+/* === Variáveis CSS para cores principais e fácil manutenção === */
+:root {
+  --color-primary-blue: #0ea5e9;
+  --color-primary-yellow: #eab308;
+  --color-primary-orange: #ff9800;
+  --color-bg-dark: #1e40af;
+  --color-bg-purple: #5b21b6;
+  --color-text-light: #ffffff;
+  --color-text-muted:rgb(141, 158, 182); /* exemplo para texto menos destacado */
+}
+
+/* === Tailwind Directives === */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === Reset / Base === */
+body {
+  @apply bg-blue-950 text-white flex flex-col items-center min-h-screen w-full overflow-x-hidden;
+  font-family: 'Inter', sans-serif; /* fonte profissional e legível */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === Fundo Nebuloso com animação suave e responsiva === */
+.nebula-bg {
+  background: 
+    radial-gradient(ellipse at 70% 30%, var(--color-bg-dark), transparent),
+    radial-gradient(ellipse at 30% 70%, var(--color-bg-purple), transparent);
+  animation: nebula-flow 25s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+}
+
+/* === Animações === */
+@keyframes nebula-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes rotate {
+  to { --angle: 360deg; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes float-subtle {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes text-focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes text-slide-in-bottom {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* === Loader estilizado e mais suave === */
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 5px solid transparent;
+  border-top-color: var(--color-primary-orange);
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  /* Aumenta suavidade e leveza do spinner */
+  will-change: transform;
+}
+
+/* === FAQ styles aprimorados === */
+.faq-item {
+  @apply border-b border-blue-700;
+}
+
+.faq-question {
+  @apply flex justify-between items-center w-full text-left text-lg font-semibold p-4 cursor-pointer hover:bg-blue-800/50 transition-colors;
+}
+
+.faq-answer {
+  @apply max-h-0 overflow-hidden transition-all duration-500 ease-in-out;
+}
+
+.faq-answer.open {
+  @apply max-h-96 p-4 bg-blue-900/50;
+}
+
+.faq-arrow {
+  @apply transition-transform duration-300;
+}
+
+.faq-arrow.rotate {
+  @apply rotate-180;
+}
+
+/* === Navegação desktop e mobile === */
+.nav-link {
+  @apply
+    text-white
+    font-semibold
+    hover:text-orange-400
+    transition-all
+    duration-200
+    relative
+    py-2;
+  /* Linha animada embaixo */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 0.125rem; /* 2px */
+    background-color: var(--color-primary-orange);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+  &:hover::after,
+  &:focus-visible::after {
+    width: 100%;
+  }
+  /* Foco acessível para teclado */
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-orange);
+    outline-offset: 4px;
+  }
+}
+
+.nav-link-mobile {
+  @apply block text-lg font-semibold text-center text-white py-2 rounded-lg hover:bg-blue-800 transition-colors;
+}
+
+/* === Vidro fosco/transparente com blur para sobreposição === */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+}
+
+/* === Hamburger menu (menu mobile) === */
+.hamburger-line {
+  @apply block w-6 h-1 bg-white rounded-full transition-all duration-300;
+}
+
+/* === Borda animada com gradiente rotativo === */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.animated-border {
+  position: relative;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  isolation: isolate;
+  border-radius: 1rem;
+}
+
+.animated-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--angle),
+    var(--color-primary-blue),
+    var(--color-primary-yellow),
+    var(--color-primary-blue)
+  );
+  animation: rotate 5s linear infinite;
+  filter: drop-shadow(0 0 6px var(--color-primary-blue));
+}
+
+/* === Visualizador (exemplo de animação) === */
+.visualizer-bar {
+  background-color: var(--color-primary-blue);
+  box-shadow: 0 0 5px var(--color-primary-blue), 0 0 10px var(--color-primary-blue);
+  animation: float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* === Animações de entrada de texto com suavidade === */
+.text-focus-in {
+  animation: text-focus-in 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+
+.text-slide-in-bottom {
+  animation: text-slide-in-bottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* === Animação mais sutil para flutuação (exemplo) === */
+@keyframes float-subtle {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+/* === Responsividade geral já garantida via Tailwind (grid, flex, etc) === */
+
+/* Pode adicionar regras específicas se quiser para pequenos ajustes */
+
+/* Por exemplo, para fontes no mobile */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Para telas maiores, ajuste o tamanho da fonte e espaçamentos */
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+  h2 {
+    font-size: 3rem;
+  }
+}
