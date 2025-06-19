@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://edivanalves.github.io/mix-fibra-sume/",
+  "homepage": "https://edivanalves.github.io/mix-fibra",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
