@@ -2,13 +2,30 @@
 <html lang="pt-BR" class="scroll-smooth antialiased">
   <head>
     <meta charset="UTF-8" />
-    <link href="/mix-fibra/imagens/logo-mix-fibra.png" rel="icon" type="image/png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/mix-fibra/imagens/logo-mix-fibra.png" type="image/png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Mix Fibra — Internet de Ultra Velocidade com fibra óptica para navegação, jogos e streaming sem limites." />
+    <meta name="keywords" content="internet, fibra óptica, ultra velocidade, Mix Fibra, plano de internet" />
+    <meta name="author" content="Mix Fibra" />
+
+    <!-- Open Graph para redes sociais -->
+    <meta property="og:title" content="Mix Fibra • Internet de Ultra Velocidade" />
+    <meta property="og:description" content="Internet de fibra óptica ultra rápida para você navegar, trabalhar, jogar e assistir sem limites." />
+    <meta property="og:image" content="/imagens/logo-mix-fibra.png" />
+    <meta property="og:url" content="https://edivanalves.github.io/mix-fibra" />
+    <meta property="og:type" content="website" />
+
     <title>Mix Fibra • Internet de Ultra Velocidade</title>
-    <script type="module" crossorigin src="/mix-fibra/assets/index-C_4FMv2s.js"></script>
-    <link rel="stylesheet" crossorigin href="/mix-fibra/assets/index-C90Ebmd7.css">
+
+    <!-- Pré-carregando o logo para acelerar o carregamento -->
+    <link rel="preload" href="/mix-fibra/imagens/logo-mix-fibra.png" as="image" />
+
+    <script type="module" crossorigin src="/mix-fibra/assets/index-Be0WvjQX.js"></script>
+    <link rel="stylesheet" crossorigin href="/mix-fibra/assets/index-Deni9rtm.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" role="main"></div>
+
+    <!-- Importa o JS com defer para não bloquear o carregamento da página -->
   </body>
 </html>
