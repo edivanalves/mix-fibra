@@ -1,15 +1,37 @@
 /* Caminho: src/index.css */
 
-/* === Variáveis CSS para cores principais e fácil manutenção === */
-:root {
-  --color-primary-blue: #0ea5e9;
-  --color-primary-yellow: #eab308;
-  --color-primary-orange: #ff9800;
-  --color-bg-dark: #1e40af;
-  --color-bg-purple: #5b21b6;
-  --color-text-light: #ffffff;
-  --color-text-muted:rgb(141, 158, 182); /* exemplo para texto menos destacado */
+/* === Importar fonte Inter === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* === Variáveis CSS para cores principais (Padrão: Tema Escuro) === */
+:root,
+[data-theme='dark'] {
+  --color-primary: #0ea5e9; /* Exemplo: Ciano */
+  --color-secondary: #eab308; /* Exemplo: Amarelo */
+  --color-accent: #ff9800; /* Exemplo: Laranja (para loaders, destaques) */
+  --color-bg-main: #080f25; /* Cor de fundo principal escura (ex: bg-blue-950) */
+  --color-bg-dark-light-gradient: #1e40af; /* Fundo nebuloso escuro - gradiente 1 */
+  --color-bg-purple-gradient: #5b21b6; /* Fundo nebuloso escuro - gradiente 2 */
+  --color-text-main: #ffffff; /* Cor de texto principal para tema escuro */
+  --color-text-muted: rgb(141, 158, 182); /* Cor de texto secundária */
+  --color-border: rgba(255, 255, 255, 0.1); /* Cor da borda para elementos de vidro */
+  --color-glass-bg: rgba(255, 255, 255, 0.05); /* Fundo do vidro escuro */
 }
+
+/* === Tema Claro === */
+[data-theme='light'] {
+  --color-primary: #1d4ed8; /* Azul mais forte */
+  --color-secondary: #fcd34d; /* Amarelo mais claro */
+  --color-accent: #f97316; /* Laranja mais vibrante */
+  --color-bg-main: #f3f4f6; /* Cor de fundo principal clara (ex: bg-gray-100) */
+  --color-bg-dark-light-gradient: #60a5fa; /* Fundo claro - gradiente 1 */
+  --color-bg-purple-gradient: #a78bfa; /* Fundo claro - gradiente 2 */
+  --color-text-main: #1f2937; /* Cor de texto principal para tema claro (ex: text-gray-900) */
+  --color-text-muted: rgb(75, 85, 99); /* Cor de texto secundária mais escura */
+  --color-border: rgba(0, 0, 0, 0.1); /* Cor da borda para elementos de vidro claro */
+  --color-glass-bg: rgba(0, 0, 0, 0.05); /* Fundo do vidro claro */
+}
+
 
 /* === Tailwind Directives === */
 @tailwind base;
@@ -17,18 +39,24 @@
 @tailwind utilities;
 
 /* === Reset / Base === */
+/* Usamos variáveis CSS aqui para o tema principal */
 body {
-  @apply bg-blue-950 text-white flex flex-col items-center min-h-screen w-full overflow-x-hidden;
-  font-family: 'Inter', sans-serif; /* fonte profissional e legível */
+  background-color: var(--color-bg-main); /* Controlado por data-theme */
+  color: var(--color-text-main); /* Controlado por data-theme */
+  @apply flex flex-col items-center min-h-screen w-full overflow-x-hidden;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.2vw, 18px);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.5s ease, color 0.5s ease; /* Transição suave */
 }
 
 /* === Fundo Nebuloso com animação suave e responsiva === */
 .nebula-bg {
-  background: 
-    radial-gradient(ellipse at 70% 30%, var(--color-bg-dark), transparent),
-    radial-gradient(ellipse at 30% 70%, var(--color-bg-purple), transparent);
+  background:
+    radial-gradient(ellipse at 70% 30%, var(--color-bg-dark-light-gradient) 0%, transparent 70%),
+    radial-gradient(ellipse at 30% 70%, var(--color-bg-purple-gradient) 0%, transparent 70%),
+    radial-gradient(ellipse at 50% 50%, rgba(255 255 255 / 0.1), transparent 80%);
   animation: nebula-flow 25s ease-in-out infinite alternate;
   background-size: 200% 200%;
 }
@@ -87,17 +115,18 @@ body {
   width: 60px;
   height: 60px;
   border: 5px solid transparent;
-  border-top-color: var(--color-primary-orange);
+  border-top-color: var(--color-accent); /* Usa variável de tema */
   border-radius: 50%;
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
-  /* Aumenta suavidade e leveza do spinner */
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
 /* === FAQ styles aprimorados === */
 .faq-item {
+  /* Pode usar variáveis aqui se o border-color precisar mudar com o tema */
   @apply border-b border-blue-700;
 }
 
@@ -123,23 +152,22 @@ body {
 
 /* === Navegação desktop e mobile === */
 .nav-link {
+  color: var(--color-text-main); /* Usa variável de tema */
   @apply
-    text-white
     font-semibold
-    hover:text-orange-400
+    hover:text-orange-400 /* Este pode ser var(--color-accent) se quiser que mude */
     transition-all
     duration-200
     relative
     py-2;
-  /* Linha animada embaixo */
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     width: 0;
-    height: 0.125rem; /* 2px */
-    background-color: var(--color-primary-orange);
+    height: 2px;
+    background-color: var(--color-accent); /* Usa variável de tema */
     transition: width 0.3s ease;
     transform: translateX(-50%);
   }
@@ -147,28 +175,30 @@ body {
   &:focus-visible::after {
     width: 100%;
   }
-  /* Foco acessível para teclado */
   &:focus-visible {
-    outline: 2px solid var(--color-primary-orange);
+    outline: 2px solid var(--color-accent); /* Usa variável de tema */
     outline-offset: 4px;
   }
 }
 
 .nav-link-mobile {
-  @apply block text-lg font-semibold text-center text-white py-2 rounded-lg hover:bg-blue-800 transition-colors;
+  color: var(--color-text-main); /* Usa variável de tema */
+  @apply block text-lg font-semibold text-center py-2 rounded-lg hover:bg-blue-800 transition-colors;
 }
 
 /* === Vidro fosco/transparente com blur para sobreposição === */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--color-glass-bg); /* Usa variável de tema */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 0.75rem;
+  border: 1px solid var(--color-border); /* Usa variável de tema */
 }
 
 /* === Hamburger menu (menu mobile) === */
 .hamburger-line {
-  @apply block w-6 h-1 bg-white rounded-full transition-all duration-300;
+  background-color: var(--color-text-main); /* Usa variável de tema para a cor da linha */
+  @apply block w-6 h-1 rounded-full transition-all duration-300;
 }
 
 /* === Borda animada com gradiente rotativo === */
@@ -194,18 +224,18 @@ body {
   border-radius: inherit;
   background: conic-gradient(
     from var(--angle),
-    var(--color-primary-blue),
-    var(--color-primary-yellow),
-    var(--color-primary-blue)
+    var(--color-primary), /* Usa variável de tema */
+    var(--color-secondary), /* Usa variável de tema */
+    var(--color-primary) /* Usa variável de tema */
   );
   animation: rotate 5s linear infinite;
-  filter: drop-shadow(0 0 6px var(--color-primary-blue));
+  filter: drop-shadow(0 0 6px var(--color-primary)); /* Usa variável de tema */
 }
 
 /* === Visualizador (exemplo de animação) === */
 .visualizer-bar {
-  background-color: var(--color-primary-blue);
-  box-shadow: 0 0 5px var(--color-primary-blue), 0 0 10px var(--color-primary-blue);
+  background-color: var(--color-primary); /* Usa variável de tema */
+  box-shadow: 0 0 5px var(--color-primary), 0 0 10px var(--color-primary); /* Usa variável de tema */
   animation: float 4s ease-in-out infinite;
   will-change: transform;
 }
@@ -219,32 +249,14 @@ body {
   animation: text-slide-in-bottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
-/* === Animação mais sutil para flutuação (exemplo) === */
-@keyframes float-subtle {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
-
-/* === Responsividade geral já garantida via Tailwind (grid, flex, etc) === */
-
-/* Pode adicionar regras específicas se quiser para pequenos ajustes */
-
-/* Por exemplo, para fontes no mobile */
+/* === Responsividade já garantida via Tailwind com alguns ajustes específicos === */
 @media (max-width: 640px) {
-  body {
-    font-size: 14px;
-  }
   h2 {
     font-size: 2rem;
   }
 }
 
-/* Para telas maiores, ajuste o tamanho da fonte e espaçamentos */
 @media (min-width: 1024px) {
-  body {
-    font-size: 18px;
-  }
   h2 {
     font-size: 3rem;
   }

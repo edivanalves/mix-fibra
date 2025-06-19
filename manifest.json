@@ -1,0 +1,12 @@
+"icons": [
+  {
+    "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  },
+  {
+    "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }
+]

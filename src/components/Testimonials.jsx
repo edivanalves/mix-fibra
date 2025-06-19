@@ -1,4 +1,5 @@
 import React from 'react';
+import { UserIcon } from '@heroicons/react/24/solid';
 
 const Testimonials = ({ loading }) => {
   const testimonials = [
@@ -17,18 +18,21 @@ const Testimonials = ({ loading }) => {
   ];
 
   return (
-    <section className={`w-full py-20 px-4 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 text-center shadow-2xl mt-12 rounded-3xl max-w-6xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+    <section className={`w-full py-20 px-4 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 text-center shadow-2xl mt-12 rounded-3xl max-w-6xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100 animate-fade-in'}`}>
       <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-14 drop-shadow-lg">
         O Que Nossos <span className="text-orange-400">Clientes</span> Dizem
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {testimonials.map((testimonial, index) => (
-          <div key={index} className="relative bg-gradient-to-br from-blue-800/80 to-blue-900/80 glass rounded-2xl p-8 shadow-2xl flex flex-col items-start group hover:scale-105 transition-transform duration-300 overflow-hidden">
+          <div key={index} className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 shadow-2xl flex flex-col items-start group hover:scale-105 transition-transform duration-300 overflow-hidden">
             <div className={`absolute -top-8 left-1/2 -translate-x-1/2 w-32 h-32 rounded-full blur-2xl opacity-30 ${testimonial.color === 'orange' ? 'bg-orange-400' : 'bg-cyan-400'} pointer-events-none`}></div>
-            <p className="text-blue-100 italic mb-4 text-lg md:text-xl">"{testimonial.text}"</p>
+            <p className="text-slate-100 italic mb-4 text-lg md:text-xl">"{testimonial.text}"</p>
             <div className="flex items-center mt-auto">
+              <UserIcon className="w-10 h-10 mr-4 text-white/30" />
               <div>
-                <p className={`font-bold ${testimonial.color === 'orange' ? 'text-orange-400' : 'text-cyan-300'} text-lg`}>{testimonial.author}</p>
+                <p className={`font-bold ${testimonial.color === 'orange' ? 'text-orange-400' : 'text-cyan-300'} text-lg`}>
+                  {testimonial.author}
+                </p>
                 <p className="text-blue-300 text-sm">{testimonial.city}</p>
               </div>
             </div>

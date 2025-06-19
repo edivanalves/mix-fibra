@@ -5,7 +5,7 @@ import React from 'react';
 const ImageSection = ({ loading }) => {
   const images = [
     {
-      src: "https://placehold.co/600x400/000033/FFA500?text=Promoção+Mix+Fibra",
+      src: "public/imagens/promo.jpg",
       alt: "Promoção Mix Fibra",
       description: "Promoção de planos com ultra velocidade.",
       glowColor: "bg-orange-400",
