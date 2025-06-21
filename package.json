@@ -15,6 +15,7 @@
     "@heroicons/react": "^2.2.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.8.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.518.0",
     "openai": "^5.5.1",

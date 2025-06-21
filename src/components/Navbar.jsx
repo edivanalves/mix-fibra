@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-// Sub-componente para os links, para evitar repetição
 const NavLink = ({ href, text, refLink, activeSection, scrollToSection, isMobile = false }) => {
   const isActive = activeSection === href;
 
   const desktopClasses = `
     relative text-sm font-medium rounded-full transition-colors duration-200 px-4 py-2
-    group
+    group whitespace-nowrap
     ${isActive
       ? 'bg-orange-500 text-white'
       : 'text-slate-200 hover:bg-slate-700/50'
@@ -16,7 +15,7 @@ const NavLink = ({ href, text, refLink, activeSection, scrollToSection, isMobile
   `;
 
   const mobileClasses = `
-    text-3xl font-bold text-slate-200 transition-colors duration-300 hover:text-orange-400
+    text-2xl font-bold text-slate-200 transition-colors duration-300 hover:text-orange-400 text-center
     ${isActive ? '!text-orange-400' : ''}
   `;
 
@@ -35,12 +34,10 @@ const NavLink = ({ href, text, refLink, activeSection, scrollToSection, isMobile
   );
 };
 
-// Componente principal da Navbar
 const Navbar = ({ refs, activeSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Efeito para a sombra ao rolar
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -49,14 +46,13 @@ const Navbar = ({ refs, activeSection }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Efeito para travar o scroll do body quando o menu mobile estiver aberto
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : 'auto';
   }, [mobileMenuOpen]);
 
   const scrollToSection = (ref) => {
     setMobileMenuOpen(false);
-    if (ref && ref.current) {
+    if (ref?.current) {
       ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
@@ -73,27 +69,31 @@ const Navbar = ({ refs, activeSection }) => {
 
   return (
     <>
-      {/* --- BARRA DE NAVEGAÇÃO DESKTOP --- */}
+      {/* NAV DESKTOP/MOBILE */}
       <nav
         className={`w-full bg-slate-900/60 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'shadow-lg shadow-black/30' : ''
         }`}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3 sm:py-4 flex-wrap gap-y-2">
           {/* Logo */}
-          <a href="#home" onClick={() => scrollToSection(refs.homeRef)} className="flex items-center space-x-3">
+          <a
+            href="#home"
+            onClick={() => scrollToSection(refs.homeRef)}
+            className="flex items-center gap-2 min-w-[150px]"
+          >
             <img
               src={`${import.meta.env.BASE_URL}imagens/logo-mix-fibra.png`}
               alt="Logo Mix Fibra"
-              className="w-10 h-10 rounded-lg"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover"
             />
-            <span className="text-xl font-black tracking-tighter text-white">
+            <span className="text-lg sm:text-xl font-black tracking-tighter text-white">
               MIX <span className="text-orange-400">FIBRA</span>
             </span>
           </a>
 
           {/* Menu Desktop */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 flex-wrap justify-center">
             {navLinksData.map(link => (
               <NavLink
                 key={link.href}
@@ -106,39 +106,38 @@ const Navbar = ({ refs, activeSection }) => {
             ))}
           </div>
 
-          {/* Botões de Ação Desktop */}
+          {/* Botão Ação Desktop */}
           <div className="hidden md:flex items-center gap-4">
             <a
               href="https://mixfibra.sgp.net.br/central/home/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-bold px-5 py-2 rounded-full shadow-lg transition-all duration-300 text-sm transform hover:scale-105"
-              aria-label="Central do Assinante"
+              className="bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-bold px-4 py-2 rounded-full shadow-lg text-sm transition-all duration-300 transform hover:scale-105"
             >
               Central do Assinante
             </a>
           </div>
 
-          {/* Botão Hamburguer Mobile */}
+          {/* Botão Mobile */}
           <button
-            className="md:hidden flex flex-col justify-center items-center w-10 h-10 z-50 cursor-pointer"
+            className="md:hidden flex flex-col justify-center items-center w-9 h-9 z-50 cursor-pointer ml-auto"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
           >
             <span
-              className={`hamburger-line block w-6 h-0.5 bg-white rounded transition-transform duration-300 ease-in-out ${
+              className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${
                 mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
               }`}
             />
             <span
-              className={`hamburger-line block w-6 h-0.5 bg-white rounded my-1 transition-opacity duration-300 ease-in-out ${
+              className={`w-6 h-0.5 bg-white rounded my-1 transition-opacity duration-300 ${
                 mobileMenuOpen ? 'opacity-0' : ''
               }`}
             />
             <span
-              className={`hamburger-line block w-6 h-0.5 bg-white rounded transition-transform duration-300 ease-in-out ${
+              className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${
                 mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
               }`}
             />
@@ -146,7 +145,7 @@ const Navbar = ({ refs, activeSection }) => {
         </div>
       </nav>
 
-      {/* --- MENU MOBILE DE TELA CHEIA --- */}
+      {/* MENU MOBILE */}
       <div
         id="mobile-menu"
         className={`
@@ -156,7 +155,7 @@ const Navbar = ({ refs, activeSection }) => {
         `}
         aria-hidden={!mobileMenuOpen}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-8 px-4">
+        <div className="flex flex-col items-center justify-center h-full gap-8 px-6 text-center">
           {navLinksData.map((link, index) => (
             <div
               key={link.href}
@@ -180,9 +179,10 @@ const Navbar = ({ refs, activeSection }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={`mt-8 bg-orange-500 text-white font-bold px-8 py-3 rounded-full shadow-lg text-lg
-              transition-all duration-300 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+              transition-all duration-300 hover:scale-105 active:scale-95
+              ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}
+            `}
             style={{ transitionDelay: `${150 + navLinksData.length * 50}ms` }}
-            aria-label="Central do Assinante"
           >
             Central do Assinante
           </a>
