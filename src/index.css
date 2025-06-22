@@ -2,6 +2,10 @@
 
 /* === Importar fonte Inter === */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import 'swiper/css';
+@import 'swiper/css/effect-coverflow'; /* Para o efeito 3D de pilha de cartas */
+@import 'swiper/css/pagination';     /* Se quiser paginação */
+@import 'swiper/css/navigation';    /* Se quiser botões de navegação */
 
 /* === Variáveis CSS para cores principais (Padrão: Tema Escuro) === */
 :root,

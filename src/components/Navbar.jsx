@@ -1,3 +1,5 @@
+// Caminho: src/components/Navbar.jsx
+
 import React, { useState, useEffect } from 'react';
 
 const NavLink = ({ href, text, refLink, activeSection, scrollToSection, isMobile = false }) => {
@@ -60,7 +62,6 @@ const Navbar = ({ refs, activeSection }) => {
   const navLinksData = [
     { href: 'home', text: 'Início', ref: refs.homeRef },
     { href: 'plans-section', text: 'Planos', ref: refs.plansRef },
-    { href: 'video-section', text: 'Vídeos', ref: refs.videoRef },
     { href: 'about', text: 'Sobre', ref: refs.aboutRef },
     { href: 'contact', text: 'Contato', ref: refs.contactRef },
     { href: 'solicitation-form', text: 'Solicite Agora', ref: refs.solicitationRef },
@@ -69,14 +70,8 @@ const Navbar = ({ refs, activeSection }) => {
 
   return (
     <>
-      {/* NAV DESKTOP/MOBILE */}
-      <nav
-        className={`w-full bg-slate-900/60 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'shadow-lg shadow-black/30' : ''
-        }`}
-      >
+      <nav className={`w-full bg-slate-900/60 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg shadow-black/30' : ''}`}>
         <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3 sm:py-4 flex-wrap gap-y-2">
-          {/* Logo */}
           <a
             href="#home"
             onClick={() => scrollToSection(refs.homeRef)}
@@ -92,7 +87,6 @@ const Navbar = ({ refs, activeSection }) => {
             </span>
           </a>
 
-          {/* Menu Desktop */}
           <div className="hidden md:flex items-center gap-2 flex-wrap justify-center">
             {navLinksData.map(link => (
               <NavLink
@@ -106,7 +100,6 @@ const Navbar = ({ refs, activeSection }) => {
             ))}
           </div>
 
-          {/* Botão Ação Desktop */}
           <div className="hidden md:flex items-center gap-4">
             <a
               href="https://mixfibra.sgp.net.br/central/home/"
@@ -118,7 +111,6 @@ const Navbar = ({ refs, activeSection }) => {
             </a>
           </div>
 
-          {/* Botão Mobile */}
           <button
             className="md:hidden flex flex-col justify-center items-center w-9 h-9 z-50 cursor-pointer ml-auto"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -126,42 +118,23 @@ const Navbar = ({ refs, activeSection }) => {
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
           >
-            <span
-              className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${
-                mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''
-              }`}
-            />
-            <span
-              className={`w-6 h-0.5 bg-white rounded my-1 transition-opacity duration-300 ${
-                mobileMenuOpen ? 'opacity-0' : ''
-              }`}
-            />
-            <span
-              className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${
-                mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''
-              }`}
-            />
+            <span className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+            <span className={`w-6 h-0.5 bg-white rounded my-1 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-6 h-0.5 bg-white rounded transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
           </button>
         </div>
       </nav>
 
-      {/* MENU MOBILE */}
       <div
         id="mobile-menu"
-        className={`
-          md:hidden fixed inset-0 w-full h-full bg-slate-900/90 backdrop-blur-xl z-40
-          transition-opacity duration-500 ease-in-out
-          ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
-        `}
+        className={`md:hidden fixed inset-0 w-full h-full bg-slate-900/90 backdrop-blur-xl z-40 transition-opacity duration-500 ease-in-out ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
         aria-hidden={!mobileMenuOpen}
       >
         <div className="flex flex-col items-center justify-center h-full gap-8 px-6 text-center">
           {navLinksData.map((link, index) => (
             <div
               key={link.href}
-              className={`transition-all duration-500 ${
-                mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-              }`}
+              className={`transition-all duration-500 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
               style={{ transitionDelay: `${150 + index * 50}ms` }}
             >
               <NavLink
@@ -178,10 +151,7 @@ const Navbar = ({ refs, activeSection }) => {
             href="https://mixfibra.sgp.net.br/central/home/"
             target="_blank"
             rel="noopener noreferrer"
-            className={`mt-8 bg-orange-500 text-white font-bold px-8 py-3 rounded-full shadow-lg text-lg
-              transition-all duration-300 hover:scale-105 active:scale-95
-              ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}
-            `}
+            className={`mt-8 bg-orange-500 text-white font-bold px-8 py-3 rounded-full shadow-lg text-lg transition-all duration-300 hover:scale-105 active:scale-95 ${mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
             style={{ transitionDelay: `${150 + navLinksData.length * 50}ms` }}
           >
             Central do Assinante
