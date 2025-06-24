@@ -1,4 +1,10 @@
-/* Caminho: src/index.css */
+/* Garante que html, body e #root preencham 100% da viewport */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 /* === Importar fonte Inter === */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -35,7 +41,6 @@
   --color-border: rgba(0, 0, 0, 0.1); /* Cor da borda para elementos de vidro claro */
   --color-glass-bg: rgba(0, 0, 0, 0.05); /* Fundo do vidro claro */
 }
-
 
 /* === Tailwind Directives === */
 @tailwind base;

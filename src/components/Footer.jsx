@@ -1,14 +1,20 @@
 import React from 'react';
-import { MessageSquare, Instagram, FileText, User, Linkedin } from 'lucide-react';
+import {
+  MessageSquare,
+  Instagram,
+  FileText,
+  User,
+  Linkedin,
+} from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 rounded-t-xl shadow-xl p-4 mt-12 text-white text-sm">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <footer className="w-full bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 rounded-t-xl shadow-2xl p-6 mt-12 text-white text-sm">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Logo discreta */}
-        <div className="flex items-center gap-2 justify-center opacity-70">
+        <div className="flex items-center gap-2 justify-center opacity-80">
           <img
             src="imagens/logo-mix-fibra.png"
             alt="Logo Mix Fibra"
@@ -25,8 +31,8 @@ const Footer = () => {
             href="https://wa.me/5583996411187"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-green-400 hover:text-green-300 transition-all duration-300 flex items-center gap-1"
-            title="Contacte-nos via WhatsApp"
+            className="text-green-400 hover:text-green-300 transition-all duration-300 flex items-center gap-1 hover:scale-105 transform"
+            title="Fale conosco via WhatsApp"
           >
             <MessageSquare size={18} />
             WhatsApp
@@ -35,16 +41,16 @@ const Footer = () => {
             href="https://instagram.com/mixfibra_sume"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-pink-400 hover:text-pink-300 transition-all duration-300 flex items-center gap-1"
+            className="text-pink-400 hover:text-pink-300 transition-all duration-300 flex items-center gap-1 hover:scale-105 transform"
             title="Siga-nos no Instagram"
           >
             <Instagram size={18} />
             Instagram
           </a>
           <a
-            href="#"
-            className="text-blue-200 hover:text-orange-400 transition-colors duration-300 flex items-center gap-1"
-            title="Termos de Uso"
+            href="/termos"
+            className="text-blue-200 hover:text-orange-400 transition-colors duration-300 flex items-center gap-1 hover:scale-105 transform"
+            title="Leia nossos Termos de Uso"
           >
             <FileText size={18} />
             Termos de Uso
@@ -53,23 +59,29 @@ const Footer = () => {
       </div>
 
       {/* Rodapé inferior */}
-      <div className="mt-4 pt-3 border-t border-blue-700/50 flex flex-col md:flex-row justify-between items-center gap-2">
-        <div className="flex items-center gap-2 text-blue-300">
-          <User size={16} />
-          <span>Criado por Edivan Alves</span>
+      <div className="mt-6 pt-4 border-t border-blue-700/50 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row items-center gap-2 text-blue-300 text-xs md:text-sm text-center md:text-left">
+          <div className="flex items-center gap-1">
+            <User size={16} />
+            <span>Criado por Edivan Alves</span>
+          </div>
           <a
             href="https://www.linkedin.com/in/edivan-alves/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-cyan-300 hover:text-cyan-200 font-medium transition-colors duration-300"
+            className="inline-flex items-center gap-1 text-cyan-300 hover:text-cyan-200 font-medium transition-colors duration-300 hover:underline"
           >
             <Linkedin size={16} />
             LinkedIn
           </a>
         </div>
-        <p className="text-blue-400 text-xs text-center md:text-right">
-          © {currentYear} Mix Fibra. Todos os direitos reservados.
-        </p>
+
+        <div className="text-blue-400 text-xs text-center md:text-right">
+          <p>© {currentYear} Mix Fibra. Todos os direitos reservados.</p>
+          <p className="text-blue-300 mt-1 italic">
+            Sem contrato de fidelidade. Sem cobrança de juros.
+          </p>
+        </div>
       </div>
     </footer>
   );

@@ -61,7 +61,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       description: 'Conexão 100% fibra óptica para máxima estabilidade e velocidade.',
       detailedDescription: 'Nossa infraestrutura usa fibra óptica moderna para máxima performance. Ideal para jogos, trabalho remoto e streaming sem travamentos.',
       icon: <Cpu className="w-12 h-12 text-white" strokeWidth={2.5} />,
-      detailImage: 'https://placehold.co/400x250/2a3a5c/FFFFFF?text=Fibra+Óptica+Avançada',
+      detailImage: 'public/imagens/lindos-detalhes-de-fibra-otica.jpg',
       glowColor: 'bg-cyan-400',
       borderColor: 'border-cyan-300',
       gradient: 'from-cyan-400 via-blue-400 to-blue-700'
@@ -71,7 +71,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       description: 'Equipa pronta para o ajudar sempre que precisar, com agilidade.',
       detailedDescription: 'Nossa equipe de suporte está sempre disponível para atender você via WhatsApp, telefone ou chat, 24 horas por dia.',
       icon: <Headphones className="w-12 h-12 text-white" strokeWidth={2.5} />,
-      detailImage: 'https://placehold.co/400x250/3c2a5c/FFFFFF?text=Suporte+Atendimento',
+      detailImage: 'public/imagens/suporte.png',
       glowColor: 'bg-orange-400',
       borderColor: 'border-orange-300',
       gradient: 'from-orange-400 via-yellow-300 to-orange-600'
@@ -81,7 +81,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       description: 'Planos com TV digital para você e sua família desfrutarem de centenas de canais.',
       detailedDescription: 'Aproveite o melhor do cinema, esporte, e variedades com nossos planos que incluem TV digital HD.',
       icon: <Tv className="w-12 h-12 text-white" strokeWidth={2.5} />,
-      detailImage: 'https://placehold.co/400x250/5c2a3a/FFFFFF?text=TV+Digital+HD',
+      detailImage: 'public/imagens/iptv.jpg',
       glowColor: 'bg-yellow-300',
       borderColor: 'border-yellow-200',
       gradient: 'from-yellow-300 via-orange-400 to-orange-600'

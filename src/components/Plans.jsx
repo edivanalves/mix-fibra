@@ -101,7 +101,7 @@ const plansData = [
   },
 ];
 
-// Memoizado para evitar re-renderizações desnecessárias
+// Card memoizado para performance
 const PlanCard = memo(({ plan, index, isInView }) => {
   const isHighlighted = plan.highlight;
   const glowRef = useRef(null);
@@ -120,15 +120,13 @@ const PlanCard = memo(({ plan, index, isInView }) => {
       onMouseMove={handleMouseMove}
       style={{ transitionDelay: `${index * 100}ms` }}
       className={`
-        animated-border group rounded-2xl p-0.5
-        transition-all duration-500
+        animated-border group rounded-2xl p-0.5 transition-all duration-500
         hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/30
         ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+        min-h-[420px] max-w-xs mx-auto
       `}
     >
-      <div
-        className="relative h-full w-full bg-slate-900 rounded-[15px] p-6 flex flex-col items-center"
-      >
+      <div className="relative h-full w-full bg-slate-900 rounded-[15px] p-6 flex flex-col items-center">
         <div
           ref={glowRef}
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -148,7 +146,9 @@ const PlanCard = memo(({ plan, index, isInView }) => {
             {plan.megas}
             <span className="text-2xl font-bold align-top">MB</span>
           </div>
-          <p className="text-slate-300 text-sm font-medium mb-4 h-12">{plan.description}</p>
+          <p className="text-slate-300 text-sm font-medium mb-4 h-12 line-clamp-2">
+            {plan.description}
+          </p>
           <div className="w-full text-center mb-4 flex-grow">
             <ul className="space-y-2 text-left">
               {plan.advantages.map((adv, i) => (
@@ -164,13 +164,17 @@ const PlanCard = memo(({ plan, index, isInView }) => {
             <span className="text-xl align-top mr-1">R$</span>
             {plan.price}
           </p>
-          
-<button
-    className={`w-full py-3 mt-4 font-bold rounded-lg shadow-lg text-white text-base tracking-wide transition-all duration-300 transform hover:scale-105 focus:outline-none active:scale-95 ${isHighlighted ? 'bg-gradient-to-r from-orange-500 to-yellow-400 ring-2 ring-orange-400/50' : 'bg-gradient-to-r from-cyan-600 to-blue-600'}`} // <-- ADICIONADO AQUI
-    onClick={() => window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank')}
->
-    Assinar Agora
-</button>
+
+          <button
+            className={`w-full py-3 mt-4 font-bold rounded-lg shadow-lg text-white text-base tracking-wide transition-all duration-300 transform hover:scale-105 focus:outline-none active:scale-95 ${
+              isHighlighted
+                ? 'bg-gradient-to-r from-orange-500 to-yellow-400 ring-2 ring-orange-400/50'
+                : 'bg-gradient-to-r from-cyan-600 to-blue-600'
+            }`}
+            onClick={() => window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank')}
+          >
+            Assinar Agora
+          </button>
         </div>
       </div>
     </div>
@@ -208,11 +212,15 @@ const Plans = React.forwardRef(({ loading }, ref) => {
       }`}
     >
       <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-16">Nossos Planos de Internet</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12 px-4">
+
+      {/* Grid responsivo adaptado para mobile */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
         {plansData.map((plan, index) => (
           <PlanCard key={index} plan={plan} index={index} isInView={isInView} />
         ))}
       </div>
+
+      {/* Componente do recomendador de plano */}
       <PlanRecommender />
     </section>
   );
