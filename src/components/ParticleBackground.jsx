@@ -1,27 +1,25 @@
-// Caminho: src/components/ParticleBackground.jsx
-
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import Particles from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
 
 const ParticleBackground = () => {
   const [isMobile, setIsMobile] = useState(false);
 
-  // Verifica se é dispositivo móvel (largura até 600px)
+  // Detecta dispositivo móvel com largura até 768px (mais flexível)
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 600);
-    };
-    handleResize(); // inicial
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize(); // Execução inicial
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Inicializa tsparticles com versão slim para menos peso
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
 
-  const particleOptions = {
+  // Memoiza opções para não recriar em cada render
+  const particleOptions = useMemo(() => ({
     background: { color: { value: 'transparent' } },
     fpsLimit: 60,
     interactivity: {
@@ -52,25 +50,21 @@ const ParticleBackground = () => {
       },
       number: {
         density: { enable: true, area: 800 },
-        value: isMobile ? 25 : 80, // Menos partículas no mobile
+        value: isMobile ? 25 : 80,
       },
       opacity: { value: 0.3 },
       shape: { type: 'circle' },
       size: { value: { min: 1, max: 3 } },
     },
     detectRetina: true,
-  };
+  }), [isMobile]);
 
   return (
     <div
-      className="absolute top-0 left-0 w-full h-full -z-10"
+      className="fixed inset-0 pointer-events-none -z-10"
       aria-hidden="true"
     >
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={particleOptions}
-      />
+      <Particles id="tsparticles" init={particlesInit} options={particleOptions} />
     </div>
   );
 };

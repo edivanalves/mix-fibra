@@ -101,9 +101,7 @@ const plansData = [
   },
 ];
 
-// Card memoizado para performance
 const PlanCard = memo(({ plan, index, isInView }) => {
-  const isHighlighted = plan.highlight;
   const glowRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -115,6 +113,8 @@ const PlanCard = memo(({ plan, index, isInView }) => {
     glowRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
 
+  const isHighlighted = plan.highlight;
+
   return (
     <div
       onMouseMove={handleMouseMove}
@@ -123,13 +123,13 @@ const PlanCard = memo(({ plan, index, isInView }) => {
         animated-border group rounded-2xl p-0.5 transition-all duration-500
         hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/30
         ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-        min-h-[420px] max-w-xs mx-auto
+        min-h-[420px] max-w-xs mx-auto bg-slate-900
       `}
     >
-      <div className="relative h-full w-full bg-slate-900 rounded-[15px] p-6 flex flex-col items-center">
+      <div className="relative h-full w-full rounded-[15px] p-6 flex flex-col items-center bg-gradient-to-br from-slate-800 to-slate-900">
         <div
           ref={glowRef}
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[15px]"
           style={{
             background: `radial-gradient(circle at var(--mouse-x) var(--mouse-y), ${
               isHighlighted ? 'rgba(249, 115, 22, 0.15)' : 'rgba(34, 211, 238, 0.1)'
@@ -137,7 +137,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
           }}
         />
         {isHighlighted && (
-          <div className="absolute top-0 right-0 text-white text-xs font-bold uppercase bg-gradient-to-r from-orange-500 to-yellow-400 px-4 py-1 rounded-bl-lg shadow-md">
+          <div className="absolute top-0 right-0 text-white text-xs font-bold uppercase bg-gradient-to-r from-orange-500 to-yellow-400 px-4 py-1 rounded-bl-lg shadow-md z-10">
             Popular
           </div>
         )}
@@ -149,8 +149,8 @@ const PlanCard = memo(({ plan, index, isInView }) => {
           <p className="text-slate-300 text-sm font-medium mb-4 h-12 line-clamp-2">
             {plan.description}
           </p>
-          <div className="w-full text-center mb-4 flex-grow">
-            <ul className="space-y-2 text-left">
+          <div className="w-full text-left mb-4 flex-grow">
+            <ul className="space-y-2">
               {plan.advantages.map((adv, i) => (
                 <li key={i} className="flex items-center text-slate-200 text-sm">
                   {adv.icon}
@@ -172,6 +172,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
                 : 'bg-gradient-to-r from-cyan-600 to-blue-600'
             }`}
             onClick={() => window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank')}
+            aria-label={`Assinar plano de ${plan.megas} megas`}
           >
             Assinar Agora
           </button>
@@ -210,17 +211,19 @@ const Plans = React.forwardRef(({ loading }, ref) => {
       className={`w-full py-16 px-4 bg-transparent text-center mt-8 rounded-2xl max-w-7xl mx-auto transition-opacity duration-500 ${
         loading ? 'opacity-0' : 'opacity-100'
       }`}
+      aria-label="Planos de Internet Mix Fibra"
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-16">Nossos Planos de Internet</h2>
+      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-16">
+        Nossos Planos de Internet
+      </h2>
 
-      {/* Grid responsivo adaptado para mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
         {plansData.map((plan, index) => (
           <PlanCard key={index} plan={plan} index={index} isInView={isInView} />
         ))}
       </div>
 
-      {/* Componente do recomendador de plano */}
+      {/* Componente recomendador */}
       <PlanRecommender />
     </section>
   );

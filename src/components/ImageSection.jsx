@@ -1,19 +1,24 @@
 import React from 'react';
 
 const ImageSection = ({ loading }) => {
-  const baseUrl = import.meta.env.BASE_URL;
+  // Base URL para imagens - importante em builds Vite / React
+  const baseUrl = import.meta.env.BASE_URL || '/';
 
   const ceoMain = {
-    src: baseUrl + 'imagens/ceo-principal.jpg',
+    src: `${baseUrl}imagens/ceo-principal.jpg`,
     alt: 'Retrato principal do CEO da Mix Fibra, sorrindo e em um ambiente profissional, transmitindo confiança e liderança.',
   };
 
   return (
     <section
       aria-labelledby="leadership-team-heading"
-      className={`w-full py-12 px-4 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 text-center shadow-2xl mt-8 rounded-3xl max-w-6xl mx-auto transition-opacity duration-500 ${
-        loading ? 'opacity-0' : 'opacity-100'
-      }`}
+      className={`
+        w-full py-12 px-4
+        bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900
+        text-center shadow-2xl mt-8 rounded-3xl max-w-6xl mx-auto
+        transition-opacity duration-500
+        ${loading ? 'opacity-0' : 'opacity-100'}
+      `}
     >
       <h2
         id="leadership-team-heading"
@@ -22,19 +27,23 @@ const ImageSection = ({ loading }) => {
         Nossa <span className="text-orange-400">Liderança</span>
       </h2>
 
-      {/* LAYOUT FLEX RESPONSIVO */}
       <div className="flex flex-col lg:flex-row items-center lg:items-start gap-10">
-        {/* IMAGEM DO CEO */}
+        {/* Imagem do CEO */}
         <figure className="w-full max-w-sm lg:max-w-md rounded-xl overflow-hidden shadow-2xl border-4 border-orange-400">
           <img
             src={ceoMain.src}
             alt={ceoMain.alt}
+            loading="lazy"
+            decoding="async"
+            width={400}  // Ajuste conforme a real largura da imagem
+            height={533} // Ajuste conforme a real altura da imagem
             className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500 ease-in-out"
           />
+          {/* Figcaption apenas para leitores de tela */}
           <figcaption className="sr-only">{ceoMain.alt}</figcaption>
         </figure>
 
-        {/* TEXTO */}
+        {/* Texto */}
         <div className="text-white text-left flex-1 px-2">
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 drop-shadow-lg text-orange-400">
             Visão da Liderança

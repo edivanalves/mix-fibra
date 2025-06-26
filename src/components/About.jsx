@@ -1,8 +1,7 @@
 import React from 'react';
 
-// Lista de cidades com cores e imagens usando base dinâmica
 const cidadesAtendidas = [
-{
+  {
     nome: 'Sumé',
     cor: 'bg-orange-400',
     imagem: import.meta.env.BASE_URL + 'imagens/sume.jpg'
@@ -25,6 +24,11 @@ const cidadesAtendidas = [
 ];
 
 const About = React.forwardRef(({ loading }, ref) => {
+  // Fallback para imagem quebrada
+  const handleImgError = (e) => {
+    e.target.src = 'https://placehold.co/400x250/5a6a99/FFFFFF?text=Imagem+Indisponível';
+  };
+
   return (
     <section
       id="about"
@@ -44,20 +48,26 @@ const About = React.forwardRef(({ loading }, ref) => {
         Cidades Atendidas
       </h3>
 
-      {/* Cards de cidades */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      {/* Lista com roles para acessibilidade */}
+      <div role="list" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         {cidadesAtendidas.map((cidade) => (
           <div
             key={cidade.nome}
-            className="bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/10 hover:scale-105 transition-transform duration-300"
+            role="listitem"
+            className="bg-white/10 backdrop-blur-md p-4 rounded-2xl shadow-lg border border-white/10 hover:scale-105 hover:shadow-xl transition-transform duration-300 will-change-transform cursor-pointer"
+            tabIndex={0}
+            aria-label={`Cidade atendida: ${cidade.nome}`}
           >
             <img
               src={cidade.imagem}
               alt={`Cidade de ${cidade.nome}`}
               className="w-full h-40 object-cover rounded-xl mb-3 border-2 border-white/20"
               loading="lazy"
+              onError={handleImgError}
+              decoding="async"
+              fetchpriority="low"
             />
-            <div className="text-white font-semibold text-lg flex items-center justify-center gap-2">
+            <div className="text-white font-semibold text-lg flex items-center justify-center gap-2 select-none">
               <span className={`w-3 h-3 rounded-full ${cidade.cor} motion-safe:animate-ping`}></span>
               {cidade.nome}
             </div>
