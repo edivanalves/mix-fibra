@@ -1,0 +1,33 @@
+{
+  "name": "Mix Fibra - Internet de Ultra Velocidade",
+  "short_name": "Mix Fibra",
+  "description": "Internet de fibra óptica ultra rápida para navegação, jogos e streaming sem limites",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "background_color": "#ffffff",
+  "theme_color": "#1f2937",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/imagens/logo-mix-fibra.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/imagens/logo-mix-fibra.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["business", "utilities", "productivity"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
+}
