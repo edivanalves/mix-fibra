@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { User, MapPin, DollarSign, Compass, Send } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import { User, MapPin, DollarSign, Compass, Send, CheckCircle } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { useGeolocationAddress } from '../hooks/useGeolocationAddress';
 import { maskDocument, isValidDocument } from '../utils/validators';
@@ -110,10 +110,12 @@ const SolicitationForm = React.forwardRef(({ initialDesiredPlan = '' }, ref) => 
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleSubmit = useCallback((e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       toast.error('Por favor, corrija os campos em destaque.');
+      const firstError = document.querySelector('.ring-red-500');
+      firstError?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
@@ -146,8 +148,13 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
 
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message.trim())}`;
 
-    toast.promise(
-      new Promise(resolve => setTimeout(() => resolve(window.open(whatsappUrl, '_blank')), 500)),
+    await toast.promise(
+      new Promise(resolve => {
+        setTimeout(() => {
+          window.open(whatsappUrl, '_blank');
+          resolve();
+        }, 500);
+      }),
       {
         loading: 'Preparando sua solicitação...',
         success: () => {
@@ -234,7 +241,7 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
           <textarea id="message" name="message" rows="4" className="w-full p-3 rounded-lg bg-blue-900 text-white focus:ring-2 focus:ring-orange-500" value={formData.message} onChange={handleChange} placeholder="Ex: 'Entrar em contato após as 14h'..."></textarea>
         </div>
 
-        <button type="submit" className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-extrabold py-4 px-6 rounded-full text-lg flex justify-center items-center gap-3 transition-all">
+        <button type="submit" className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-extrabold py-4 px-6 rounded-full text-lg flex justify-center items-center gap-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
           <Send size={20} /> Enviar Solicitação via WhatsApp
         </button>
       </form>
@@ -246,27 +253,45 @@ const SectionTitle = ({ icon, title }) => (
   <h3 className="text-xl font-bold text-white mb-4 border-b border-blue-700 pb-2 flex items-center gap-2">{icon}{title}</h3>
 );
 
-const InputField = React.memo(({ label, name, value, onChange, type = 'text', required = false, error, ...props }) => (
+const InputField = memo(({ label, name, value, onChange, type = 'text', required = false, error, ...props }) => (
   <div className="w-full">
-    <label htmlFor={name} className="block text-sm font-bold mb-2">{label} {required && <span className="text-red-500">*</span>}</label>
-    <input
-      type={type} id={name} name={name} value={value} onChange={onChange}
-      className={`w-full p-3 rounded-lg bg-blue-900 text-white focus:outline-none focus:ring-2 ${error ? 'ring-red-500' : 'focus:ring-orange-500'}`} required={required} {...props}
-    />
-    {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+    <label htmlFor={name} className="block text-sm font-bold mb-2">{label} {required && <span className="text-red-500" aria-label="obrigatório">*</span>}</label>
+    <div className="relative">
+      <input
+        type={type} id={name} name={name} value={value} onChange={onChange}
+        className={`w-full p-3 pr-10 rounded-lg bg-blue-900 text-white focus:outline-none focus:ring-2 transition-all duration-200 ${error ? 'ring-2 ring-red-500' : 'focus:ring-orange-500'}`} 
+        required={required} 
+        aria-invalid={error ? 'true' : 'false'}
+        aria-describedby={error ? `${name}-error` : undefined}
+        {...props}
+      />
+      {value && !error && (
+        <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-400" />
+      )}
+    </div>
+    {error && <p id={`${name}-error`} className="text-red-400 text-xs mt-1" role="alert">{error}</p>}
   </div>
 ));
 
-const SelectField = React.memo(({ label, name, value, onChange, required = false, error, children, ...props }) => (
+const SelectField = memo(({ label, name, value, onChange, required = false, error, children, ...props }) => (
   <div className="w-full">
-    <label htmlFor={name} className="block text-sm font-bold mb-2">{label} {required && <span className="text-red-500">*</span>}</label>
-    <select
-      id={name} name={name} value={value} onChange={onChange}
-      className={`w-full p-3 rounded-lg bg-blue-900 text-white focus:outline-none focus:ring-2 ${error ? 'ring-red-500' : 'focus:ring-orange-500'}`} required={required} {...props}
-    >
-      {children}
-    </select>
-    {error && <p className="text-red-400 text-xs mt-1">{error}</p>}
+    <label htmlFor={name} className="block text-sm font-bold mb-2">{label} {required && <span className="text-red-500" aria-label="obrigatório">*</span>}</label>
+    <div className="relative">
+      <select
+        id={name} name={name} value={value} onChange={onChange}
+        className={`w-full p-3 pr-10 rounded-lg bg-blue-900 text-white focus:outline-none focus:ring-2 transition-all duration-200 ${error ? 'ring-2 ring-red-500' : 'focus:ring-orange-500'}`} 
+        required={required} 
+        aria-invalid={error ? 'true' : 'false'}
+        aria-describedby={error ? `${name}-error` : undefined}
+        {...props}
+      >
+        {children}
+      </select>
+      {value && !error && (
+        <CheckCircle className="absolute right-8 top-1/2 -translate-y-1/2 w-5 h-5 text-green-400 pointer-events-none" />
+      )}
+    </div>
+    {error && <p id={`${name}-error`} className="text-red-400 text-xs mt-1" role="alert">{error}</p>}
   </div>
 ));
 

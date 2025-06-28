@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useMemo, useCallback } from 'react';
 import PlanRecommender from './PlanRecommender';
+import { trackPlanInterest, trackButtonClick } from '../utils/analytics';
 
 const iconProps = "w-5 h-5 text-green-400 mr-3 flex-shrink-0";
 
@@ -104,14 +105,20 @@ const plansData = [
 const PlanCard = memo(({ plan, index, isInView }) => {
   const glowRef = useRef(null);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!glowRef.current) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     glowRef.current.style.setProperty('--mouse-x', `${x}px`);
     glowRef.current.style.setProperty('--mouse-y', `${y}px`);
-  };
+  }, []);
+
+  const handlePlanClick = useCallback(() => {
+    trackPlanInterest(`${plan.megas}MB`);
+    trackButtonClick('assinar_plano', 'plans_section');
+    window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank');
+  }, [plan.megas]);
 
   const isHighlighted = plan.highlight;
 
@@ -166,15 +173,16 @@ const PlanCard = memo(({ plan, index, isInView }) => {
           </p>
 
           <button
-            className={`w-full py-3 mt-4 font-bold rounded-lg shadow-lg text-white text-base tracking-wide transition-all duration-300 transform hover:scale-105 focus:outline-none active:scale-95 ${
+            className={`w-full py-3 mt-4 font-bold rounded-lg shadow-lg text-white text-base tracking-wide transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95 ${
               isHighlighted
-                ? 'bg-gradient-to-r from-orange-500 to-yellow-400 ring-2 ring-orange-400/50'
-                : 'bg-gradient-to-r from-cyan-600 to-blue-600'
+                ? 'bg-gradient-to-r from-orange-500 to-yellow-400 ring-2 ring-orange-400/50 focus:ring-orange-500'
+                : 'bg-gradient-to-r from-cyan-600 to-blue-600 focus:ring-cyan-500'
             }`}
-            onClick={() => window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank')}
+            onClick={handlePlanClick}
             aria-label={`Assinar plano de ${plan.megas} megas`}
           >
-            Assinar Agora
+            <span className="relative z-10">Assinar Agora</span>
+            <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </div>
       </div>
@@ -184,6 +192,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
 
 const Plans = React.forwardRef(({ loading }, ref) => {
   const [isInView, setIsInView] = useState(false);
+  const memoizedPlans = useMemo(() => plansData, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -218,8 +227,8 @@ const Plans = React.forwardRef(({ loading }, ref) => {
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
-        {plansData.map((plan, index) => (
-          <PlanCard key={index} plan={plan} index={index} isInView={isInView} />
+        {memoizedPlans.map((plan, index) => (
+          <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} />
         ))}
       </div>
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 
-const Hero = React.forwardRef(({ loading, scrollToPlans }, ref) => {
+const Hero = memo(React.forwardRef(({ loading, scrollToPlans }, ref) => {
   return (
     <section
       id="home"
@@ -8,36 +8,30 @@ const Hero = React.forwardRef(({ loading, scrollToPlans }, ref) => {
       className="w-full h-screen relative flex items-center overflow-hidden mb-12"
       aria-label="Seção inicial do site com apresentação e chamada para conhecer planos"
     >
-      {/* Estilos específicos de animação para o Hero */}
       <style>
         {`
-          @keyframes hero-float-scale {
-            0% { transform: translateY(0) scale(1); }
-            25% { transform: translateY(-5px) scale(1.01); }
-            50% { transform: translateY(0) scale(1); }
-            75% { transform: translateY(5px) scale(1.01); }
-            100% { transform: translateY(0) scale(1); }
+          @keyframes hero-float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
           }
-          .animate-hero-img-effect {
-            animation: hero-float-scale 6s ease-in-out infinite;
+          @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          .hero-float { animation: hero-float 4s ease-in-out infinite; }
+          .fade-up { animation: fade-in-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+          .fade-up-delay { animation: fade-in-up 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; }
+          .gradient-animate { 
+            background: linear-gradient(-45deg, #1e40af, #3b82f6, #06b6d4, #0891b2);
+            background-size: 400% 400%;
+            animation: gradient-shift 8s ease infinite;
           }
           @media (prefers-reduced-motion: reduce) {
-            .animate-hero-img-effect {
-              animation: none;
-            }
-          }
-          .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s ease forwards;
-          }
-          .fade-in-up.delay-100 { animation-delay: 0.1s; }
-          .fade-in-up.delay-300 { animation-delay: 0.3s; }
-          @keyframes fadeInUp {
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
+            .hero-float, .fade-up, .fade-up-delay, .gradient-animate { animation: none; }
           }
         `}
       </style>
@@ -49,12 +43,15 @@ const Hero = React.forwardRef(({ loading, scrollToPlans }, ref) => {
           loop
           muted
           playsInline
+          preload="metadata"
           aria-hidden="true"
           className="w-full h-full object-cover"
           src="/mix-fibra/videos/hero-video.mp4"
-          loading="eager"
           poster="/mix-fibra/imagens/hero-poster.jpg"
-        />
+        >
+          <source src="/mix-fibra/videos/hero-video.webm" type="video/webm" />
+          <source src="/mix-fibra/videos/hero-video.mp4" type="video/mp4" />
+        </video>
       </div>
       {/* Overlay para escurecer o vídeo */}
       <div className="absolute inset-0 bg-blue-950/70 -z-10" />
@@ -63,39 +60,40 @@ const Hero = React.forwardRef(({ loading, scrollToPlans }, ref) => {
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-20">
         <div className="flex flex-col lg:flex-row items-center gap-10">
 
-          {/* Imagem com animação */}
-          <div className="flex justify-center items-center w-full lg:w-1/2 animate-hero-img-effect">
-            <img
-              src="/mix-fibra/imagens/mix.png"
-              alt="Logo da Mix Fibra"
-              className="rounded-2xl w-64 sm:w-80 md:w-[22rem] lg:w-full max-w-xl h-auto"
-              loading="eager"
-              decoding="async"
-              width={352} // ajusta para tamanho real da imagem para melhor performance
-              height={224}
-            />
+          <div className="flex justify-center items-center w-full lg:w-1/2">
+            <div className="hero-float relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-400/20 to-cyan-400/20 rounded-2xl blur-xl"></div>
+              <img
+                src="/mix-fibra/imagens/mix.png"
+                alt="Logo da Mix Fibra - Internet de fibra óptica de alta velocidade"
+                className="relative rounded-2xl w-64 sm:w-80 md:w-[22rem] lg:w-full max-w-xl h-auto shadow-2xl"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+                width={352}
+                height={224}
+              />
+            </div>
           </div>
 
-          {/* Texto e botão */}
           <div className="text-center lg:text-left space-y-6 w-full lg:w-1/2">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight fade-in-up delay-100">
-              A Conexão que <span className="text-orange-400">Transforma</span> o seu Dia.
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-tight fade-up opacity-0">
+              A Conexão que <span className="bg-gradient-to-r from-orange-400 to-yellow-400 bg-clip-text text-transparent">Transforma</span> o seu Dia.
             </h1>
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-200 max-w-lg mx-auto lg:mx-0 fade-in-up delay-300">
-              Ultra velocidade e estabilidade 100% fibra óptica para você navegar, trabalhar, jogar e assistir sem limites.
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-200 max-w-lg mx-auto lg:mx-0 fade-up-delay opacity-0 leading-relaxed">
+              Ultra velocidade e estabilidade <strong className="text-white">100% fibra óptica</strong> para você navegar, trabalhar, jogar e assistir sem limites.
             </p>
 
             <div className="flex justify-center lg:justify-start">
               <button
-                onClick={scrollToPlans}
-                className="group inline-flex items-center justify-center gap-2
-                  bg-gradient-to-r from-blue-700 to-blue-600
-                  hover:from-blue-600 hover:to-blue-500
-                  text-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 rounded-xl
-                  shadow-md shadow-blue-400/30 hover:shadow-blue-500/50
+                onClick={useCallback(() => scrollToPlans(), [scrollToPlans])}
+                className="group inline-flex items-center justify-center gap-2 gradient-animate
+                  text-white font-bold text-base sm:text-lg px-8 sm:px-10 py-4 sm:py-5 rounded-2xl
+                  shadow-lg shadow-blue-500/30 hover:shadow-blue-400/50 hover:shadow-2xl
                   transition-all duration-300 transform hover:scale-105 active:scale-95
-                  focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Conhecer Planos"
+                  focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent
+                  border border-white/20 hover:border-white/30"
+                aria-label="Conhecer nossos planos de internet"
                 type="button"
               >
                 Conhecer Planos
@@ -122,6 +120,6 @@ const Hero = React.forwardRef(({ loading, scrollToPlans }, ref) => {
       </div>
     </section>
   );
-});
+}));
 
 export default Hero;

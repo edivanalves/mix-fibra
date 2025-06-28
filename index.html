@@ -1,30 +1,70 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth antialiased">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/imagens/logo-mix-fibra.png" type="image/png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Mix Fibra — Internet de Ultra Velocidade com fibra óptica para navegação, jogos e streaming sem limites." />
-    <meta name="keywords" content="internet, fibra óptica, ultra velocidade, Mix Fibra, plano de internet" />
-    <meta name="author" content="Mix Fibra" />
-
-    <!-- Open Graph para redes sociais -->
-    <meta property="og:title" content="Mix Fibra • Internet de Ultra Velocidade" />
-    <meta property="og:description" content="Internet de fibra óptica ultra rápida para você navegar, trabalhar, jogar e assistir sem limites." />
-    <meta property="og:image" content="/imagens/logo-mix-fibra.png" />
-    <meta property="og:url" content="https://edivanalves.github.io/mix-fibra" />
-    <meta property="og:type" content="website" />
-
-    <title>Mix Fibra • Internet de Ultra Velocidade</title>
-
-    <!-- Pré-carregando o logo para acelerar o carregamento -->
-    <link rel="preload" href="/imagens/logo-mix-fibra.png" as="image" />
-
-  </head>
-  <body>
-    <div id="root" role="main"></div>
-
-    <!-- Importa o JS com defer para não bloquear o carregamento da página -->
-    <script type="module" src="/src/main.jsx" defer></script>
-  </body>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Mix Fibra • Internet de Ultra Velocidade</title>
+  <meta name="description" content="Internet de fibra óptica ultra rápida para navegação, jogos e streaming sem limites. Planos Mix Fibra com velocidade garantida.">
+  <meta name="keywords" content="internet fibra óptica, internet rápida, planos internet, mix fibra, velocidade garantida, provedor internet">
+  <meta name="author" content="Mix Fibra">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#1f2937" media="(prefers-color-scheme:light)">
+  <meta name="theme-color" content="#111827" media="(prefers-color-scheme:dark)">
+  <meta name="color-scheme" content="light dark">
+  <link rel="canonical" href="https://edivanalves.github.io/mix-fibra">
+  
+  <!-- Favicons -->
+  <link rel="icon" href="/imagens/logo-mix-fibra.png" sizes="any">
+  <link rel="icon" href="/imagens/logo-mix-fibra.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/imagens/logo-mix-fibra.png">
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mix Fibra • Internet de Ultra Velocidade">
+  <meta property="og:description" content="Internet de fibra óptica ultra rápida para você navegar, trabalhar, jogar e assistir sem limites.">
+  <meta property="og:image" content="https://edivanalves.github.io/mix-fibra/imagens/logo-mix-fibra.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://edivanalves.github.io/mix-fibra">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Mix Fibra">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mix Fibra • Internet de Ultra Velocidade">
+  <meta name="twitter:description" content="Internet de fibra óptica ultra rápida para navegação, jogos e streaming sem limites.">
+  <meta name="twitter:image" content="https://edivanalves.github.io/mix-fibra/imagens/logo-mix-fibra.png">
+  
+  <!-- Performance -->
+  <link rel="preload" href="/src/main.jsx" as="script" crossorigin>
+  <link rel="preload" href="/imagens/logo-mix-fibra.png" as="image" fetchpriority="high">
+  <link rel="dns-prefetch" href="//fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="modulepreload" href="/src/main.jsx">
+  
+  <!-- Styles -->
+  <style>
+    :root{--primary:#1f2937;--bg:#ffffff;--text:#1f2937}@media(prefers-color-scheme:dark){:root{--primary:#374151;--bg:#111827;--text:#f9fafb}}
+    *,::before,::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:16px;-webkit-text-size-adjust:100%}
+    body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;line-height:1.6;color:var(--text);background:var(--bg);scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+    #root{min-height:100vh;min-height:100dvh;isolation:isolate}
+    .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+    @media(max-width:768px){html{font-size:14px}}
+  </style>
+</head>
+<body>
+  <noscript>
+    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:1rem;background:#fef2f2;color:#dc2626">
+      <div>
+        <h1 style="font-size:1.5rem;margin-bottom:1rem">JavaScript Necessário</h1>
+        <p>Este site requer JavaScript para funcionar. Habilite o JavaScript em seu navegador.</p>
+      </div>
+    </div>
+  </noscript>
+  <div id="root" role="main" aria-label="Aplicação Mix Fibra"></div>
+  <script type="module" src="/src/main.jsx" defer></script>
+</body>
 </html>
