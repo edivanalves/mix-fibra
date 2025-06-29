@@ -1,66 +1,132 @@
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react'; // Importar o ícone ChevronDown da lucide-react
+import React, { useState, useRef, useCallback } from 'react';
+import { ChevronDown, HelpCircle, MessageSquare } from 'lucide-react';
 
-// Componente individual de FAQ
-const FaqItem = ({ question, answer }) => {
+const FaqItem = ({ question, answer, index }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="faq-item">
-      <button
-        className="faq-question"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen} // Atributo ARIA para acessibilidade
-        aria-controls={`faq-answer-${question.replace(/\s+/g, '-')}`} // Ligação para a resposta
-      >
-        <span>{question}</span>
-        <ChevronDown // Usar ícone SVG para melhor controlo e acessibilidade
-          size={24}
-          className={`faq-arrow transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-        />
-        {/*
-          NOTA: A classe 'rotate' no CSS para 'faq-arrow.rotate'
-          deve ser ajustada para 'rotate-180' se estiver a usar Tailwind diretamente,
-          ou pode manter o 'rotate' e certificar-se que a regra CSS é:
-          .faq-arrow.rotate { transform: rotate(180deg); }
-          No meu CSS, 'rotate' já está mapeado para 'rotate-180', então está consistente.
-        */}
-      </button>
-      <div
-        id={`faq-answer-${question.replace(/\s+/g, '-')}`} // ID único para a resposta
-        className={`faq-answer ${isOpen ? 'open' : ''}`}
-        role="region" // Atributo ARIA para indicar que é uma região de conteúdo
-        aria-labelledby={`faq-question-${question.replace(/\s+/g, '-')}`} // Ligação para a pergunta
-      >
-        <p className="p-4 text-blue-100">{answer}</p> {/* Adicionado cor de texto para tema escuro */}
+    <div 
+      className="group relative mb-4 transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1"
+      style={{ animationDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Glow Effect */}
+      <div className={`absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-sm transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      
+      <div className="relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden shadow-xl">
+        <button
+          className="w-full flex justify-between items-center text-left p-6 cursor-pointer hover:bg-white/5 transition-all duration-300 group"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+          aria-controls={`faq-answer-${question.replace(/\s+/g, '-')}`}
+        >
+          <span className="flex items-center gap-4 text-white">
+            <div className="p-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 group-hover:scale-110 transition-transform duration-300">
+              <HelpCircle size={20} className="text-white" />
+            </div>
+            <span className="font-semibold text-lg group-hover:text-blue-300 transition-colors duration-300">{question}</span>
+          </span>
+          <ChevronDown
+            size={24}
+            className={`transition-all duration-300 text-cyan-300 group-hover:text-blue-300 ${isOpen ? 'rotate-180 scale-110' : ''}`}
+          />
+        </button>
+        
+        <div 
+          id={`faq-answer-${question.replace(/\s+/g, '-')}`}
+          className={`overflow-hidden transition-all duration-500 ease-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+          role="region"
+          aria-labelledby={`faq-question-${question.replace(/\s+/g, '-')}`}
+        >
+          <div className="px-6 pb-6">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-white/90 leading-relaxed">{answer}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-// Componente principal de FAQ
-const Faq = React.forwardRef(({ loading }, ref) => { // Adicionado React.forwardRef
+const Faq = React.forwardRef(({ loading }, ref) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef(null);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePosition({ x, y });
+  }, []);
+
   const faqData = [
-    { question: 'Como faço para verificar a disponibilidade na minha cidade?', answer: 'Você pode entrar em contato conosco pelo WhatsApp ou preencher o formulário de contato. Nossa equipe verificará a cobertura em seu endereço.' },
-    { question: 'Quais são as formas de pagamento aceitas?', answer: 'Aceitamos pagamentos via boleto bancário, débito automático e cartão de crédito. Consulte nossos atendentes para mais detalhes.' },
-    { question: 'Posso mudar de plano a qualquer momento?', answer: 'Sim, você pode solicitar a alteração do seu plano a qualquer momento, de acordo com as condições contratuais. Entre em contato com nossa central de atendimento.' },
-    { question: 'A Mix Fibra oferece suporte técnico 24h?', answer: 'Sim, a Mix Fibra oferece suporte técnico especializado 24 horas por dia, 7 dias por semana, para garantir que você esteja sempre conectado. Entre em contato pelos nossos canais de atendimento.' },
-    { question: 'Há fidelidade nos planos da Mix Fibra?', answer: 'Nossos planos são flexíveis, mas alguns podem ter um período de fidelidade associado a benefícios promocionais. Verifique as condições do plano escolhido ou fale com nossa equipe comercial.' },
+    { question: 'Como faço para verificar a disponibilidade na minha cidade?', answer: 'Entre em contato conosco pelo WhatsApp ou preencha o formulário de contato. Nossa equipe verificará a cobertura em seu endereço de forma rápida e gratuita.' },
+    { question: 'Quais são as formas de pagamento aceitas?', answer: 'Aceitamos pagamentos via boleto bancário, débito automático, cartão de crédito e PIX. Consulte nossos atendentes para escolher a melhor opção para você.' },
+    { question: 'Posso mudar de plano a qualquer momento?', answer: 'Sim! Você pode solicitar upgrade ou downgrade do seu plano a qualquer momento. Entre em contato com nossa central de atendimento para fazer a alteração.' },
+    { question: 'A Mix Fibra oferece suporte técnico 24h?', answer: 'Sim! Oferecemos suporte técnico especializado 24 horas por dia, 7 dias por semana, para garantir que você esteja sempre conectado com qualidade total.' },
+    { question: 'Há fidelidade nos planos da Mix Fibra?', answer: 'Nossos planos são flexíveis e sem fidelidade obrigatória. Alguns planos promocionais podem ter condições especiais. Consulte nossa equipe para mais detalhes.' },
+    { question: 'Qual é o prazo para instalação?', answer: 'O prazo médio de instalação é de 24 a 48 horas após a contratação, dependendo da disponibilidade técnica na sua região. Nossa equipe entrará em contato para agendar.' },
+    { question: 'A velocidade é realmente garantida?', answer: 'Sim! Garantimos 100% da velocidade contratada via fibra óptica. Caso não atinja a velocidade, nossa equipe técnica resolve o problema sem custo adicional.' }
   ];
 
   return (
     <section
-      className={`w-full py-16 px-4 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 text-center shadow-2xl mt-12 rounded-3xl max-w-6xl mx-auto mb-12 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
-      id="faq" // Adicionado ID para navegação
-      ref={ref} // Passa o ref para a secção
+      id="faq"
+      ref={ref}
+      className={`relative w-full py-20 px-4 text-center mt-12 max-w-7xl mx-auto mb-12 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      onMouseMove={handleMouseMove}
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-10 drop-shadow-lg">
-        Perguntas Frequentes <span className="text-orange-400">(FAQ)</span>
-      </h2>
-      <div className="max-w-3xl mx-auto text-left"> {/* Alinhamento do texto à esquerda para melhor leitura */}
-        {faqData.map((item, index) => (
-          <FaqItem key={index} question={item.question} answer={item.answer} />
-        ))}
+      <div ref={sectionRef} className="absolute inset-0" />
+      
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 rounded-3xl" />
+      <div 
+        className="absolute inset-0 opacity-20 rounded-3xl"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(99, 102, 241, 0.4) 0%, transparent 50%)`
+        }}
+      />
+      
+      {/* Floating Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-indigo-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
+            <HelpCircle className="w-4 h-4 text-blue-400" />
+            Dúvidas Frequentes
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent mb-6">
+            Perguntas & Respostas
+          </h2>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+            Encontre respostas para as dúvidas mais comuns sobre nossos serviços
+          </p>
+        </div>
+
+        {/* FAQ Items */}
+        <div className="max-w-4xl mx-auto mb-12">
+          {faqData.map((item, index) => (
+            <FaqItem key={index} question={item.question} answer={item.answer} index={index} />
+          ))}
+        </div>
+        
+        {/* CTA Section */}
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300 hover:scale-105">
+            <MessageSquare className="w-5 h-5 text-blue-400" />
+            <span className="font-semibold">Não encontrou sua dúvida? Fale conosco!</span>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -11,20 +11,17 @@ import Testimonials from './components/Testimonials';
 import About from './components/About';
 import Contact from './components/Contact';
 import Support from './components/Support';
-import Faq from './components/Faq';
-import SpeedTest from './components/SpeedTest';
 import CentralAssinante from './components/CentralAssinante';
 import Footer from './components/Footer';
-import ThemeToggle from './components/ThemeToggle';
 import SolicitationForm from './components/SolicitationForm';
 import ParticleBackground from './components/ParticleBackground';
 import PlanRecommender from './components/PlanRecommender';
+import IngridAssistant from './components/IngridAssistant';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('');
-  const [currentParticleColor, setCurrentParticleColor] = useState('#5a6a99');
-  const [currentLinkColor, setCurrentLinkColor] = useState('#5a6a99');
+
 
   const homeRef = useRef(null);
   const plansRef = useRef(null);
@@ -33,22 +30,21 @@ function App() {
   const contactRef = useRef(null);
   const centralRef = useRef(null);
   const solicitationRef = useRef(null);
-  const speedTestRef = useRef(null);
   const testimonialsRef = useRef(null);
-  const faqRef = useRef(null);
   const whyChooseUsRef = useRef(null);
+  const imageSectionRef = useRef(null);
 
   const sectionRefs = [
     { id: 'home', ref: homeRef },
     { id: 'plans-section', ref: plansRef },
     { id: 'why-choose-us-section', ref: whyChooseUsRef },
+    { id: 'image-section', ref: imageSectionRef },
+    { id: 'testimonials-section', ref: testimonialsRef },
     { id: 'about', ref: aboutRef },
     { id: 'contact', ref: contactRef },
+    { id: 'support-section', ref: supportRef },
     { id: 'central-assinante', ref: centralRef },
-    { id: 'solicitation-form', ref: solicitationRef },
-    { id: 'speedtest-section', ref: speedTestRef },
-    { id: 'testimonials-section', ref: testimonialsRef },
-    { id: 'faq', ref: faqRef },
+    { id: 'solicitation-form', ref: solicitationRef }
   ];
 
   useEffect(() => {
@@ -81,34 +77,7 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const updateParticleColors = () => {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const mainTextColor = rootStyles.getPropertyValue('--color-text-main').trim();
-      const mutedTextColor = rootStyles.getPropertyValue('--color-text-muted').trim();
 
-      if (document.documentElement.getAttribute('data-theme') === 'light') {
-        setCurrentParticleColor(mainTextColor || '#1f2937');
-        setCurrentLinkColor(mutedTextColor || '#a78bfa');
-      } else {
-        setCurrentParticleColor(mutedTextColor || '#5a6a99');
-        setCurrentLinkColor(mutedTextColor || '#5a6a99');
-      }
-    };
-
-    updateParticleColors();
-    const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          updateParticleColors();
-        }
-      });
-    });
-
-    observer.observe(document.documentElement, { attributes: true });
-
-    return () => observer.disconnect();
-  }, []);
 
   const scrollToSection = (ref) => {
     if (ref && ref.current) {
@@ -118,8 +87,7 @@ function App() {
 
   return (
     <div className="w-full bg-blue-950">
-      <ParticleBackground particleColor={currentParticleColor} linkColor={currentLinkColor} />
-      <ThemeToggle />
+      <ParticleBackground />
 
       <Navbar
         refs={{
@@ -130,9 +98,7 @@ function App() {
           contactRef,
           centralRef,
           solicitationRef,
-          speedTestRef,
           testimonialsRef,
-          faqRef,
           whyChooseUsRef
         }}
         activeSection={activeSection}
@@ -142,21 +108,17 @@ function App() {
         <Hero ref={homeRef} loading={loading} scrollToPlans={() => scrollToSection(plansRef)} />
         <Plans ref={plansRef} loading={loading} />
         <WhyChooseUs ref={whyChooseUsRef} loading={loading} />
-        <ImageSection loading={loading} />
+        <ImageSection ref={imageSectionRef} loading={loading} />
         <Testimonials ref={testimonialsRef} loading={loading} />
         <About ref={aboutRef} loading={loading} />
         <Contact ref={contactRef} loading={loading} />
         <Support ref={supportRef} loading={loading} />
-        <Faq ref={faqRef} loading={loading} />
-        <SpeedTest ref={speedTestRef} loading={loading} />
         <CentralAssinante ref={centralRef} loading={loading} />
         <SolicitationForm ref={solicitationRef} />
-        <div className="my-12">
-          <PlanRecommender />
-        </div>
       </div>
 
       <Footer />
+      <IngridAssistant />
     </div>
   );
 }

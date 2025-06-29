@@ -1,99 +1,204 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { Calculator, Wifi, Monitor, Gamepad2, Users, Zap, CheckCircle } from 'lucide-react';
 
-const PlanRecommender = () => {
-  const [usageInput, setUsageInput] = useState('');
-  const [recommendationOutput, setRecommendationOutput] = useState('');
-  const [llmLoading, setLlmLoading] = useState(false);
-  const debounceRef = useRef();
+const SpeedCalculator = () => {
+  const [people, setPeople] = useState(2);
+  const [activities, setActivities] = useState({
+    streaming: false,
+    gaming: false,
+    work: false,
+    social: false,
+    download: false
+  });
+  const [quality, setQuality] = useState('hd');
 
-  const plansData = [/* ...mantido como está... */];
-
-  const getPlanRecommendation = (input) => {
-    const lowerInput = input.toLowerCase();
-    let recommendedPlan = null;
-    let highestMatchCount = 0;
-
-    if (lowerInput.length < 5) {
-      return `<p class="text-blue-100">Descreva melhor como usa a internet para receber uma recomendação personalizada.</p>`;
-    }
-
-    for (const plan of plansData) {
-      let matchCount = 0;
-      for (const keyword of plan.keywords) {
-        if (lowerInput.includes(keyword)) matchCount++;
-      }
-      if (matchCount > highestMatchCount) {
-        highestMatchCount = matchCount;
-        recommendedPlan = plan;
-      }
-    }
-
-    if (recommendedPlan && highestMatchCount > 0) {
-      return `
-        <div class="text-xl font-bold text-orange-400 mb-2">Plano recomendado: ${recommendedPlan.megas}MB</div>
-        <p class="text-blue-100 mb-2">${recommendedPlan.description}</p>
-        <p class="text-white text-lg font-semibold">Por apenas R$${recommendedPlan.price}/mês</p>
-        <a href="https://wa.me/5583996411187?text=Tenho%20interesse%20no%20plano%20de%20${recommendedPlan.megas}MB" 
-           target="_blank" rel="noopener noreferrer"
-           class="inline-block mt-4 w-full sm:w-auto text-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-200 shadow-md">
-          Assinar via WhatsApp
-        </a>
-        <p class="text-blue-200 mt-4 text-sm">Essa é uma sugestão baseada na sua descrição. Para mais detalhes, fale com nosso atendimento clicando acima.</p>
-      `;
-    } else {
-      return `
-        <p class="text-blue-100">Não conseguimos recomendar um plano com base nessa descrição.</p>
-        <p class="text-blue-100 mt-2">Tente ser mais específico (ex: "assistimos filmes em 4K e jogamos online") ou <a href="https://wa.me/5583996411187" target="_blank" class="text-orange-400 hover:underline">fale com um atendente</a>.</p>
-      `;
-    }
+  const activityData = {
+    streaming: { name: 'Streaming (Netflix, YouTube)', speed: quality === '4k' ? 25 : quality === 'hd' ? 8 : 3, icon: Monitor },
+    gaming: { name: 'Jogos Online', speed: 15, icon: Gamepad2 },
+    work: { name: 'Home Office/Videochamadas', speed: 10, icon: Users },
+    social: { name: 'Redes Sociais', speed: 2, icon: Wifi },
+    download: { name: 'Downloads Pesados', speed: 20, icon: Zap }
   };
 
-  useEffect(() => {
-    const fetchRecommendation = () => {
-      setLlmLoading(true);
-      const recommendation = getPlanRecommendation(usageInput);
-      setRecommendationOutput(recommendation);
-      setLlmLoading(false);
-    };
+  const plans = [
+    { speed: 50, price: '39,99', color: 'from-blue-500 to-cyan-500' },
+    { speed: 100, price: '49,99', color: 'from-orange-500 to-pink-500', popular: true },
+    { speed: 200, price: '59,99', color: 'from-purple-500 to-indigo-500' },
+    { speed: 300, price: '69,99', color: 'from-emerald-500 to-teal-500' },
+    { speed: 500, price: '99,99', color: 'from-red-500 to-orange-500' }
+  ];
 
-    if (!usageInput.trim()) {
-      setRecommendationOutput('');
-      setLlmLoading(false);
-      return;
-    }
+  const calculateSpeed = useMemo(() => {
+    let totalSpeed = 0;
+    Object.entries(activities).forEach(([key, active]) => {
+      if (active) totalSpeed += activityData[key].speed;
+    });
+    return Math.ceil(totalSpeed * people * 1.3); // 30% buffer
+  }, [people, activities, quality]);
 
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    setLlmLoading(true);
-    debounceRef.current = setTimeout(fetchRecommendation, 800);
-    return () => clearTimeout(debounceRef.current);
-  }, [usageInput]);
+  const recommendedPlan = useMemo(() => {
+    return plans.find(plan => plan.speed >= calculateSpeed) || plans[plans.length - 1];
+  }, [calculateSpeed]);
+
+  const handleActivityChange = useCallback((activity) => {
+    setActivities(prev => ({ ...prev, [activity]: !prev[activity] }));
+  }, []);
 
   return (
-    <div className="bg-gradient-to-br from-blue-800 to-blue-900/80 rounded-2xl p-6 sm:p-8 shadow-2xl mt-10 max-w-3xl mx-auto border border-blue-700">
-      <h3 className="text-3xl font-extrabold text-white mb-6 text-center">Qual o plano ideal para você?</h3>
+    <div className="relative mt-16 max-w-6xl mx-auto">
+      {/* Background Effects */}
+      <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20 rounded-3xl blur-xl" />
       
-      <textarea
-        className="w-full p-4 rounded-lg bg-blue-900 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-orange-500 mb-4 h-32 resize-y transition-all"
-        placeholder="Ex: Somos 4 pessoas, assistimos filmes em 4K e jogamos online todos os dias."
-        value={usageInput}
-        onChange={(e) => setUsageInput(e.target.value)}
-      ></textarea>
-
-      {llmLoading && (
-        <div className="flex items-center justify-center mt-6 gap-3">
-          <div className="animate-spin border-4 border-orange-500 border-t-transparent rounded-full h-6 w-6"></div>
-          <p className="text-lg text-blue-200">Analisando suas necessidades...</p>
+      <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 shadow-2xl">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-400/30 text-white mb-4">
+            <Calculator className="w-5 h-5" />
+            Calculadora Inteligente
+          </div>
+          <h3 className="text-3xl md:text-4xl font-black bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-2">
+            Descubra Seu Plano Ideal
+          </h3>
+          <p className="text-white/80 text-lg">Configure seu perfil e veja a recomendação personalizada</p>
         </div>
-      )}
 
-      <div
-        className={`mt-6 p-4 sm:p-6 bg-blue-950/60 rounded-lg text-left text-blue-100 transition-all duration-500 ease-in-out ${
-          recommendationOutput && !llmLoading ? '' : 'hidden'
-        }`}
-        dangerouslySetInnerHTML={{ __html: recommendationOutput }}
-      ></div>
+        <div className="grid lg:grid-cols-2 gap-8">
+          {/* Calculator */}
+          <div className="space-y-6">
+            {/* People Counter */}
+            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <label className="block text-white font-semibold mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5 text-cyan-400" />
+                Quantas pessoas usam a internet?
+              </label>
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => setPeople(Math.max(1, people - 1))}
+                  className="w-12 h-12 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl text-white font-bold text-xl hover:scale-105 transition-transform"
+                >-</button>
+                <span className="text-3xl font-black text-white min-w-[3rem] text-center">{people}</span>
+                <button 
+                  onClick={() => setPeople(Math.min(10, people + 1))}
+                  className="w-12 h-12 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl text-white font-bold text-xl hover:scale-105 transition-transform"
+                >+</button>
+              </div>
+            </div>
+
+            {/* Quality Selector */}
+            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <label className="block text-white font-semibold mb-4">Qualidade de Streaming</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[{id: 'sd', label: 'SD'}, {id: 'hd', label: 'HD'}, {id: '4k', label: '4K'}].map(q => (
+                  <button
+                    key={q.id}
+                    onClick={() => setQuality(q.id)}
+                    className={`py-3 px-4 rounded-xl font-semibold transition-all ${
+                      quality === q.id 
+                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white scale-105' 
+                        : 'bg-white/10 text-white/80 hover:bg-white/20'
+                    }`}
+                  >
+                    {q.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Activities */}
+            <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <label className="block text-white font-semibold mb-4">Atividades Online</label>
+              <div className="space-y-3">
+                {Object.entries(activityData).map(([key, data]) => {
+                  const Icon = data.icon;
+                  return (
+                    <button
+                      key={key}
+                      onClick={() => handleActivityChange(key)}
+                      className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all ${
+                        activities[key] 
+                          ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-400/30 text-white' 
+                          : 'bg-white/5 border border-white/10 text-white/80 hover:bg-white/10'
+                      }`}
+                    >
+                      <Icon className={`w-5 h-5 ${activities[key] ? 'text-emerald-400' : 'text-white/60'}`} />
+                      <span className="flex-1 text-left font-medium">{data.name}</span>
+                      {activities[key] && <CheckCircle className="w-5 h-5 text-emerald-400" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="space-y-6">
+            {/* Speed Result */}
+            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl p-6 border border-purple-400/30">
+              <div className="text-center">
+                <div className="text-5xl font-black text-white mb-2">{calculateSpeed}</div>
+                <div className="text-purple-200 text-lg font-semibold mb-4">MB recomendados</div>
+                <div className="text-white/80 text-sm">Baseado no seu perfil de uso</div>
+              </div>
+            </div>
+
+            {/* Plan Recommendation */}
+            <div className="space-y-4">
+              <h4 className="text-xl font-bold text-white mb-4">Plano Recomendado</h4>
+              {plans.map(plan => {
+                const isRecommended = plan.speed === recommendedPlan.speed;
+                const isOverkill = plan.speed > calculateSpeed * 2;
+                const isInsufficient = plan.speed < calculateSpeed;
+                
+                return (
+                  <div
+                    key={plan.speed}
+                    className={`relative p-4 rounded-2xl border transition-all duration-300 ${
+                      isRecommended 
+                        ? 'bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border-emerald-400/50 scale-105 shadow-lg shadow-emerald-500/25' 
+                        : isInsufficient
+                        ? 'bg-red-500/10 border-red-400/30 opacity-60'
+                        : 'bg-white/5 border-white/10 hover:bg-white/10'
+                    }`}
+                  >
+                    {isRecommended && (
+                      <div className="absolute -top-2 -right-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        ⭐ IDEAL
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-white font-bold text-lg">{plan.speed}MB</div>
+                        <div className="text-white/60 text-sm">
+                          {isInsufficient ? 'Insuficiente' : isOverkill ? 'Muito rápido' : 'Perfeito'}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-white font-bold text-xl">R$ {plan.price}</div>
+                        <div className="text-white/60 text-sm">/mês</div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            <a
+              href={`https://wa.me/5583996411187?text=Olá! Calculei que preciso de ${calculateSpeed}MB e me interessei pelo plano de ${recommendedPlan.speed}MB por R$${recommendedPlan.price}/mês`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-bold py-4 px-6 rounded-2xl text-center transition-all duration-300 hover:scale-105 shadow-lg shadow-emerald-500/25"
+            >
+              <span className="flex items-center justify-center gap-2">
+                <Zap className="w-5 h-5" />
+                Contratar {recommendedPlan.speed}MB por R$ {recommendedPlan.price}/mês
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default PlanRecommender;
+export default SpeedCalculator;

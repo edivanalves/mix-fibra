@@ -170,15 +170,34 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <section ref={ref} id="solicitation-form" className="w-full max-w-6xl mx-auto px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 rounded-3xl shadow-2xl">
-      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 text-center">
-        Solicite Sua <span className="text-orange-400">Internet</span>
-      </h2>
-      <p className="text-blue-200 mb-10 text-lg text-center max-w-2xl mx-auto">
-        Preencha os dados e envie a solicitação direto para nossa equipe no WhatsApp. É rápido e fácil!
-      </p>
+    <section ref={ref} id="solicitation-form" className="relative w-full max-w-7xl mx-auto px-4 py-20 mt-12">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-900 via-teal-900 to-cyan-900 rounded-3xl" />
+      <div className="absolute inset-0 opacity-20 rounded-3xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20" />
+      
+      {/* Floating Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
+            <Send className="w-4 h-4 text-emerald-400" />
+            Solicitação Rápida
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-emerald-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+            Solicite Sua Internet
+          </h2>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+            Preencha os dados e envie a solicitação direto para nossa equipe no WhatsApp. É rápido, fácil e seguro!
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit} className="bg-blue-800/80 glass rounded-2xl p-8 shadow-xl text-blue-200 max-w-3xl mx-auto">
+        <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 shadow-2xl text-white max-w-4xl mx-auto">
 
         {/* Dados Pessoais */}
         <SectionTitle icon={<User className="text-orange-400" />} title="Dados Pessoais" />
@@ -209,7 +228,7 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
           </SelectField>
         </div>
 
-        <button type="button" onClick={getUserLocation} disabled={isGeolocating} className="w-full mb-6 bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2 disabled:opacity-50">
+        <button type="button" onClick={getUserLocation} disabled={isGeolocating} className="w-full mb-6 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/40 text-white font-semibold py-3 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
           {isGeolocating ? <div className="animate-spin h-5 w-5 border-2 border-white rounded-full border-t-transparent" /> : <Compass size={20} />}
           {isGeolocating ? 'Buscando Endereço...' : 'Preencher com meu GPS'}
         </button>
@@ -241,10 +260,18 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
           <textarea id="message" name="message" rows="4" className="w-full p-3 rounded-lg bg-blue-900 text-white focus:ring-2 focus:ring-orange-500" value={formData.message} onChange={handleChange} placeholder="Ex: 'Entrar em contato após as 14h'..."></textarea>
         </div>
 
-        <button type="submit" className="w-full bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 text-white font-extrabold py-4 px-6 rounded-full text-lg flex justify-center items-center gap-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed">
-          <Send size={20} /> Enviar Solicitação via WhatsApp
-        </button>
-      </form>
+        <div className="relative">
+          <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-3xl blur-lg" />
+          <button type="submit" className="relative w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white font-bold py-4 px-6 rounded-2xl text-lg flex justify-center items-center gap-3 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-transparent shadow-lg shadow-emerald-500/25 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden">
+            <span className="relative z-10 flex items-center gap-3">
+              <Send size={20} /> 
+              Enviar Solicitação via WhatsApp
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-emerald-500 opacity-0 hover:opacity-100 transition-opacity duration-300" />
+          </button>
+        </div>
+        </form>
+      </div>
     </section>
   );
 });

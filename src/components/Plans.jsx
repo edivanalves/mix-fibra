@@ -1,50 +1,15 @@
 import React, { useState, useEffect, useRef, memo, useMemo, useCallback } from 'react';
 import PlanRecommender from './PlanRecommender';
 import { trackPlanInterest, trackButtonClick } from '../utils/analytics';
-
-const iconProps = "w-5 h-5 text-green-400 mr-3 flex-shrink-0";
+import { Zap, Wifi, Monitor, Users, Building, Gamepad2 } from 'lucide-react';
 
 const advantagesIcons = {
-  wifi: (
-    <svg xmlns="http://www.w3.org/2000/svg" className={iconProps} viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M14.243 5.757a1 1 0 010 1.414l-4.243 4.243a1 1 0 01-1.414 0L4.243 7.172a1 1 0 011.414-1.414L10 10.586l4.243-4.829a1 1 0 011.414-.141z"
-        clipRule="evenodd"
-        transform="rotate(90 10 10)"
-      />
-    </svg>
-  ),
-  stream: (
-    <svg xmlns="http://www.w3.org/2000/svg" className={iconProps} viewBox="0 0 20 20" fill="currentColor">
-      <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm14 0H4v8h12V6z" />
-      <path d="M6 8a1 1 0 100 2h8a1 1 0 100-2H6z" />
-    </svg>
-  ),
-  games: (
-    <svg xmlns="http://www.w3.org/2000/svg" className={iconProps} viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h6a1 1 0 100-2H7z"
-        clipRule="evenodd"
-      />
-      <path d="M10 13a1 1 0 110-2h.01a1 1 0 110 2H10zM10 9a1 1 0 110-2h.01a1 1 0 110 2H10z" />
-    </svg>
-  ),
-  home: (
-    <svg xmlns="http://www.w3.org/2000/svg" className={iconProps} viewBox="0 0 20 20" fill="currentColor">
-      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-    </svg>
-  ),
-  business: (
-    <svg xmlns="http://www.w3.org/2000/svg" className={iconProps} viewBox="0 0 20 20" fill="currentColor">
-      <path
-        fillRule="evenodd"
-        d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 11-2 0V4H6v12a1 1 0 11-2 0V4zm5 3a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm-2 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zm2 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z"
-        clipRule="evenodd"
-      />
-    </svg>
-  ),
+  wifi: <Wifi className="w-5 h-5 text-emerald-400" />,
+  stream: <Monitor className="w-5 h-5 text-emerald-400" />,
+  games: <Gamepad2 className="w-5 h-5 text-emerald-400" />,
+  home: <Users className="w-5 h-5 text-emerald-400" />,
+  business: <Building className="w-5 h-5 text-emerald-400" />,
+  speed: <Zap className="w-5 h-5 text-emerald-400" />
 };
 
 const plansData = [
@@ -53,9 +18,12 @@ const plansData = [
     price: '39,99',
     description: 'Ideal para uso básico, redes sociais e e-mails.',
     highlight: false,
+    color: 'from-blue-500 to-cyan-500',
+    glowColor: 'rgba(59, 130, 246, 0.3)',
     advantages: [
       { text: "Wi-Fi Grátis", icon: advantagesIcons.wifi },
-      { text: "Suporte técnico", icon: advantagesIcons.home },
+      { text: "Suporte", icon: advantagesIcons.home },
+      { text: "Velocidade garantida", icon: advantagesIcons.speed },
     ],
   },
   {
@@ -63,10 +31,12 @@ const plansData = [
     price: '49,99',
     description: 'Perfeito para streaming de filmes e séries em HD.',
     highlight: true,
+    color: 'from-orange-500 to-pink-500',
+    glowColor: 'rgba(249, 115, 22, 0.4)',
     advantages: [
-      { text: "Streaming sem travar", icon: advantagesIcons.stream },
-      { text: "Wi-Fi 5G", icon: advantagesIcons.wifi },
-      { text: "Acima de 4 dispositivos", icon: advantagesIcons.games },
+      { text: "Streaming HD sem travar", icon: advantagesIcons.stream },
+      { text: "Wi-Fi 5G incluído", icon: advantagesIcons.wifi },
+      { text: "Até 6 dispositivos", icon: advantagesIcons.home },
     ],
   },
   {
@@ -74,9 +44,12 @@ const plansData = [
     price: '59,99',
     description: 'Para trabalho remoto, videochamadas e jogos online.',
     highlight: false,
+    color: 'from-purple-500 to-indigo-500',
+    glowColor: 'rgba(147, 51, 234, 0.3)',
     advantages: [
-      { text: "Ideal para home office", icon: advantagesIcons.home },
-      { text: "Baixa latência p/ jogos", icon: advantagesIcons.games },
+      { text: "Home office perfeito", icon: advantagesIcons.business },
+      { text: "Gaming sem lag", icon: advantagesIcons.games },
+      { text: "Upload rápido", icon: advantagesIcons.speed },
     ],
   },
   {
@@ -84,10 +57,12 @@ const plansData = [
     price: '69,99',
     description: 'Experiência completa para múltiplos streamings 4K.',
     highlight: true,
+    color: 'from-emerald-500 to-teal-500',
+    glowColor: 'rgba(16, 185, 129, 0.4)',
     advantages: [
-      { text: "Streaming em 4K", icon: advantagesIcons.stream },
-      { text: "Família conectada", icon: advantagesIcons.home },
-      { text: "Wi-Fi alta performance", icon: advantagesIcons.wifi },
+      { text: "Streaming 4K múltiplo", icon: advantagesIcons.stream },
+      { text: "Família toda conectada", icon: advantagesIcons.home },
+      { text: "Wi-Fi mesh premium", icon: advantagesIcons.wifi },
     ],
   },
   {
@@ -95,23 +70,33 @@ const plansData = [
     price: '99,99',
     description: 'Ultra velocidade para empresas e gamers exigentes.',
     highlight: false,
+    color: 'from-red-500 to-orange-500',
+    glowColor: 'rgba(239, 68, 68, 0.3)',
     advantages: [
-      { text: "Ideal para empresas", icon: advantagesIcons.business },
-      { text: "Performance p/ gamers", icon: advantagesIcons.games },
+      { text: "Empresas e escritórios", icon: advantagesIcons.business },
+      { text: "Gaming profissional", icon: advantagesIcons.games },
+      { text: "Velocidade extrema", icon: advantagesIcons.speed },
     ],
   },
 ];
 
 const PlanCard = memo(({ plan, index, isInView }) => {
-  const glowRef = useRef(null);
+  const cardRef = useRef(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = useCallback((e) => {
-    if (!glowRef.current) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    glowRef.current.style.setProperty('--mouse-x', `${x}px`);
-    glowRef.current.style.setProperty('--mouse-y', `${y}px`);
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePosition({ x, y });
+  }, []);
+
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+    setMousePosition({ x: 50, y: 50 });
   }, []);
 
   const handlePlanClick = useCallback(() => {
@@ -120,72 +105,133 @@ const PlanCard = memo(({ plan, index, isInView }) => {
     window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank');
   }, [plan.megas]);
 
-  const isHighlighted = plan.highlight;
+  const transform3D = isHovered 
+    ? `perspective(1000px) rotateX(${(mousePosition.y - 50) * 0.1}deg) rotateY(${(mousePosition.x - 50) * 0.1}deg) translateZ(20px)`
+    : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
 
   return (
     <div
+      ref={cardRef}
       onMouseMove={handleMouseMove}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ 
+        transform: transform3D,
+        transitionDelay: `${index * 150}ms`,
+        transformStyle: 'preserve-3d'
+      }}
       className={`
-        animated-border group rounded-2xl p-0.5 transition-all duration-500
-        hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/30
-        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-        min-h-[420px] max-w-xs mx-auto bg-slate-900
+        relative group cursor-pointer transition-all duration-700 ease-out
+        ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}
+        max-w-sm mx-auto
       `}
     >
-      <div className="relative h-full w-full rounded-[15px] p-6 flex flex-col items-center bg-gradient-to-br from-slate-800 to-slate-900">
-        <div
-          ref={glowRef}
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[15px]"
-          style={{
-            background: `radial-gradient(circle at var(--mouse-x) var(--mouse-y), ${
-              isHighlighted ? 'rgba(249, 115, 22, 0.15)' : 'rgba(34, 211, 238, 0.1)'
-            } 0%, transparent 40%)`,
-          }}
-        />
-        {isHighlighted && (
-          <div className="absolute top-0 right-0 text-white text-xs font-bold uppercase bg-gradient-to-r from-orange-500 to-yellow-400 px-4 py-1 rounded-bl-lg shadow-md z-10">
-            Popular
+      {/* 3D Card Container */}
+      <div 
+        className="relative w-full h-[500px] rounded-3xl overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, ${plan.color})`,
+          boxShadow: isHovered 
+            ? `0 25px 50px -12px ${plan.glowColor}, 0 0 0 1px rgba(255,255,255,0.1)` 
+            : `0 10px 25px -5px ${plan.glowColor}`,
+        }}
+      >
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/20" />
+          <div 
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(255,255,255,0.2) 0%, transparent 50%)`,
+              opacity: isHovered ? 1 : 0
+            }}
+          />
+        </div>
+
+        {/* Popular Badge */}
+        {plan.highlight && (
+          <div className="absolute -top-2 -right-2 z-20">
+            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg transform rotate-12 animate-pulse">
+              ⭐ POPULAR
+            </div>
           </div>
         )}
-        <div className="relative z-10 flex flex-col items-center text-center w-full h-full">
-          <div className={`text-5xl font-black mb-2 tracking-tight ${isHighlighted ? 'text-orange-300' : 'text-cyan-300'}`}>
-            {plan.megas}
-            <span className="text-2xl font-bold align-top">MB</span>
+
+        {/* Card Content */}
+        <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
+          {/* Speed Display */}
+          <div className="text-center mb-6">
+            <div className="relative inline-block">
+              <div className={`text-7xl font-black bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent drop-shadow-lg`}>
+                {plan.megas}
+              </div>
+              <div className="text-xl font-bold text-white/90 -mt-2">MEGA</div>
+              <div className="absolute -inset-4 bg-white/10 rounded-full blur-xl -z-10 animate-pulse" />
+            </div>
           </div>
-          <p className="text-slate-300 text-sm font-medium mb-4 h-12 line-clamp-2">
+
+          {/* Description */}
+          <p className="text-white/90 text-center text-sm font-medium mb-6 leading-relaxed">
             {plan.description}
           </p>
-          <div className="w-full text-left mb-4 flex-grow">
-            <ul className="space-y-2">
-              {plan.advantages.map((adv, i) => (
-                <li key={i} className="flex items-center text-slate-200 text-sm">
-                  {adv.icon}
-                  <span>{adv.text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <hr className="w-full border-t border-slate-700 my-4" />
-          <p className="text-4xl font-extrabold text-orange-400 drop-shadow-md my-2">
-            <span className="text-xl align-top mr-1">R$</span>
-            {plan.price}
-          </p>
 
+          {/* Features */}
+          <div className="space-y-3 mb-6">
+            {plan.advantages.map((adv, i) => (
+              <div 
+                key={i} 
+                className="flex items-center gap-3 text-white/90 text-sm font-medium p-2 rounded-lg bg-white/10 backdrop-blur-sm"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="flex-shrink-0 p-1 rounded-full bg-emerald-500/20">
+                  {adv.icon}
+                </div>
+                <span>{adv.text}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Price */}
+          <div className="text-center mb-6">
+            <div className="text-4xl font-black text-white drop-shadow-lg">
+              <span className="text-xl align-top">R$</span>
+              {plan.price}
+              <span className="text-lg font-medium text-white/80">/mês</span>
+            </div>
+          </div>
+
+          {/* CTA Button */}
           <button
-            className={`w-full py-3 mt-4 font-bold rounded-lg shadow-lg text-white text-base tracking-wide transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95 ${
-              isHighlighted
-                ? 'bg-gradient-to-r from-orange-500 to-yellow-400 ring-2 ring-orange-400/50 focus:ring-orange-500'
-                : 'bg-gradient-to-r from-cyan-600 to-blue-600 focus:ring-cyan-500'
-            }`}
             onClick={handlePlanClick}
-            aria-label={`Assinar plano de ${plan.megas} megas`}
+            className="w-full py-4 px-6 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg relative z-20"
           >
-            <span className="relative z-10">Assinar Agora</span>
-            <div className="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <span className="flex items-center justify-center gap-2">
+              <Zap className="w-5 h-5" />
+              Assinar Agora
+            </span>
           </button>
         </div>
+
+        {/* 3D Depth Effect */}
+        <div 
+          className="absolute inset-0 rounded-3xl transition-opacity duration-300"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 100%)',
+            opacity: isHovered ? 1 : 0
+          }}
+        />
       </div>
+
+      {/* 3D Shadow */}
+      <div 
+        className="absolute inset-0 rounded-3xl transition-all duration-700 -z-10"
+        style={{
+          background: `linear-gradient(135deg, ${plan.color})`,
+          filter: 'blur(20px)',
+          opacity: isHovered ? 0.6 : 0.3,
+          transform: 'translateZ(-50px) scale(0.9)'
+        }}
+      />
     </div>
   );
 });
@@ -222,14 +268,34 @@ const Plans = React.forwardRef(({ loading }, ref) => {
       }`}
       aria-label="Planos de Internet Mix Fibra"
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-16">
-        Nossos Planos de Internet
-      </h2>
+      {/* Animated Title */}
+      <div className="text-center mb-20">
+        <h2 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 animate-pulse">
+          Planos Incríveis
+        </h2>
+        <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+          Escolha o plano perfeito para sua necessidade e experimente a velocidade da fibra óptica
+        </p>
+        <div className="mt-8 flex justify-center">
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" />
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 justify-center">
+      {/* 3D Cards Grid */}
+      <div 
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 lg:gap-12 justify-center items-center"
+        style={{ perspective: '1000px' }}
+      >
         {memoizedPlans.map((plan, index) => (
           <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} />
         ))}
+      </div>
+
+      {/* Floating Elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" />
+        <div className="absolute bottom-20 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-pink-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }} />
       </div>
 
       {/* Componente recomendador */}

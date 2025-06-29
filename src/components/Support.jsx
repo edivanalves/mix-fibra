@@ -1,66 +1,84 @@
-// Caminho: src/components/Support.jsx
+import React, { useState, useRef, useCallback } from 'react';
+import {
+  MessageSquare,
+  ChevronDown,
+  HelpCircle,
+  Search,
+  ThumbsUp,
+  ThumbsDown,
+  Sparkles,
+  Zap,
+  Shield
+} from 'lucide-react';
 
-import React, { useState } from 'react';
-import { MessageSquareText, PhoneCall, ChevronDown, HelpCircle, Search, ThumbsUp, ThumbsDown, Info } from 'lucide-react'; // Ícones adicionais
-
-// Sub-componente para um item de problema comum (similar ao FaqItem)
-const CommonProblemItem = ({ problem, solution }) => {
+const CommonProblemItem = ({ problem, solution, index }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [feedbackGiven, setFeedbackGiven] = useState(null); // 'yes' | 'no' | null
+  const [feedbackGiven, setFeedbackGiven] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleFeedback = (type) => {
     setFeedbackGiven(type);
-    // Aqui você poderia enviar esta informação para um serviço de análise, se necessário.
     console.log(`Feedback para "${problem}": ${type === 'yes' ? 'Ajudou' : 'Não Ajudou'}`);
   };
 
   return (
-    <div className="bg-blue-800/60 rounded-xl shadow-lg border border-blue-700/50 mb-3 overflow-hidden transition-all duration-300 ease-in-out">
-      <button
-        className="w-full flex justify-between items-center text-left text-lg font-semibold p-4 cursor-pointer hover:bg-blue-700/70 transition-colors duration-200"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-controls={`problem-solution-${problem.replace(/\s+/g, '-').toLowerCase()}`}
-      >
-        <span className="flex items-center gap-3 text-white">
-          <HelpCircle size={20} className="text-orange-400" /> {/* Ícone para o problema */}
-          {problem}
-        </span>
-        <ChevronDown
-          size={22}
-          className={`transition-transform duration-300 text-cyan-300 ${isOpen ? 'rotate-180' : ''}`}
-        />
-      </button>
-      <div
-        id={`problem-solution-${problem.replace(/\s+/g, '-').toLowerCase()}`}
-        // CORREÇÃO: Ajustado as classes CSS para evitar o erro de sintaxe.
-        // px-4 é aplicado sempre, pb-4 e max-h/opacity são condicionais.
-        className={`overflow-hidden transition-all duration-500 ease-in-out px-4 ${isOpen ? 'max-h-[500px] opacity-100 pb-4' : 'max-h-0 opacity-0'}`}
-        role="region"
-        aria-labelledby={`problem-${problem.replace(/\s+/g, '-').toLowerCase()}`}
-      >
-        <p className="text-blue-200 mb-4">{solution}</p>
-        {feedbackGiven ? (
-          <p className={`text-sm text-center font-medium ${feedbackGiven === 'yes' ? 'text-green-400' : 'text-red-400'}`}>
-            Obrigado pelo seu feedback!
-          </p>
-        ) : (
-          <div className="flex items-center justify-center gap-4 text-blue-300 text-sm font-medium">
-            Esta solução ajudou?
-            <button
-              onClick={() => handleFeedback('yes')}
-              className="flex items-center gap-1 bg-green-600/30 text-green-300 py-1 px-3 rounded-full hover:bg-green-600/50 transition-colors duration-200"
-            >
-              <ThumbsUp size={16} /> Sim
-            </button>
-            <button
-              onClick={() => handleFeedback('no')}
-              className="flex items-center gap-1 bg-red-600/30 text-red-300 py-1 px-3 rounded-full hover:bg-red-600/50 transition-colors duration-200"
-            >
-              <ThumbsDown size={16} /> Não
-            </button>
+    <div 
+      className="group relative mb-4 transform transition-all duration-500 hover:scale-[1.02] hover:-translate-y-1"
+      style={{ animationDelay: `${index * 100}ms` }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Glow Effect */}
+      <div className={`absolute -inset-1 bg-gradient-to-r from-orange-500/20 via-pink-500/20 to-cyan-500/20 rounded-2xl blur-sm transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      
+      <div className="relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden shadow-xl">
+        <button
+          className="w-full flex justify-between items-center text-left p-6 cursor-pointer hover:bg-white/5 transition-all duration-300 group"
+          onClick={() => setIsOpen(!isOpen)}
+          aria-expanded={isOpen}
+        >
+          <span className="flex items-center gap-4 text-white">
+            <div className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 group-hover:scale-110 transition-transform duration-300">
+              <HelpCircle size={20} className="text-white" />
+            </div>
+            <span className="font-semibold text-lg group-hover:text-orange-300 transition-colors duration-300">{problem}</span>
+          </span>
+          <ChevronDown
+            size={24}
+            className={`transition-all duration-300 text-cyan-300 group-hover:text-orange-300 ${isOpen ? 'rotate-180 scale-110' : ''}`}
+          />
+        </button>
+        
+        <div className={`overflow-hidden transition-all duration-500 ease-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="px-6 pb-6">
+            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-white/90 mb-4 leading-relaxed">{solution}</p>
+              
+              {feedbackGiven ? (
+                <div className={`text-center p-3 rounded-lg ${feedbackGiven === 'yes' ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
+                  <Sparkles className="w-5 h-5 inline mr-2" />
+                  Obrigado pelo seu feedback!
+                </div>
+              ) : (
+                <div className="flex items-center justify-center gap-4 text-white/80">
+                  <span className="text-sm font-medium">Esta solução ajudou?</span>
+                  <button
+                    onClick={() => handleFeedback('yes')}
+                    className="flex items-center gap-2 bg-green-500/20 hover:bg-green-500/30 text-green-300 py-2 px-4 rounded-xl transition-all duration-300 hover:scale-105 border border-green-500/30"
+                  >
+                    <ThumbsUp size={16} /> Sim
+                  </button>
+                  <button
+                    onClick={() => handleFeedback('no')}
+                    className="flex items-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 py-2 px-4 rounded-xl transition-all duration-300 hover:scale-105 border border-red-500/30"
+                  >
+                    <ThumbsDown size={16} /> Não
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -69,16 +87,26 @@ const CommonProblemItem = ({ problem, solution }) => {
 
 const Support = React.forwardRef(({ loading }, ref) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef(null);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setMousePosition({ x, y });
+  }, []);
 
   const commonProblemsData = [
-    { problem: 'Minha internet está lenta. O que fazer?', solution: 'Verifique se há muitos dispositivos conectados, reinicie seu roteador e o modem. Se o problema persistir, entre em contato com o suporte técnico.' },
+    { problem: 'Minha internet está lenta. O que fazer?', solution: 'Verifique se há muitos dispositivos conectados, reinicie seu roteador e o modem. Se o problema persistir, entre em contato com o suporte técnico 24/7.' },
     { problem: 'Não consigo conectar ao Wi-Fi. Qual o problema?', solution: 'Certifique-se de que o roteador está ligado e com as luzes indicadoras normais. Tente esquecer a rede Wi-Fi no seu dispositivo e reconectar. Verifique se a senha está correta.' },
-    { problem: 'Minha fatura não chegou. Como posso obter a 2ª via?', solution: 'Você pode acessar a 2ª via da sua fatura diretamente na Central do Assinante em nosso site ou solicitar via WhatsApp.' },
-    { problem: 'Preciso mudar meu plano de internet. Como faço?', solution: 'Entre em contato com nossa central de atendimento pelo WhatsApp ou telefone para verificar as opções de planos disponíveis e fazer a alteração.' },
-    { problem: 'O suporte técnico funciona 24 horas?', solution: 'Sim, nosso suporte técnico está disponível 24 horas por dia, 7 dias por semana, para monitorar a rede geral e atender às emergências.' },
-    { problem: 'Como faço para alterar meus dados cadastrais?', solution: 'Para alterar dados como telefone, e-mail ou endereço, entre em contato com a nossa Central de Atendimento ou através da Central do Assinante.'},
-    { problem: 'Minha conexão está caindo constantemente. O que pode ser?', solution: 'Verifique os cabos do roteador e modem. Reinicie os equipamentos. Se o problema persistir, pode ser necessário verificar a infraestrutura externa. Contacte o suporte.'},
-    { problem: 'Esqueci a senha do meu Wi-Fi. O que fazer?', solution: 'A senha padrão do Wi-Fi geralmente está no rótulo do seu roteador. Se tiver alterado e não se lembra, pode ser necessário reconfigurar o roteador ou entrar em contato com o suporte para assistência.'}
+    { problem: 'Minha fatura não chegou. Como posso obter a 2ª via?', solution: 'Você pode acessar a 2ª via da sua fatura diretamente na Central do Assinante em nosso site ou solicitar via WhatsApp de forma rápida e prática.' },
+    { problem: 'Preciso mudar meu plano de internet. Como faço?', solution: 'Entre em contato com nossa central de atendimento pelo WhatsApp ou telefone para verificar as opções de planos disponíveis e fazer a alteração sem burocracia.' },
+    { problem: 'O suporte técnico funciona 24 horas?', solution: 'Sim! Nosso suporte técnico está disponível 24 horas por dia, 7 dias por semana, para monitorar a rede e atender emergências com agilidade total.' },
+    { problem: 'Como faço para alterar meus dados cadastrais?', solution: 'Para alterar dados como telefone, e-mail ou endereço, entre em contato com nossa Central de Atendimento ou através da Central do Assinante de forma segura.'},
+    { problem: 'Minha conexão está caindo constantemente. O que pode ser?', solution: 'Verifique os cabos do roteador e modem. Reinicie os equipamentos. Se persistir, pode ser infraestrutura externa. Nossa equipe técnica resolve rapidamente!'},
+    { problem: 'Esqueci a senha do meu Wi-Fi. O que fazer?', solution: 'A senha padrão está no rótulo do roteador. Se alterou e esqueceu, podemos ajudar a reconfigurar ou fornecer suporte técnico especializado.'}
   ];
 
   const filteredProblems = commonProblemsData.filter(item =>
@@ -90,63 +118,125 @@ const Support = React.forwardRef(({ loading }, ref) => {
     <section
       id="support-section"
       ref={ref}
-      className={`w-full py-16 px-4 bg-gradient-to-br from-blue-900 via-blue-950 to-indigo-900 text-center shadow-2xl mt-12 rounded-3xl max-w-6xl mx-auto mb-12 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      className={`relative w-full py-20 px-4 text-center mt-12 max-w-7xl mx-auto mb-12 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      onMouseMove={handleMouseMove}
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg flex items-center justify-center gap-3">
-        Suporte Rápido <span className="text-orange-400">Mix Fibra</span>
-      </h2>
-      <p className="text-blue-200 mb-8 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-        Encontre soluções para problemas comuns ou fale com um dos nossos especialistas para um atendimento personalizado.
-      </p>
-
-      {/* Secção de Problemas Comuns */}
-      <div className="max-w-3xl mx-auto mt-10 p-6 bg-blue-900/40 rounded-xl shadow-inner border border-blue-700/30">
-        <h3 className="text-2xl font-bold text-white mb-6 drop-shadow-lg flex items-center justify-center gap-2">
-            <Info size={28} className="text-cyan-300" />
-            Problemas Comuns <span className="text-cyan-300">e Soluções</span>
-        </h3>
-
-        {/* Campo de Pesquisa */}
-        <div className="relative mb-6">
-          <input
-            type="text"
-            placeholder="Pesquisar problema ou solução..."
-            className="w-full p-3 pl-10 rounded-lg bg-blue-700/50 text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors duration-200"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-300" />
+      <div ref={sectionRef} className="absolute inset-0" />
+      
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900 rounded-3xl" />
+      <div 
+        className="absolute inset-0 opacity-20 rounded-3xl"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(147, 51, 234, 0.4) 0%, transparent 50%)`
+        }}
+      />
+      
+      {/* Floating Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
+            <Shield className="w-4 h-4 text-green-400" />
+            Suporte 24/7 Disponível
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+            Central de Ajuda
+          </h2>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+            Encontre soluções rápidas ou fale com nossos especialistas para um atendimento personalizado
+          </p>
         </div>
 
-        {filteredProblems.length > 0 ? (
-          filteredProblems.map((item, index) => (
-            <CommonProblemItem key={index} problem={item.problem} solution={item.solution} />
-          ))
-        ) : (
-          <p className="text-blue-200 text-center text-lg py-8">Nenhum problema encontrado para "{searchTerm}".</p>
-        )}
-      </div>
+        {/* Search Section */}
+        <div className="max-w-4xl mx-auto mb-12">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300" />
+            <div className="relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Digite sua dúvida ou problema..."
+                  className="w-full p-4 pl-12 pr-4 bg-transparent text-white placeholder-white/60 focus:outline-none text-lg"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Search size={24} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div className="mt-12 p-6 bg-blue-900/40 rounded-xl shadow-inner border border-blue-700/30"> {/* Box para CTA */}
-        <p className="text-blue-200 mb-6 text-lg md:text-xl font-medium max-w-2xl mx-auto">
-            Não encontrou a resposta ou precisa de ajuda imediata? Fale diretamente com a nossa equipa de suporte!
-        </p>
-        <a
-          href="https://wa.me/5583996411187"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-3 bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-extrabold py-3 px-8 rounded-full text-xl shadow-lg transition-all duration-300 hover:scale-105 active:scale-95"
-          title="Iniciar Atendimento via WhatsApp com o Suporte da Mix Fibra"
-        >
-          <MessageSquareText size={28} strokeWidth={2.5} />
-          Falar com Suporte no WhatsApp
-        </a>
+        {/* Problems Grid */}
+        <div className="max-w-5xl mx-auto mb-16">
+          {filteredProblems.length > 0 ? (
+            <div className="grid gap-4">
+              {filteredProblems.map((item, index) => (
+                <CommonProblemItem key={index} problem={item.problem} solution={item.solution} index={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-24 h-24 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Search size={32} className="text-white" />
+              </div>
+              <p className="text-white/80 text-xl mb-2">Nenhum resultado encontrado</p>
+              <p className="text-white/60">Tente pesquisar com outras palavras ou entre em contato conosco</p>
+            </div>
+          )}
+        </div>
+
+        {/* CTA Section */}
+        <div className="relative">
+          <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-cyan-500/20 rounded-3xl blur-xl" />
+          <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <MessageSquare size={32} className="text-white" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Precisa de Ajuda Personalizada?
+              </h3>
+              <p className="text-white/80 mb-8 max-w-2xl mx-auto">
+                Nossa equipe especializada está pronta para resolver qualquer problema. 
+                Atendimento rápido, eficiente e sempre disponível!
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://wa.me/5583996411187"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-green-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/40 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-transparent overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5" />
+                    Falar no WhatsApp
+                    <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </a>
+                
+                <a
+                  href="https://mixfibra.sgp.net.br/central/home/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/40 text-white font-semibold text-lg rounded-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50"
+                >
+                  Central do Assinante
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      {/*
-        Se o componente QuickSupport (para suporte com IA) for criado,
-        ele pode ser adicionado aqui, talvez com um link ou botão secundário.
-        Ex: <QuickSupport />
-      */}
     </section>
   );
 });
