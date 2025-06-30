@@ -87,7 +87,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       icon: <Shield className="w-10 h-10 text-white" strokeWidth={2.5} />,
       gradient: 'from-emerald-500 to-emerald-600',
       stats: [
-        { value: '24/7', label: 'Disponibilidade' },
+        { value: 'Seg-Sáb', label: '8h-12h | 14h-18h' },
         { value: '2min', label: 'Tempo Resposta' }
       ],
       features: [

@@ -17,6 +17,19 @@ import SolicitationForm from './components/SolicitationForm';
 import ParticleBackground from './components/ParticleBackground';
 import PlanRecommender from './components/PlanRecommender';
 import IngridAssistant from './components/IngridAssistant';
+import LGPDBanner from './components/LGPDBanner';
+
+import UrgencyTimer from './components/UrgencyTimer';
+
+import ScrollProgress from './components/ScrollProgress';
+import MobileMenu from './components/MobileMenu';
+import LocationMap from './components/LocationMap';
+import ParallaxHero from './components/ParallaxHero';
+import LoadingScreen from './components/LoadingScreen';
+import { SkeletonSection } from './components/SkeletonLoader';
+import { initGA, measurePerformance, trackScroll, trackPageView } from './utils/analytics';
+import { conversionFunnel } from './utils/conversionFunnel';
+import { abTesting } from './utils/abTesting';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -48,6 +61,18 @@ function App() {
   ];
 
   useEffect(() => {
+    // Initialize analytics
+    initGA();
+    measurePerformance();
+    trackScroll();
+    trackPageView('Home');
+    
+    // Initialize conversion tracking
+    conversionFunnel.trackStep('app_loaded');
+    
+    // Initialize A/B testing
+    console.log('A/B Tests initialized');
+    
     const timer = setTimeout(() => setLoading(false), 2000);
 
     const observer = new IntersectionObserver(
@@ -87,6 +112,7 @@ function App() {
 
   return (
     <div className="w-full bg-slate-900">
+      <LoadingScreen loading={loading} />
       <ParticleBackground />
 
       <Navbar
@@ -105,13 +131,16 @@ function App() {
       />
 
       <div className="relative z-10">
-        <Hero ref={homeRef} loading={loading} scrollToPlans={() => scrollToSection(plansRef)} />
+        <ParallaxHero ref={homeRef} scrollToPlans={() => scrollToSection(plansRef)} />
         <Plans ref={plansRef} loading={loading} />
         <WhyChooseUs ref={whyChooseUsRef} loading={loading} />
         <ImageSection ref={imageSectionRef} loading={loading} />
         <Testimonials ref={testimonialsRef} loading={loading} />
         <About ref={aboutRef} loading={loading} />
         <Contact ref={contactRef} loading={loading} />
+        <div className="max-w-7xl mx-auto px-4 py-20">
+          <LocationMap />
+        </div>
         <Support ref={supportRef} loading={loading} />
         <CentralAssinante ref={centralRef} loading={loading} />
         <SolicitationForm ref={solicitationRef} />
@@ -119,6 +148,11 @@ function App() {
 
       <Footer />
       <IngridAssistant />
+
+
+      <UrgencyTimer />
+      <ScrollProgress />
+      <LGPDBanner />
     </div>
   );
 }

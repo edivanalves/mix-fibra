@@ -16,10 +16,37 @@ const Contact = React.forwardRef(({ loading }, ref) => {
   const contactMethods = [
     {
       icon: <MessageSquare className="w-8 h-8" />,
-      title: 'WhatsApp',
-      description: 'Resposta em 2 minutos',
+      title: 'WhatsApp Sumé',
+      description: '(83) 99641-1187',
       action: 'Conversar Agora',
       href: 'https://wa.me/5583996411187',
+      gradient: 'from-green-500 to-emerald-600',
+      hoverGradient: 'from-green-600 to-emerald-700'
+    },
+    {
+      icon: <MessageSquare className="w-8 h-8" />,
+      title: 'WhatsApp Congo',
+      description: '(83) 99929-8366',
+      action: 'Conversar Agora',
+      href: 'https://wa.me/5583999298366',
+      gradient: 'from-green-500 to-emerald-600',
+      hoverGradient: 'from-green-600 to-emerald-700'
+    },
+    {
+      icon: <MessageSquare className="w-8 h-8" />,
+      title: 'WhatsApp Caraúbas',
+      description: '(83) 98853-9424',
+      action: 'Conversar Agora',
+      href: 'https://wa.me/5583988539424',
+      gradient: 'from-green-500 to-emerald-600',
+      hoverGradient: 'from-green-600 to-emerald-700'
+    },
+    {
+      icon: <MessageSquare className="w-8 h-8" />,
+      title: 'WhatsApp Camalaú',
+      description: '(83) 99678-4194',
+      action: 'Conversar Agora',
+      href: 'https://wa.me/5583996784194',
       gradient: 'from-green-500 to-emerald-600',
       hoverGradient: 'from-green-600 to-emerald-700'
     },
@@ -31,15 +58,6 @@ const Contact = React.forwardRef(({ loading }, ref) => {
       href: 'mailto:mixfibrasume@gmail.com',
       gradient: 'from-blue-500 to-cyan-600',
       hoverGradient: 'from-blue-600 to-cyan-700'
-    },
-    {
-      icon: <Phone className="w-8 h-8" />,
-      title: 'Telefone',
-      description: '(83) 99641-1187',
-      action: 'Ligar Agora',
-      href: 'tel:+5583996411187',
-      gradient: 'from-purple-500 to-indigo-600',
-      hoverGradient: 'from-purple-600 to-indigo-700'
     }
   ];
 
@@ -93,13 +111,13 @@ const Contact = React.forwardRef(({ loading }, ref) => {
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-green-400" />
-              <span>Atendimento 24/7</span>
+              <span>Seg a Sáb: 8h-12h e 14h-18h</span>
             </div>
           </div>
         </div>
 
         {/* Contact Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
           {contactMethods.map((method, index) => (
             <div
               key={index}
@@ -137,8 +155,8 @@ const Contact = React.forwardRef(({ loading }, ref) => {
             <div className="text-white/60 text-sm">Tempo Resposta</div>
           </div>
           <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-            <div className="text-2xl font-bold text-blue-400 mb-1">24/7</div>
-            <div className="text-white/60 text-sm">Disponibilidade</div>
+            <div className="text-2xl font-bold text-blue-400 mb-1">Seg-Sáb</div>
+            <div className="text-white/60 text-sm">8h-12h | 14h-18h</div>
           </div>
           <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
             <div className="text-2xl font-bold text-purple-400 mb-1">100%</div>

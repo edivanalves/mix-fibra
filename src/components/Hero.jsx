@@ -91,15 +91,28 @@ const Hero = memo(
                 #1 em Velocidade na Região
               </div>
 
-              <h1 className={`text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                <span className="block text-white mb-2">Internet que</span>
-                <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
-                  Transforma
-                </span>
-                <span className="block text-white/90 text-2xl sm:text-3xl lg:text-4xl font-semibold mt-2">
-                  sua experiência digital
-                </span>
-              </h1>
+              <div className={`flex flex-col items-center lg:items-start transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                <img
+                  src="/mix-fibra/imagens/mix.png"
+                  alt="Mix Fibra"
+                  className="w-64 sm:w-80 lg:w-96 h-auto object-contain mb-4"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                  onError={(e) => {
+                    e.target.src = "https://placehold.co/400x200/1e40af/FFFFFF?text=Mix+Fibra";
+                  }}
+                />
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight text-center lg:text-left">
+                  <span className="block text-white mb-2">Internet que</span>
+                  <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent animate-pulse">
+                    Transforma
+                  </span>
+                  <span className="block text-white/90 text-2xl sm:text-3xl lg:text-4xl font-semibold mt-2">
+                    sua experiência digital
+                  </span>
+                </h1>
+              </div>
 
               <p className={`text-lg sm:text-xl text-white/80 max-w-2xl mx-auto lg:mx-0 leading-relaxed transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                 Fibra óptica <strong className="text-white">100% pura</strong> com velocidades de até <strong className="text-orange-400">500MB</strong>. Sem travamentos, sem limites, sem complicação.

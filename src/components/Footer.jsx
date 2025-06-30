@@ -78,9 +78,20 @@ const Footer = () => {
                   <MapPin className="w-4 h-4 text-cyan-400" />
                   <span>Sumé, Congo, Camalaú, Caraúbas - PB</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-green-400" />
-                  <span>(83) 99641-1187</span>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-green-400" />
+                    <span>Sumé: (83) 99641-1187</span>
+                  </div>
+                  <div className="flex items-center gap-2 ml-6">
+                    <span>Congo: (83) 99929-8366</span>
+                  </div>
+                  <div className="flex items-center gap-2 ml-6">
+                    <span>Caraúbas: (83) 98853-9424</span>
+                  </div>
+                  <div className="flex items-center gap-2 ml-6">
+                    <span>Camalaú: (83) 99678-4194</span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-orange-400" />
@@ -88,7 +99,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-purple-400" />
-                  <span>Atendimento 24/7</span>
+                  <span>Seg-Sáb: 8h-12h | 14h-18h</span>
                 </div>
               </div>
             </div>
@@ -116,15 +127,31 @@ const Footer = () => {
             <div>
               <h4 className="text-white font-bold text-lg mb-4">Redes Sociais</h4>
               <div className="space-y-3">
-                <a
-                  href="https://wa.me/5583996411187"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-white/70 hover:text-green-400 transition-all duration-300 hover:scale-105 transform p-2 rounded-lg hover:bg-white/5"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  WhatsApp
-                </a>
+                <div className="relative group">
+                  <div className="flex items-center gap-3 text-white/70 hover:text-green-400 transition-all duration-300 hover:scale-105 transform p-2 rounded-lg hover:bg-white/5 cursor-pointer">
+                    <MessageSquare className="w-5 h-5" />
+                    WhatsApp
+                  </div>
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute bottom-full left-0 mb-2 w-56 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div className="text-white/90 text-xs font-medium mb-2">Escolha sua cidade:</div>
+                    <div className="space-y-1">
+                      <a href="https://wa.me/5583996411187" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-sm">
+                        Sumé - (83) 99641-1187
+                      </a>
+                      <a href="https://wa.me/5583999298366" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-sm">
+                        Congo - (83) 99929-8366
+                      </a>
+                      <a href="https://wa.me/5583988539424" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-sm">
+                        Caraúbas - (83) 98853-9424
+                      </a>
+                      <a href="https://wa.me/5583996784194" target="_blank" rel="noopener noreferrer" className="block px-3 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 text-sm">
+                        Camalaú - (83) 99678-4194
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <a
                   href="https://instagram.com/mixfibra_sume"
                   target="_blank"

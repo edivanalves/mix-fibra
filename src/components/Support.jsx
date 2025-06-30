@@ -99,11 +99,11 @@ const Support = React.forwardRef(({ loading }, ref) => {
   }, []);
 
   const commonProblemsData = [
-    { problem: 'Minha internet está lenta. O que fazer?', solution: 'Verifique se há muitos dispositivos conectados, reinicie seu roteador e o modem. Se o problema persistir, entre em contato com o suporte técnico 24/7.' },
+    { problem: 'Minha internet está lenta. O que fazer?', solution: 'Verifique se há muitos dispositivos conectados, reinicie seu roteador e o modem. Se o problema persistir, entre em contato com nosso suporte técnico (Seg-Sáb: 8h-12h e 14h-18h).' },
     { problem: 'Não consigo conectar ao Wi-Fi. Qual o problema?', solution: 'Certifique-se de que o roteador está ligado e com as luzes indicadoras normais. Tente esquecer a rede Wi-Fi no seu dispositivo e reconectar. Verifique se a senha está correta.' },
     { problem: 'Minha fatura não chegou. Como posso obter a 2ª via?', solution: 'Você pode acessar a 2ª via da sua fatura diretamente na Central do Assinante em nosso site ou solicitar via WhatsApp de forma rápida e prática.' },
     { problem: 'Preciso mudar meu plano de internet. Como faço?', solution: 'Entre em contato com nossa central de atendimento pelo WhatsApp ou telefone para verificar as opções de planos disponíveis e fazer a alteração sem burocracia.' },
-    { problem: 'O suporte técnico funciona 24 horas?', solution: 'Sim! Nosso suporte técnico está disponível 24 horas por dia, 7 dias por semana, para monitorar a rede e atender emergências com agilidade total.' },
+    { problem: 'Qual o horário de atendimento?', solution: 'Nosso atendimento funciona de segunda a sábado, das 8h às 12h e das 14h às 18h. Fora desse horário, você pode enviar mensagem pelo WhatsApp que responderemos assim que possível.' },
     { problem: 'Como faço para alterar meus dados cadastrais?', solution: 'Para alterar dados como telefone, e-mail ou endereço, entre em contato com nossa Central de Atendimento ou através da Central do Assinante de forma segura.'},
     { problem: 'Minha conexão está caindo constantemente. O que pode ser?', solution: 'Verifique os cabos do roteador e modem. Reinicie os equipamentos. Se persistir, pode ser infraestrutura externa. Nossa equipe técnica resolve rapidamente!'},
     { problem: 'Esqueci a senha do meu Wi-Fi. O que fazer?', solution: 'A senha padrão está no rótulo do roteador. Se alterou e esqueceu, podemos ajudar a reconfigurar ou fornecer suporte técnico especializado.'}
@@ -143,7 +143,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
             <Shield className="w-4 h-4 text-emerald-400" />
-            Suporte 24/7 Disponível
+            Suporte Seg-Sáb: 8h-12h | 14h-18h
           </div>
           
           <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-emerald-200 to-green-200 bg-clip-text text-transparent mb-6">
@@ -210,19 +210,35 @@ const Support = React.forwardRef(({ loading }, ref) => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://wa.me/5583996411187"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/40 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-transparent overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5" />
-                    Falar no WhatsApp
-                    <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </a>
+                <div className="relative group">
+                  <button className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/40 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-transparent overflow-hidden">
+                    <span className="relative z-10 flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5" />
+                      Falar no WhatsApp
+                      <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </button>
+                  
+                  {/* Dropdown Menu */}
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-64 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <div className="text-white/90 text-sm font-medium mb-3 text-center">Escolha sua cidade:</div>
+                    <div className="space-y-2">
+                      <a href="https://wa.me/5583996411187" target="_blank" rel="noopener noreferrer" className="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 text-center">
+                        Sumé - (83) 99641-1187
+                      </a>
+                      <a href="https://wa.me/5583999298366" target="_blank" rel="noopener noreferrer" className="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 text-center">
+                        Congo - (83) 99929-8366
+                      </a>
+                      <a href="https://wa.me/5583988539424" target="_blank" rel="noopener noreferrer" className="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 text-center">
+                        Caraúbas - (83) 98853-9424
+                      </a>
+                      <a href="https://wa.me/5583996784194" target="_blank" rel="noopener noreferrer" className="block px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-200 text-center">
+                        Camalaú - (83) 99678-4194
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 
                 <a
                   href="https://mixfibra.sgp.net.br/central/home/"
