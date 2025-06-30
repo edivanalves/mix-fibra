@@ -1,23 +1,23 @@
 {
   "name": "Mix Fibra - Internet de Ultra Velocidade",
   "short_name": "Mix Fibra",
-  "description": "Internet de fibra óptica ultra rápida para navegação, jogos e streaming sem limites",
-  "start_url": "/",
-  "scope": "/",
+  "description": "Internet de alta velocidade com fibra óptica. Planos a partir de R$39,99. Instalação gratuita, sem fidelidade.",
+  "start_url": "/mix-fibra/",
+  "scope": "/mix-fibra/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
-  "background_color": "#ffffff",
-  "theme_color": "#1f2937",
+  "background_color": "#0f172a",
+  "theme_color": "#1e40af",
   "orientation": "any",
   "icons": [
     {
-      "src": "/imagens/logo-mix-fibra.png",
+      "src": "/mix-fibra/imagens/logo-mix-fibra.png",
       "sizes": "192x192 512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/imagens/logo-mix-fibra.png",
+      "src": "/mix-fibra/imagens/logo-mix-fibra.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
@@ -29,5 +29,37 @@
   "prefer_related_applications": false,
   "edge_side_panel": {
     "preferred_width": 400
-  }
+  },
+  "shortcuts": [
+    {
+      "name": "Ver Planos",
+      "short_name": "Planos",
+      "description": "Veja nossos planos de internet",
+      "url": "/mix-fibra/#plans-section",
+      "icons": [{
+        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+        "sizes": "96x96"
+      }]
+    },
+    {
+      "name": "WhatsApp",
+      "short_name": "Contato",
+      "description": "Fale conosco no WhatsApp",
+      "url": "/mix-fibra/",
+      "icons": [{
+        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+        "sizes": "96x96"
+      }]
+    },
+    {
+      "name": "Central do Assinante",
+      "short_name": "Área Cliente",
+      "description": "Acesse sua área do cliente",
+      "url": "/mix-fibra/",
+      "icons": [{
+        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+        "sizes": "96x96"
+      }]
+    }
+  ]
 }
