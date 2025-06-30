@@ -86,7 +86,7 @@ function App() {
   };
 
   return (
-    <div className="w-full bg-blue-950">
+    <div className="w-full bg-slate-900">
       <ParticleBackground />
 
       <Navbar

@@ -19,7 +19,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
       title: "Promoção Ultra Velocidade",
       description: "Conheça nossas ofertas especiais",
       icon: <Video className="w-6 h-6" />,
-      gradient: "from-orange-500 to-pink-500",
+      gradient: "from-orange-500 to-orange-600",
       category: "Promoções"
     },
     {
@@ -27,7 +27,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
       title: "Atendimento Técnico",
       description: "Suporte especializado 24/7",
       icon: <Headphones className="w-6 h-6" />,
-      gradient: "from-cyan-500 to-blue-500",
+      gradient: "from-blue-500 to-blue-600",
       category: "Suporte"
     },
     {
@@ -35,7 +35,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
       title: "Depoimentos de Clientes",
       description: "Experiências reais dos nossos clientes",
       icon: <Users className="w-6 h-6" />,
-      gradient: "from-emerald-500 to-teal-500",
+      gradient: "from-emerald-500 to-emerald-600",
       category: "Testemunhos"
     }
   ];
@@ -50,29 +50,29 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
       <div ref={sectionRef} className="absolute inset-0" />
       
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-800 to-blue-900 rounded-3xl" />
       <div 
         className="absolute inset-0 opacity-20 rounded-3xl"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(168, 85, 247, 0.4) 0%, transparent 50%)`
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(59, 130, 246, 0.4) 0%, transparent 50%)`
         }}
       />
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
-        <div className="absolute top-10 right-10 w-24 h-24 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-10 right-10 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 left-10 w-32 h-32 bg-gradient-to-br from-blue-600/20 to-blue-700/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
       
       <div className="relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
-            <Play className="w-4 h-4 text-purple-400" />
+            <Play className="w-4 h-4 text-blue-400" />
             Vídeos Exclusivos
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent mb-6">
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-blue-200 to-blue-300 bg-clip-text text-transparent mb-6">
             Mix Fibra em Ação
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
@@ -118,7 +118,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
                     <div className={`p-2 rounded-xl bg-gradient-to-r ${video.gradient} group-hover:scale-110 transition-transform duration-300`}>
                       {video.icon}
                     </div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                    <h3 className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors duration-300">
                       {video.title}
                     </h3>
                   </div>
@@ -143,7 +143,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
         {/* CTA Section */}
         <div className="mt-16 text-center">
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300 hover:scale-105">
-            <Video className="w-5 h-5 text-purple-400" />
+            <Video className="w-5 h-5 text-blue-400" />
             <span className="font-semibold">Mais vídeos em nosso canal</span>
           </div>
         </div>

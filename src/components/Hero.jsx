@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState, useEffect, useRef, useMemo } from 'react';
-import { ArrowRight, Zap, Star } from 'lucide-react';
+import { ArrowRight, Zap, Star, Gauge } from 'lucide-react';
+import SpeedTestWidget from './SpeedTestWidget';
 
 const FloatingParticle = memo(({ delay = 0, duration = 20, left, top }) => (
   <div
@@ -16,6 +17,7 @@ const FloatingParticle = memo(({ delay = 0, duration = 20, left, top }) => (
 const Hero = memo(
   React.forwardRef(({ scrollToPlans }, ref) => {
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [showSpeedTest, setShowSpeedTest] = useState(false);
     const heroRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
 
@@ -116,16 +118,15 @@ const Hero = memo(
                   <div className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </button>
 
-                <a
-                  href="https://wa.me/5583996411187"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setShowSpeedTest(true)}
                   className="group px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/40 text-white font-semibold text-lg rounded-2xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50"
                 >
                   <span className="flex items-center gap-2">
-                    💬 Falar no WhatsApp
+                    <Gauge className="w-5 h-5" />
+                    Teste de Velocidade
                   </span>
-                </a>
+                </button>
               </div>
             </div>
 
@@ -174,6 +175,11 @@ const Hero = memo(
             </div>
           </div>
         </div>
+        
+        <SpeedTestWidget 
+          isOpen={showSpeedTest} 
+          onClose={() => setShowSpeedTest(false)} 
+        />
       </section>
     );
   })

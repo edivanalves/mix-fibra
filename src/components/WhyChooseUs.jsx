@@ -70,7 +70,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       title: 'Tecnologia de Ponta',
       description: 'Infraestrutura 100% fibra óptica com tecnologia de última geração para máxima performance.',
       icon: <Zap className="w-10 h-10 text-white" strokeWidth={2.5} />,
-      gradient: 'from-cyan-500 to-blue-600',
+      gradient: 'from-blue-500 to-blue-600',
       stats: [
         { value: '500MB', label: 'Velocidade Máx' },
         { value: '99.9%', label: 'Uptime' }
@@ -85,7 +85,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       title: 'Suporte Especializado',
       description: 'Equipe técnica qualificada disponível 24/7 para resolver qualquer problema rapidamente.',
       icon: <Shield className="w-10 h-10 text-white" strokeWidth={2.5} />,
-      gradient: 'from-emerald-500 to-green-600',
+      gradient: 'from-emerald-500 to-emerald-600',
       stats: [
         { value: '24/7', label: 'Disponibilidade' },
         { value: '2min', label: 'Tempo Resposta' }
@@ -100,7 +100,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       title: 'Melhor Custo-Benefício',
       description: 'Planos com preços justos, sem taxa de instalação e sem fidelidade obrigatória.',
       icon: <Award className="w-10 h-10 text-white" strokeWidth={2.5} />,
-      gradient: 'from-orange-500 to-pink-600',
+      gradient: 'from-orange-500 to-orange-600',
       stats: [
         { value: 'R$39', label: 'A partir de' },
         { value: '0%', label: 'Taxa Instalação' }
@@ -123,7 +123,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       <div ref={sectionRef} className="absolute inset-0" />
       
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-800 to-blue-900 rounded-3xl" />
       <div 
         className="absolute inset-0 opacity-20 rounded-3xl"
         style={{
@@ -133,19 +133,19 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
-        <div className="absolute top-10 right-10 w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute bottom-10 left-10 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-10 right-10 w-24 h-24 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 left-10 w-32 h-32 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
       
       <div className="relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
-            <Award className="w-4 h-4 text-yellow-400" />
+            <Award className="w-4 h-4 text-orange-400" />
             Diferenciais Exclusivos
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-cyan-200 to-purple-200 bg-clip-text text-transparent mb-6">
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-blue-200 to-orange-200 bg-clip-text text-transparent mb-6">
             Por Que Escolher a Mix Fibra?
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">

@@ -74,7 +74,6 @@ const Navbar = ({ refs, activeSection }) => {
     { href: 'about', text: 'Sobre', ref: refs.aboutRef },
     { href: 'contact', text: 'Contato', ref: refs.contactRef },
     { href: 'solicitation-form', text: 'Solicite Agora', ref: refs.solicitationRef },
-    { href: 'speedtest-section', text: 'Teste de Velocidade', ref: refs.speedTestRef },
   ];
 
   return (

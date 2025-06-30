@@ -38,14 +38,14 @@ const CommonProblemItem = ({ problem, solution, index }) => {
           aria-expanded={isOpen}
         >
           <span className="flex items-center gap-4 text-white">
-            <div className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 group-hover:scale-110 transition-transform duration-300">
+            <div className="p-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 group-hover:scale-110 transition-transform duration-300">
               <HelpCircle size={20} className="text-white" />
             </div>
             <span className="font-semibold text-lg group-hover:text-orange-300 transition-colors duration-300">{problem}</span>
           </span>
           <ChevronDown
             size={24}
-            className={`transition-all duration-300 text-cyan-300 group-hover:text-orange-300 ${isOpen ? 'rotate-180 scale-110' : ''}`}
+            className={`transition-all duration-300 text-emerald-300 group-hover:text-orange-300 ${isOpen ? 'rotate-180 scale-110' : ''}`}
           />
         </button>
         
@@ -124,29 +124,29 @@ const Support = React.forwardRef(({ loading }, ref) => {
       <div ref={sectionRef} className="absolute inset-0" />
       
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-blue-900 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-emerald-800 to-emerald-900 rounded-3xl" />
       <div 
         className="absolute inset-0 opacity-20 rounded-3xl"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(147, 51, 234, 0.4) 0%, transparent 50%)`
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(16, 185, 129, 0.4) 0%, transparent 50%)`
         }}
       />
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
       
       <div className="relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
-            <Shield className="w-4 h-4 text-green-400" />
+            <Shield className="w-4 h-4 text-emerald-400" />
             Suporte 24/7 Disponível
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-6">
+          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-emerald-200 to-green-200 bg-clip-text text-transparent mb-6">
             Central de Ajuda
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
@@ -157,7 +157,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
         {/* Search Section */}
         <div className="max-w-4xl mx-auto mb-12">
           <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-pink-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300" />
+            <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-orange-600 to-emerald-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition-opacity duration-300" />
             <div className="relative bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-2">
               <div className="relative">
                 <input
@@ -183,7 +183,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
             </div>
           ) : (
             <div className="text-center py-16">
-              <div className="w-24 h-24 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-24 h-24 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Search size={32} className="text-white" />
               </div>
               <p className="text-white/80 text-xl mb-2">Nenhum resultado encontrado</p>
@@ -194,10 +194,10 @@ const Support = React.forwardRef(({ loading }, ref) => {
 
         {/* CTA Section */}
         <div className="relative">
-          <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-cyan-500/20 rounded-3xl blur-xl" />
+          <div className="absolute -inset-4 bg-gradient-to-r from-emerald-500/20 via-green-500/20 to-emerald-600/20 rounded-3xl blur-xl" />
           <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <MessageSquare size={32} className="text-white" />
               </div>
               
@@ -214,14 +214,14 @@ const Support = React.forwardRef(({ loading }, ref) => {
                   href="https://wa.me/5583996411187"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-green-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-green-500/40 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-transparent overflow-hidden"
+                  className="group relative px-8 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-500/25 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/40 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-transparent overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <MessageSquare className="w-5 h-5" />
                     Falar no WhatsApp
                     <Zap className="w-5 h-5 transition-transform group-hover:scale-110" />
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </a>
                 
                 <a

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Bot, User, Minimize2, Maximize2 } from 'lucide-react';
+import { MessageSquare, Send, X, Bot, User, Minimize2, Maximize2, Mic, VolumeX } from 'lucide-react';
 
 const IngridAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +14,11 @@ const IngridAssistant = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef(null);
+  const recognitionRef = useRef(null);
+  const synthRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -24,53 +28,136 @@ const IngridAssistant = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    // Inicializar Speech Recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      recognitionRef.current.lang = 'pt-BR';
+      
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInputText(transcript);
+        setIsListening(false);
+      };
+      
+      recognitionRef.current.onerror = () => {
+        setIsListening(false);
+      };
+      
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
+    // Inicializar Speech Synthesis
+    if ('speechSynthesis' in window) {
+      synthRef.current = window.speechSynthesis;
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+      if (synthRef.current) {
+        synthRef.current.cancel();
+      }
+    };
+  }, []);
+
   const knowledgeBase = {
     planos: {
-      keywords: ['plano', 'velocidade', 'preço', 'valor', 'mb', 'internet'],
-      response: "Temos planos de 50MB (R$39,99), 100MB (R$49,99), 200MB (R$59,99), 300MB (R$69,99) e 500MB (R$99,99). Todos sem taxa de instalação e sem fidelidade! Qual velocidade você precisa?"
+      keywords: ['plano', 'velocidade', 'preço', 'valor', 'mb', 'internet', 'pacote', 'oferta', 'promoção'],
+      response: "🚀 Nossos planos de fibra óptica:\n\n• 50MB - R$39,99/mês\n• 100MB - R$49,99/mês\n• 200MB - R$59,99/mês\n• 300MB - R$69,99/mês\n• 500MB - R$99,99/mês\n\n✅ Todos SEM taxa de instalação\n✅ SEM fidelidade\n✅ Instalação em 24-48h\n\nQual velocidade atende suas necessidades?"
     },
     suporte: {
-      keywords: ['suporte', 'problema', 'ajuda', 'técnico', 'lento', 'wifi'],
-      response: "Nosso suporte técnico funciona 24/7! Para problemas urgentes: (83) 99641-1187. Para internet lenta, tente reiniciar o roteador. Posso ajudar com mais alguma coisa?"
+      keywords: ['suporte', 'problema', 'ajuda', 'técnico', 'lento', 'wifi', 'conexão', 'internet', 'caiu', 'não funciona'],
+      response: "🛠️ Suporte técnico 24/7 disponível!\n\n📞 Emergências: (83) 99641-1187\n💬 WhatsApp: Atendimento rápido\n🔧 Monitoramento: Rede 24h\n\n⚡ Dica rápida: Internet lenta? Reinicie o roteador por 30 segundos. Persistindo? Nossa equipe resolve!"
     },
     instalacao: {
-      keywords: ['instalar', 'instalação', 'prazo', 'quando', 'técnico'],
-      response: "A instalação é GRATUITA e leva de 24 a 48 horas após a contratação! Nossa equipe técnica agenda o melhor horário com você. Quer contratar?"
+      keywords: ['instalar', 'instalação', 'prazo', 'quando', 'técnico', 'agendar', 'visita'],
+      response: "🏠 Instalação GRATUITA e rápida!\n\n⏰ Prazo: 24 a 48 horas\n👨‍🔧 Técnico especializado\n📅 Agendamento flexível\n🎯 Sem taxa de instalação\n\nApós a contratação, nossa equipe entra em contato para agendar no melhor horário para você!"
     },
     cobertura: {
-      keywords: ['cidade', 'atende', 'disponível', 'cobertura', 'sumé', 'congo', 'camalaú'],
-      response: "Atendemos Sumé, Congo, Camalaú e Caraúbas! Se você está em outra cidade, entre em contato que verificamos a viabilidade. Onde você mora?"
+      keywords: ['cidade', 'atende', 'disponível', 'cobertura', 'sumé', 'congo', 'camalaú', 'caraúbas', 'onde', 'local'],
+      response: "🌍 Cidades atendidas pela Mix Fibra:\n\n📍 Sumé - PB\n📍 Congo - PB\n📍 Camalaú - PB\n📍 Caraúbas - PB\n\n🔍 Sua cidade não está na lista? Entre em contato! Estamos sempre expandindo nossa cobertura."
     },
     contrato: {
-      keywords: ['contratar', 'assinar', 'whatsapp', 'contato'],
-      response: "Para contratar é super fácil! Entre em contato pelo WhatsApp (83) 99641-1187 ou preencha nosso formulário no site. Qual plano te interessa?"
+      keywords: ['contratar', 'assinar', 'whatsapp', 'contato', 'quero', 'como faço'],
+      response: "📝 Contratar é super fácil!\n\n💬 WhatsApp: (83) 99641-1187\n🌐 Site: Formulário online\n📞 Telefone: Atendimento direto\n\n✨ Processo 100% digital, sem burocracia! Qual plano você escolheu?"
     },
     fidelidade: {
-      keywords: ['fidelidade', 'cancelar', 'multa', 'contrato'],
-      response: "Nossos planos são SEM FIDELIDADE! Você pode cancelar quando quiser, sem multa. Transparência total é nosso compromisso!"
+      keywords: ['fidelidade', 'cancelar', 'multa', 'contrato', 'permanência'],
+      response: "🆓 ZERO fidelidade na Mix Fibra!\n\n❌ Sem multa por cancelamento\n❌ Sem permanência obrigatória\n✅ Liberdade total\n✅ Transparência completa\n\nVocê fica porque quer, não porque precisa! 😊"
+    },
+    velocidade: {
+      keywords: ['velocidade', 'rápido', 'lento', 'mb', 'mega', 'fibra'],
+      response: "⚡ Fibra óptica 100% pura!\n\n🚀 Até 500MB de velocidade\n📶 Baixa latência\n🎮 Ideal para games\n📺 Streaming 4K\n💻 Home office\n\nNossa fibra óptica garante velocidade real, não apenas 'até'!"
+    },
+    pagamento: {
+      keywords: ['pagamento', 'boleto', 'cartão', 'pix', 'fatura', '2ª via'],
+      response: "💳 Formas de pagamento flexíveis:\n\n🏦 Boleto bancário\n💳 Cartão de crédito\n⚡ PIX (desconto especial)\n🌐 Débito automático\n\n📄 2ª via: Central do Assinante ou WhatsApp"
+    },
+    promocao: {
+      keywords: ['promoção', 'desconto', 'oferta', 'barato', 'preço especial'],
+      response: "🎉 Promoções ativas Mix Fibra:\n\n🆓 Instalação GRATUITA\n❌ ZERO taxa de adesão\n🎁 Primeiro mês com desconto\n⚡ Upgrade grátis por 3 meses\n\nEntre em contato e garante sua oferta especial!"
+    },
+    tecnico: {
+      keywords: ['técnico', 'roteador', 'modem', 'equipamento', 'configurar'],
+      response: "🔧 Suporte técnico especializado:\n\n👨‍💻 Técnicos certificados\n🏠 Atendimento domiciliar\n📱 Suporte remoto\n⚙️ Configuração completa\n\nTodos os equipamentos são configurados pela nossa equipe!"
     }
   };
 
   const getResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
+    let bestMatch = null;
+    let maxMatches = 0;
     
+    // Busca inteligente por múltiplas palavras-chave
     for (const [category, data] of Object.entries(knowledgeBase)) {
-      if (data.keywords.some(keyword => message.includes(keyword))) {
-        return data.response;
+      const matches = data.keywords.filter(keyword => message.includes(keyword)).length;
+      if (matches > maxMatches) {
+        maxMatches = matches;
+        bestMatch = data.response;
       }
     }
-
-    // Respostas para cumprimentos
-    if (message.includes('oi') || message.includes('olá') || message.includes('ola')) {
-      return "Oi! Que bom falar com você! 😊 Sou a Ingrid da Mix Fibra. Como posso te ajudar hoje?";
+    
+    if (bestMatch && maxMatches > 0) {
+      return bestMatch;
     }
 
-    if (message.includes('obrigad') || message.includes('valeu')) {
-      return "Por nada! Fico feliz em ajudar! 💙 Se precisar de mais alguma coisa, estarei aqui!";
+    // Respostas contextuais inteligentes
+    if (message.includes('oi') || message.includes('olá') || message.includes('ola') || message.includes('bom dia') || message.includes('boa tarde') || message.includes('boa noite')) {
+      const greetings = [
+        "Oi! Que bom falar com você! 😊 Sou a Ingrid da Mix Fibra. Como posso te ajudar hoje?",
+        "Olá! 👋 Bem-vindo à Mix Fibra! Estou aqui para esclarecer suas dúvidas sobre nossos planos de internet!",
+        "Oi! 🌟 Sou sua assistente virtual da Mix Fibra. Posso ajudar com planos, suporte, instalação e muito mais!"
+      ];
+      return greetings[Math.floor(Math.random() * greetings.length)];
     }
 
-    // Resposta padrão
-    return "Hmm, não tenho certeza sobre isso. Mas posso te ajudar com: planos de internet, suporte técnico, instalação, cobertura ou contratação. Ou fale direto com nossa equipe: (83) 99641-1187! 📞";
+    if (message.includes('obrigad') || message.includes('valeu') || message.includes('muito bom')) {
+      const thanks = [
+        "Por nada! Fico feliz em ajudar! 💙 Se precisar de mais alguma coisa, estarei aqui!",
+        "Que bom que pude ajudar! 😊 Estou sempre disponível para você!",
+        "Foi um prazer! 🌟 A Mix Fibra está sempre aqui para você!"
+      ];
+      return thanks[Math.floor(Math.random() * thanks.length)];
+    }
+
+    if (message.includes('tchau') || message.includes('até logo') || message.includes('bye')) {
+      return "Até logo! 👋 Foi ótimo conversar com você! Lembre-se: Mix Fibra, conectando você ao futuro! 🚀";
+    }
+
+    // Resposta inteligente padrão
+    const defaultResponses = [
+      "🤔 Hmm, não tenho certeza sobre isso. Mas posso te ajudar com:\n\n📋 Planos de internet\n🛠️ Suporte técnico\n🏠 Instalação\n📍 Cobertura\n📞 Contratação\n\nOu fale direto: (83) 99641-1187!",
+      "💭 Não entendi completamente, mas estou aqui para ajudar! Posso esclarecer sobre nossos planos, suporte, instalação ou qualquer dúvida sobre a Mix Fibra!",
+      "🎯 Que tal reformular sua pergunta? Sou especialista em: planos de internet, suporte técnico, instalação, cobertura e contratação da Mix Fibra!"
+    ];
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   };
 
   const handleSendMessage = () => {
@@ -83,22 +170,70 @@ const IngridAssistant = () => {
       timestamp: new Date()
     };
 
+    const messageToProcess = inputText;
     setMessages(prev => [...prev, userMessage]);
     setInputText('');
     setIsTyping(true);
 
     // Simular digitação da IA
     setTimeout(() => {
+      const responseText = getResponse(messageToProcess);
       const botResponse = {
         id: Date.now() + 1,
-        text: getResponse(inputText),
+        text: responseText,
         sender: 'bot',
         timestamp: new Date()
       };
       
       setMessages(prev => [...prev, botResponse]);
       setIsTyping(false);
+      
+      // Falar a resposta automaticamente
+      speakMessage(responseText);
     }, 1500);
+  };
+
+  const startListening = () => {
+    if (recognitionRef.current && !isListening) {
+      setIsListening(true);
+      recognitionRef.current.start();
+    }
+  };
+
+  const speakMessage = (text) => {
+    if (synthRef.current && !isSpeaking) {
+      // Limpar texto de emojis para melhor síntese
+      const cleanText = text.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '');
+      
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1.1;
+      utterance.volume = 0.8;
+      
+      // Tentar usar voz feminina em português
+      const voices = synthRef.current.getVoices();
+      const ptBrVoice = voices.find(voice => 
+        voice.lang.includes('pt-BR') || voice.lang.includes('pt')
+      ) || voices.find(voice => voice.name.includes('Google português'));
+      
+      if (ptBrVoice) {
+        utterance.voice = ptBrVoice;
+      }
+      
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
+      
+      synthRef.current.speak(utterance);
+    }
+  };
+
+  const stopSpeaking = () => {
+    if (synthRef.current) {
+      synthRef.current.cancel();
+      setIsSpeaking(false);
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -209,9 +344,35 @@ const IngridAssistant = () => {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Digite sua pergunta..."
+                  placeholder="Digite ou fale sua pergunta..."
                   className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-4 py-2 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 />
+                
+                {/* Botão de Microfone */}
+                <button
+                  onClick={startListening}
+                  disabled={isListening || !('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)}
+                  className={`p-2 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                    isListening 
+                      ? 'bg-red-500 hover:bg-red-600 animate-pulse' 
+                      : 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'
+                  } disabled:opacity-50 disabled:cursor-not-allowed text-white`}
+                  title={isListening ? 'Ouvindo...' : 'Clique para falar'}
+                >
+                  <Mic size={20} className={isListening ? 'animate-pulse' : ''} />
+                </button>
+                
+                {/* Botão de Parar Fala */}
+                {isSpeaking && (
+                  <button
+                    onClick={stopSpeaking}
+                    className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-2xl transition-all duration-300 hover:scale-105"
+                    title="Parar fala"
+                  >
+                    <VolumeX size={20} />
+                  </button>
+                )}
+                
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputText.trim()}

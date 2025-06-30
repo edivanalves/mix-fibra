@@ -13,11 +13,11 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
     setMousePosition({ x, y });
   }, []);
 
-  const achievements = [
-    { icon: <Users className="w-6 h-6" />, value: '5000+', label: 'Clientes Conectados' },
-    { icon: <Target className="w-6 h-6" />, value: '4', label: 'Cidades Atendidas' },
-    { icon: <Award className="w-6 h-6" />, value: '99.9%', label: 'Uptime Garantido' },
-    { icon: <TrendingUp className="w-6 h-6" />, value: '500MB', label: 'Velocidade Máxima' }
+  const values = [
+    { icon: <Users className="w-6 h-6" />, title: 'Compromisso', description: 'Com cada cliente' },
+    { icon: <Target className="w-6 h-6" />, title: 'Inovação', description: 'Tecnologia avançada' },
+    { icon: <Award className="w-6 h-6" />, title: 'Excelência', description: 'Em cada serviço' },
+    { icon: <TrendingUp className="w-6 h-6" />, title: 'Crescimento', description: 'Junto com você' }
   ];
 
   return (
@@ -31,7 +31,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
       <div ref={sectionRef} className="absolute inset-0" />
       
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 rounded-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-700 to-blue-900 rounded-3xl" />
       <div 
         className="absolute inset-0 opacity-20 rounded-3xl"
         style={{
@@ -41,8 +41,8 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
       
       {/* Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
-        <div className="absolute top-10 left-10 w-24 h-24 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" />
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-10 left-10 w-24 h-24 bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-full blur-xl animate-pulse" />
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
       
       <div className="relative z-10">
@@ -62,7 +62,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
           {/* Image Section */}
           <div className="relative group">
             {/* Glow Effect */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/30 to-pink-500/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/30 to-orange-600/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 p-8 shadow-2xl">
               <div className="relative overflow-hidden rounded-2xl">
@@ -108,19 +108,19 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
               </blockquote>
             </div>
             
-            {/* Achievements Grid */}
+            {/* Values Grid */}
             <div className="grid grid-cols-2 gap-4">
-              {achievements.map((achievement, index) => (
+              {values.map((value, index) => (
                 <div 
                   key={index}
                   className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10 text-center group hover:bg-white/10 transition-all duration-300 hover:scale-105"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {achievement.icon}
+                  <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {value.icon}
                   </div>
-                  <div className="text-2xl font-bold text-white mb-1">{achievement.value}</div>
-                  <div className="text-sm text-white/60">{achievement.label}</div>
+                  <div className="text-lg font-bold text-white mb-1">{value.title}</div>
+                  <div className="text-sm text-white/60">{value.description}</div>
                 </div>
               ))}
             </div>
