@@ -288,15 +288,15 @@ const IngridAssistant = () => {
 
   if (!isOpen) {
     return (
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-45">
         <button
           onClick={() => setIsOpen(true)}
-          className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 animate-pulse"
+          className="group relative bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white p-4 md:p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 animate-pulse"
         >
           <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center gap-2">
-            <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-              <span className="text-2xl">👩‍💼</span>
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-white/20 rounded-full flex items-center justify-center">
+              <span className="text-xl md:text-2xl">👩‍💼</span>
             </div>
             <div className="hidden lg:block text-left">
               <div className="font-bold text-sm">Ingrid - Assistente IA</div>
@@ -309,7 +309,7 @@ const IngridAssistant = () => {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${isMinimized ? 'w-80' : 'w-96'}`}>
+    <div className={`fixed bottom-20 md:bottom-6 right-4 md:right-6 z-45 transition-all duration-300 ${isMinimized ? 'w-72 md:w-80' : 'w-80 md:w-96'}`}>
       <div className="bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-4 flex items-center justify-between">
@@ -341,7 +341,7 @@ const IngridAssistant = () => {
         {!isMinimized && (
           <>
             {/* Messages */}
-            <div className="h-96 overflow-y-auto p-4 space-y-4">
+            <div className="h-64 md:h-96 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -380,15 +380,15 @@ const IngridAssistant = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 border-t border-white/20">
-              <div className="flex gap-2">
+            <div className="p-3 md:p-4 border-t border-white/20">
+              <div className="flex gap-1 md:gap-2">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Digite ou fale sua pergunta..."
-                  className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-4 py-2 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="flex-1 bg-white/10 border border-white/20 rounded-2xl px-3 md:px-4 py-2 text-sm md:text-base text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-400"
                 />
                 
                 {/* Botão de Microfone */}
@@ -402,7 +402,7 @@ const IngridAssistant = () => {
                   } disabled:opacity-50 disabled:cursor-not-allowed text-white`}
                   title={isListening ? 'Ouvindo...' : 'Clique para falar'}
                 >
-                  <Mic size={20} className={isListening ? 'animate-pulse' : ''} />
+                  <Mic size={16} className={`md:w-5 md:h-5 ${isListening ? 'animate-pulse' : ''}`} />
                 </button>
                 
                 {/* Botão de Parar Fala */}
@@ -412,7 +412,7 @@ const IngridAssistant = () => {
                     className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-2xl transition-all duration-300 hover:scale-105"
                     title="Parar fala"
                   >
-                    <VolumeX size={20} />
+                    <VolumeX size={16} className="md:w-5 md:h-5" />
                   </button>
                 )}
                 
@@ -421,7 +421,7 @@ const IngridAssistant = () => {
                   disabled={!inputText.trim()}
                   className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-2 rounded-2xl transition-all duration-300 hover:scale-105"
                 >
-                  <Send size={20} />
+                  <Send size={16} className="md:w-5 md:h-5" />
                 </button>
               </div>
             </div>
