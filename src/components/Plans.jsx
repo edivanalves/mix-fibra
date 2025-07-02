@@ -67,7 +67,7 @@ const plansData = [
   },
   {
     megas: 500,
-    price: '99,99',
+    price: '89,99',
     description: 'Ultra velocidade para empresas e gamers exigentes.',
     highlight: false,
     color: 'from-red-500 to-orange-500',

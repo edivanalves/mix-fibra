@@ -70,7 +70,7 @@ const IngridAssistant = () => {
   const knowledgeBase = {
     planos: {
       keywords: ['plano', 'velocidade', 'preço', 'valor', 'mb', 'internet', 'pacote', 'oferta', 'promoção'],
-      response: "🚀 Nossos planos de fibra óptica:\n\n• 50MB - R$39,99/mês\n• 100MB - R$49,99/mês\n• 200MB - R$59,99/mês\n• 300MB - R$69,99/mês\n• 500MB - R$99,99/mês\n\n✅ Todos SEM taxa de instalação\n✅ SEM fidelidade\n✅ Instalação em 24-48h\n\nQual velocidade atende suas necessidades?"
+      response: "🚀 Nossos planos de fibra óptica:\n\n• 50MB - R$39,99/mês\n• 100MB - R$49,99/mês\n• 200MB - R$59,99/mês\n• 300MB - R$69,99/mês\n• 500MB - R$89,99/mês\n\n✅ Todos SEM taxa de instalação\n✅ SEM fidelidade\n✅ Instalação em 24-48h\n\nQual velocidade atende suas necessidades?"
     },
     suporte: {
       keywords: ['suporte', 'problema', 'ajuda', 'técnico', 'lento', 'wifi', 'conexão', 'internet', 'caiu', 'não funciona'],
@@ -101,35 +101,64 @@ const IngridAssistant = () => {
       response: "💳 Formas de pagamento flexíveis:\n\n🏦 Boleto bancário\n💳 Cartão de crédito\n⚡ PIX (desconto especial)\n🌐 Débito automático\n\n📄 2ª via: Central do Assinante ou WhatsApp"
     },
     promocao: {
-      keywords: ['promoção', 'desconto', 'oferta', 'barato', 'preço especial'],
-      response: "🎉 Promoções ativas Mix Fibra:\n\n🆓 Instalação GRATUITA\n❌ ZERO taxa de adesão\n🎁 Primeiro mês com desconto\n⚡ Upgrade grátis por 3 meses\n\nEntre em contato e garante sua oferta especial!"
+      keywords: ['promoção', 'desconto', 'oferta', 'barato', 'preço especial', 'black friday', 'natal'],
+      response: "🎉 Promoções ativas Mix Fibra:\n\n🆓 Instalação GRATUITA\n❌ ZERO taxa de adesão\n🎁 Primeiro mês com desconto\n⚡ Upgrade grátis por 3 meses\n\n📞 Entre em contato: (83) 99641-1187\n🌐 Ou pelo site para garantir sua oferta!"
     },
     tecnico: {
-      keywords: ['técnico', 'roteador', 'modem', 'equipamento', 'configurar'],
-      response: "🔧 Suporte técnico especializado:\n\n👨‍💻 Técnicos certificados\n🏠 Atendimento domiciliar\n📱 Suporte remoto\n⚙️ Configuração completa\n\nTodos os equipamentos são configurados pela nossa equipe!"
+      keywords: ['técnico', 'roteador', 'modem', 'equipamento', 'configurar', 'senha wifi', 'resetar'],
+      response: "🔧 Suporte técnico especializado:\n\n👨‍💻 Técnicos certificados\n🏠 Atendimento domiciliar\n📱 Suporte remoto\n⚙️ Configuração completa\n\n📞 Emergência 24h: (83) 99641-1187\nTodos os equipamentos são configurados pela nossa equipe!"
+    },
+    horario: {
+      keywords: ['horário', 'atendimento', 'funciona', 'aberto', 'fechado', 'domingo'],
+      response: "🕐 Horário de atendimento Mix Fibra:\n\n📞 Segunda a Sábado: 8h às 12h | 14h às 18h\n💬 WhatsApp: 24h (resposta rápida)\n🚨 Emergências técnicas: 24h\n❌ Domingo: Apenas emergências\n\nSempre prontos para te atender!"
     }
   };
 
   const getResponse = (userMessage) => {
-    const message = userMessage.toLowerCase();
+    const message = userMessage.toLowerCase().trim();
+    
+    // Validação de entrada
+    if (!message || message.length < 2) {
+      return "🤔 Não entendi sua mensagem. Pode reformular sua pergunta?";
+    }
+    
     let bestMatch = null;
     let maxMatches = 0;
+    let contextScore = 0;
     
-    // Busca inteligente por múltiplas palavras-chave
+    // Sistema de pontuação inteligente
     for (const [category, data] of Object.entries(knowledgeBase)) {
-      const matches = data.keywords.filter(keyword => message.includes(keyword)).length;
-      if (matches > maxMatches) {
-        maxMatches = matches;
+      let matches = 0;
+      let exactMatches = 0;
+      
+      // Contagem de palavras-chave com peso
+      data.keywords.forEach(keyword => {
+        if (message.includes(keyword)) {
+          matches++;
+          // Peso extra para correspondências exatas
+          if (message.split(' ').includes(keyword)) {
+            exactMatches++;
+          }
+        }
+      });
+      
+      const score = matches + (exactMatches * 2);
+      
+      if (score > maxMatches) {
+        maxMatches = score;
         bestMatch = data.response;
+        contextScore = score;
       }
     }
     
-    if (bestMatch && maxMatches > 0) {
+    // Só responde se tiver confiança mínima
+    if (bestMatch && contextScore >= 1) {
       return bestMatch;
     }
 
-    // Respostas contextuais inteligentes
-    if (message.includes('oi') || message.includes('olá') || message.includes('ola') || message.includes('bom dia') || message.includes('boa tarde') || message.includes('boa noite')) {
+    // Respostas contextuais com validação
+    const greetingWords = ['oi', 'olá', 'ola', 'hey', 'bom dia', 'boa tarde', 'boa noite', 'e ai'];
+    if (greetingWords.some(word => message.includes(word))) {
       const greetings = [
         "Oi! Que bom falar com você! 😊 Sou a Ingrid da Mix Fibra. Como posso te ajudar hoje?",
         "Olá! 👋 Bem-vindo à Mix Fibra! Estou aqui para esclarecer suas dúvidas sobre nossos planos de internet!",
@@ -138,7 +167,8 @@ const IngridAssistant = () => {
       return greetings[Math.floor(Math.random() * greetings.length)];
     }
 
-    if (message.includes('obrigad') || message.includes('valeu') || message.includes('muito bom')) {
+    const thankWords = ['obrigad', 'valeu', 'muito bom', 'perfeito', 'ótimo', 'excelente'];
+    if (thankWords.some(word => message.includes(word))) {
       const thanks = [
         "Por nada! Fico feliz em ajudar! 💙 Se precisar de mais alguma coisa, estarei aqui!",
         "Que bom que pude ajudar! 😊 Estou sempre disponível para você!",
@@ -147,17 +177,26 @@ const IngridAssistant = () => {
       return thanks[Math.floor(Math.random() * thanks.length)];
     }
 
-    if (message.includes('tchau') || message.includes('até logo') || message.includes('bye')) {
+    const byeWords = ['tchau', 'até logo', 'bye', 'falou', 'até mais'];
+    if (byeWords.some(word => message.includes(word))) {
       return "Até logo! 👋 Foi ótimo conversar com você! Lembre-se: Mix Fibra, conectando você ao futuro! 🚀";
     }
 
-    // Resposta inteligente padrão
-    const defaultResponses = [
-      "🤔 Hmm, não tenho certeza sobre isso. Mas posso te ajudar com:\n\n📋 Planos de internet\n🛠️ Suporte técnico\n🏠 Instalação\n📍 Cobertura\n📞 Contratação\n\nOu fale direto: (83) 99641-1187!",
-      "💭 Não entendi completamente, mas estou aqui para ajudar! Posso esclarecer sobre nossos planos, suporte, instalação ou qualquer dúvida sobre a Mix Fibra!",
-      "🎯 Que tal reformular sua pergunta? Sou especialista em: planos de internet, suporte técnico, instalação, cobertura e contratação da Mix Fibra!"
+    // Detecção de perguntas específicas não cobertas
+    if (message.includes('?') || message.includes('como') || message.includes('quando') || message.includes('onde') || message.includes('qual') || message.includes('quanto')) {
+      return "🤔 Sua pergunta é muito específica! Para te dar a resposta mais precisa, recomendo falar diretamente com nossa equipe:\n\n📞 WhatsApp: (83) 99641-1187\n🌐 Site: mixfibra.com.br\n\nOu posso ajudar com informações gerais sobre planos, suporte, instalação ou cobertura!";
+    }
+
+    // Resposta inteligente padrão com sugestões específicas
+    const suggestions = [
+      "📋 Planos e preços",
+      "🛠️ Suporte técnico", 
+      "🏠 Instalação",
+      "📍 Cobertura",
+      "📞 Contratação"
     ];
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    
+    return `💭 Não consegui entender exatamente o que você precisa. Posso ajudar com:\n\n${suggestions.map(s => `• ${s}`).join('\n')}\n\n💬 Ou fale direto no WhatsApp: (83) 99641-1187`;
   };
 
   const handleSendMessage = () => {
@@ -202,8 +241,12 @@ const IngridAssistant = () => {
 
   const speakMessage = (text) => {
     if (synthRef.current && !isSpeaking) {
-      // Limpar texto de emojis para melhor síntese
-      const cleanText = text.replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '');
+      // Limpar texto de emojis e símbolos para melhor síntese
+      const cleanText = text
+        .replace(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+        .replace(/[•✅❌🎯📋🛠️🏠📍📞⚡💬]/g, '')
+        .replace(/\n/g, '. ')
+        .trim();
       
       const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.lang = 'pt-BR';
