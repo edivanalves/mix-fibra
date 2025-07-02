@@ -141,7 +141,7 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
         </div>
         
         {/* CTA Section */}
-        <div className="mt-16 text-center">
+        <div className="mt-8 text-center">
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300 hover:scale-105">
             <Video className="w-5 h-5 text-blue-400" />
             <span className="font-semibold">Mais vídeos em nosso canal</span>

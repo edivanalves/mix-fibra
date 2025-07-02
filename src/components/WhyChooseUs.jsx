@@ -117,7 +117,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
     <section
       id="why-choose-us-section"
       ref={ref}
-      className={`relative w-full py-20 px-4 text-center mt-12 max-w-7xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      className={`relative w-full py-12 px-4 text-center mt-8 max-w-7xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
       onMouseMove={handleMouseMove}
     >
       <div ref={sectionRef} className="absolute inset-0" />
@@ -139,7 +139,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
             <Award className="w-4 h-4 text-orange-400" />
             Diferenciais Exclusivos

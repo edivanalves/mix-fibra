@@ -5,6 +5,7 @@ const NavLink = memo(({ href, text, refLink, activeSection, scrollToSection, isM
   const isActive = activeSection === href;
   const handleClick = useCallback((e) => {
     e.preventDefault();
+    window.dispatchEvent(new CustomEvent('closeContent'));
     scrollToSection(refLink);
   }, [refLink, scrollToSection]);
   
@@ -65,15 +66,26 @@ const Navbar = ({ refs, activeSection }) => {
 
   const scrollToSection = useCallback((ref) => {
     setMobileMenuOpen(false);
+    // Fechar overlay se estiver aberto
+    window.dispatchEvent(new CustomEvent('closeContent'));
     ref?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, []);
 
   const navLinks = [
     { href: 'home', text: 'Início', ref: refs.homeRef },
     { href: 'plans-section', text: 'Planos', ref: refs.plansRef },
-    { href: 'about', text: 'Sobre', ref: refs.aboutRef },
     { href: 'contact', text: 'Contato', ref: refs.contactRef },
     { href: 'solicitation-form', text: 'Solicite Agora', ref: refs.solicitationRef },
+  ];
+
+  const moreLinks = [
+    { href: 'speedtest-section', text: 'Teste Velocidade', ref: refs.speedTestRef },
+    { href: 'support-section', text: 'Suporte', ref: refs.supportRef },
+    { href: 'central-assinante', text: 'Central do Cliente', ref: refs.centralRef },
+    { href: 'about', text: 'Sobre Nós', ref: refs.aboutRef },
+    { href: 'why-choose-us-section', text: 'Diferenciais', ref: refs.whyChooseUsRef },
+    { href: 'testimonials-section', text: 'Depoimentos', ref: refs.testimonialsRef },
+    { href: 'image-section', text: 'Liderança', ref: refs.imageSectionRef },
   ];
 
   return (
@@ -92,7 +104,11 @@ const Navbar = ({ refs, activeSection }) => {
         <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
           <a
             href="#home"
-            onClick={(e) => { e.preventDefault(); scrollToSection(refs.homeRef); }}
+            onClick={(e) => { 
+              e.preventDefault(); 
+              window.dispatchEvent(new CustomEvent('closeContent'));
+              scrollToSection(refs.homeRef); 
+            }}
             className="flex items-center gap-3 group transition-all duration-300 hover:scale-105"
           >
             <div className="relative">
@@ -125,6 +141,34 @@ const Navbar = ({ refs, activeSection }) => {
                 scrollToSection={scrollToSection}
               />
             ))}
+            
+            {/* More Menu */}
+            <div className="relative group">
+              <button className="px-4 py-2 rounded-xl font-bold text-sm transition-all duration-300 backdrop-blur-sm border transform hover:scale-105 bg-gradient-to-r from-orange-500 to-orange-600 text-white border-orange-400 hover:from-orange-600 hover:to-orange-700 shadow-lg">
+                🚀 Mais
+              </button>
+              
+              <div className="absolute top-full right-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md border-2 border-orange-400/50 rounded-2xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 shadow-2xl">
+                <div className="text-orange-400 text-xs font-bold mb-3 text-center uppercase tracking-wide">
+                  ✨ Conteúdo Completo
+                </div>
+                <div className="space-y-2">
+                  {moreLinks.map(link => (
+                    <button
+                      key={link.href}
+                      onClick={(e) => { 
+                        e.preventDefault(); 
+                        window.showContent = link.href;
+                        window.dispatchEvent(new CustomEvent('showContent', { detail: link.href }));
+                      }}
+                      className="block w-full text-left px-4 py-3 text-white font-medium hover:text-orange-300 hover:bg-orange-500/20 rounded-xl transition-all duration-200 text-sm border border-transparent hover:border-orange-400/30"
+                    >
+                      {link.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           <a
@@ -137,19 +181,56 @@ const Navbar = ({ refs, activeSection }) => {
             Central do Assinante
           </a>
 
-          <button
-            className="md:hidden p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-white" />
-            ) : (
-              <Menu className="w-6 h-6 text-white" />
-            )}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            {/* Mobile More Button */}
+            <div className="relative">
+              <button 
+                onClick={() => {
+                  const dropdown = document.getElementById('mobile-more-dropdown');
+                  dropdown.classList.toggle('hidden');
+                }}
+                className="px-3 py-2 rounded-lg font-bold text-xs bg-gradient-to-r from-orange-500 to-orange-600 text-white border border-orange-400 shadow-lg"
+              >
+                🚀 Mais
+              </button>
+              
+              <div id="mobile-more-dropdown" className="hidden absolute top-full right-0 mt-2 w-56 bg-slate-800/95 backdrop-blur-md border-2 border-orange-400/50 rounded-2xl p-4 z-50 shadow-2xl">
+                <div className="text-orange-400 text-xs font-bold mb-3 text-center uppercase tracking-wide">
+                  ✨ Conteúdo Completo
+                </div>
+                <div className="space-y-2">
+                  {moreLinks.map(link => (
+                    <button
+                      key={link.href}
+                      onClick={(e) => { 
+                        e.preventDefault();
+                        document.getElementById('mobile-more-dropdown').classList.add('hidden');
+                        window.showContent = link.href;
+                        window.dispatchEvent(new CustomEvent('showContent', { detail: link.href }));
+                      }}
+                      className="block w-full text-left px-4 py-3 text-white font-medium hover:text-orange-300 hover:bg-orange-500/20 rounded-xl transition-all duration-200 text-sm border border-transparent hover:border-orange-400/30"
+                    >
+                      {link.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <button
+              className="p-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 hover:bg-white/20 hover:scale-105"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-white" />
+              ) : (
+                <Menu className="w-6 h-6 text-white" />
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 

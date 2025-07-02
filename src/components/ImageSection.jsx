@@ -25,7 +25,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
       id="image-section"
       ref={ref}
       aria-labelledby="leadership-team-heading"
-      className={`relative w-full py-20 px-4 text-center mt-12 max-w-7xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      className={`relative w-full py-12 px-4 text-center mt-8 max-w-7xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
       onMouseMove={handleMouseMove}
     >
       <div ref={sectionRef} className="absolute inset-0" />
@@ -47,7 +47,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
             <Award className="w-4 h-4 text-orange-400" />
             Liderança & Visão
@@ -58,7 +58,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Image Section */}
           <div className="relative group">
             {/* Glow Effect */}

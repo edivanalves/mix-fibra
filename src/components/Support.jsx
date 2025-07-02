@@ -118,7 +118,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
     <section
       id="support-section"
       ref={ref}
-      className={`relative w-full py-20 px-4 text-center mt-12 max-w-7xl mx-auto mb-12 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
+      className={`relative w-full py-12 px-4 text-center mt-8 max-w-7xl mx-auto mb-8 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
       onMouseMove={handleMouseMove}
     >
       <div ref={sectionRef} className="absolute inset-0" />
@@ -140,7 +140,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
       
       <div className="relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-medium mb-6">
             <Shield className="w-4 h-4 text-emerald-400" />
             Suporte Seg-Sáb: 8h-12h | 14h-18h
@@ -174,7 +174,7 @@ const Support = React.forwardRef(({ loading }, ref) => {
         </div>
 
         {/* Problems Grid */}
-        <div className="max-w-5xl mx-auto mb-16">
+        <div className="max-w-5xl mx-auto mb-10">
           {filteredProblems.length > 0 ? (
             <div className="grid gap-4">
               {filteredProblems.map((item, index) => (
