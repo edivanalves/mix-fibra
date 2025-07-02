@@ -25,6 +25,7 @@ import UrgencyTimer from './components/UrgencyTimer';
 
 import ScrollProgress from './components/ScrollProgress';
 import MobileMenu from './components/MobileMenu';
+import MobileBottomNav from './components/MobileBottomNav';
 import LocationMap from './components/LocationMap';
 import ParallaxHero from './components/ParallaxHero';
 import CompactHero from './components/CompactHero';
@@ -34,6 +35,7 @@ import { SkeletonSection } from './components/SkeletonLoader';
 import { initGA, measurePerformance, trackScroll, trackPageView } from './utils/analytics';
 import { conversionFunnel } from './utils/conversionFunnel';
 import { abTesting } from './utils/abTesting';
+import useSwipeNavigation from './hooks/useSwipeNavigation';
 
 const ContentViewer = ({ refs, loading }) => {
   const [currentContent, setCurrentContent] = useState(null);
@@ -233,6 +235,14 @@ function App() {
     }
   };
 
+  // Initialize swipe navigation for mobile
+  useSwipeNavigation({
+    homeRef,
+    plansRef,
+    solicitationRef,
+    contactRef
+  });
+
   return (
     <div className="w-full bg-slate-900">
       <LoadingScreen loading={loading} />
@@ -277,7 +287,21 @@ function App() {
 
       <Footer />
       <IngridAssistant />
-
+      <MobileBottomNav 
+        refs={{
+          homeRef,
+          plansRef,
+          supportRef,
+          aboutRef,
+          contactRef,
+          centralRef,
+          solicitationRef,
+          testimonialsRef,
+          whyChooseUsRef,
+          speedTestRef
+        }}
+        activeSection={activeSection}
+      />
 
       <UrgencyTimer />
       <ScrollProgress />
