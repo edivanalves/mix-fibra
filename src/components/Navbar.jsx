@@ -62,6 +62,18 @@ const Navbar = ({ refs, activeSection }) => {
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    
+    // Fechar dropdown mobile ao clicar fora
+    const handleClickOutside = (e) => {
+      const dropdown = document.getElementById('mobile-more-dropdown');
+      const button = e.target.closest('button');
+      if (dropdown && !dropdown.contains(e.target) && !button?.textContent?.includes('Mais')) {
+        dropdown.classList.add('hidden');
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, [mobileMenuOpen]);
 
   const scrollToSection = useCallback((ref) => {
@@ -148,7 +160,7 @@ const Navbar = ({ refs, activeSection }) => {
                 🚀 Mais
               </button>
               
-              <div className="absolute top-full right-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md border-2 border-orange-400/50 rounded-2xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 shadow-2xl">
+              <div className="absolute top-full right-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md border-2 border-orange-400/50 rounded-2xl p-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 shadow-2xl" onMouseLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { e.currentTarget.classList.add('invisible', 'opacity-0'); } }}>
                 <div className="text-orange-400 text-xs font-bold mb-3 text-center uppercase tracking-wide">
                   ✨ Conteúdo Completo
                 </div>
