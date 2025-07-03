@@ -132,8 +132,8 @@ const Contact = React.forwardRef(({ loading }, ref) => {
                   {method.icon}
                 </div>
                 
-                <h3 className="text-2xl font-bold text-white mb-2">{method.title}</h3>
-                <p className="text-white/70 mb-6">{method.description}</p>
+                <h3 className="text-xl font-bold text-white mb-2">{method.title}</h3>
+                <p className="text-white/90 font-semibold mb-6 text-lg">{method.description}</p>
                 
                 <a
                   href={method.href}

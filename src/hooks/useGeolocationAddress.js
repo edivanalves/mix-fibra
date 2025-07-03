@@ -7,28 +7,37 @@ export const useGeolocationAddress = () => {
 
     const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1';
 
-    const fetchAddressByCoords = async (latitude, longitude) => {
+    const fetchAddressByCoords = async (latitude, longitude, accuracy) => {
         setIsLoading(true);
-        toast.loading('Buscando endereço...');
+        toast.loading(`🛰️ Localizando... (precisão: ${Math.round(accuracy)}m)`);
 
         try {
             const response = await fetch(`${NOMINATIM_URL}&lat=${latitude}&lon=${longitude}`, {
-                headers: { 'User-Agent': 'MixFibra/1.0 (seuemail@provedor.com)' }
+                headers: { 'User-Agent': 'MixFibra/1.0 (contato@mixfibra.com.br)' }
             });
             const data = await response.json();
 
             if (data && data.address) {
-                setAddress(data.address);
+                const addressData = {
+                    ...data.address,
+                    postcode: data.address.postcode?.replace('-', ''),
+                    road: data.address.road || data.address.pedestrian,
+                    suburb: data.address.suburb || data.address.neighbourhood,
+                    city: data.address.city || data.address.town || data.address.village,
+                    state_code: data.address.state?.substring(0, 2).toUpperCase() || 'PB'
+                };
+                
+                setAddress(addressData);
                 toast.dismiss();
-                toast.success('Endereço preenchido!');
+                toast.success(`📍 Endereço encontrado! (${Math.round(accuracy)}m de precisão)`);
             } else {
                 toast.dismiss();
-                toast.error('Não foi possível encontrar um endereço detalhado.');
+                toast.error('❌ Não foi possível encontrar um endereço detalhado.');
             }
         } catch (apiError) {
             console.error("Erro na API Nominatim: ", apiError);
             toast.dismiss();
-            toast.error('Erro ao buscar endereço. Tente preencher manualmente.');
+            toast.error('❌ Erro ao buscar endereço. Tente preencher manualmente.');
         } finally {
             setIsLoading(false);
         }
@@ -41,30 +50,37 @@ export const useGeolocationAddress = () => {
         }
 
         setIsLoading(true);
-        toast.loading('Obtendo sua localização...');
+        toast.loading('🔍 Obtendo sua localização...', { duration: 15000 });
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                fetchAddressByCoords(position.coords.latitude, position.coords.longitude);
+                const { latitude, longitude, accuracy } = position.coords;
+                fetchAddressByCoords(latitude, longitude, accuracy);
             },
             (error) => {
                 setIsLoading(false);
                 toast.dismiss();
-                let errorMessage = 'Ocorreu um erro desconhecido.';
+                let errorMessage = '❌ Erro desconhecido ao obter localização.';
+                let suggestion = '';
+                
                 switch (error.code) {
                     case error.PERMISSION_DENIED:
-                        errorMessage = 'Permissão de localização negada.';
+                        errorMessage = '🚫 Permissão de localização negada.';
+                        suggestion = 'Permita o acesso à localização nas configurações do navegador.';
                         break;
                     case error.POSITION_UNAVAILABLE:
-                        errorMessage = 'Informação de localização indisponível.';
+                        errorMessage = '📡 Localização indisponível.';
+                        suggestion = 'Verifique se o GPS está ativado e tente novamente.';
                         break;
                     case error.TIMEOUT:
-                        errorMessage = 'Tempo esgotado para obter a localização.';
+                        errorMessage = '⏱️ Tempo esgotado para obter localização.';
+                        suggestion = 'Tente novamente em um local com melhor sinal.';
                         break;
                 }
-                toast.error(errorMessage);
+                
+                toast.error(`${errorMessage} ${suggestion}`, { duration: 6000 });
             },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 300000 }
         );
     };
 

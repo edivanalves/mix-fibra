@@ -83,7 +83,7 @@ const WhyChooseUs = React.forwardRef(({ loading }, ref) => {
     },
     {
       title: 'Suporte Especializado',
-      description: 'Equipe técnica qualificada disponível 24/7 para resolver qualquer problema rapidamente.',
+      description: 'Equipe técnica qualificada disponível Seg-Sáb (8h-18h) para resolver qualquer problema rapidamente.',
       icon: <Shield className="w-10 h-10 text-white" strokeWidth={2.5} />,
       gradient: 'from-emerald-500 to-emerald-600',
       stats: [

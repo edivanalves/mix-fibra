@@ -80,7 +80,7 @@ const plansData = [
   },
 ];
 
-const PlanCard = memo(({ plan, index, isInView }) => {
+const PlanCard = memo(({ plan, index, isInView, onOpenModal }) => {
   const cardRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -100,10 +100,11 @@ const PlanCard = memo(({ plan, index, isInView }) => {
   }, []);
 
   const handlePlanClick = useCallback(() => {
+    console.log('Card clicado:', plan.megas + 'MB'); // DEBUG
     trackPlanInterest(`${plan.megas}MB`);
     trackButtonClick('assinar_plano', 'plans_section');
-    window.open(`https://wa.me/5583996411187?text=Olá!%20Quero%20assinar%20o%20plano%20de%20${plan.megas}MB`, '_blank');
-  }, [plan.megas]);
+    onOpenModal(plan);
+  }, [plan, onOpenModal]);
 
   const transform3D = isHovered 
     ? `perspective(1000px) rotateX(${(mousePosition.y - 50) * 0.1}deg) rotateY(${(mousePosition.x - 50) * 0.1}deg) translateZ(20px)`
@@ -112,13 +113,9 @@ const PlanCard = memo(({ plan, index, isInView }) => {
   return (
     <div
       ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       style={{ 
-        transform: transform3D,
         transitionDelay: `${index * 150}ms`,
-        transformStyle: 'preserve-3d'
+        pointerEvents: 'auto'
       }}
       className={`
         relative group cursor-pointer transition-all duration-700 ease-out
@@ -128,7 +125,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
     >
       {/* 3D Card Container */}
       <div 
-        className="relative w-full h-[500px] rounded-3xl overflow-hidden"
+        className="relative w-full min-h-[600px] flex flex-col rounded-3xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${plan.color})`,
           boxShadow: isHovered 
@@ -150,7 +147,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
 
         {/* Popular Badge */}
         {plan.highlight && (
-          <div className="absolute -top-2 -right-2 z-20">
+          <div className="absolute -top-2 -right-2 z-20 pointer-events-none">
             <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-4 py-2 rounded-full shadow-lg transform rotate-12 animate-pulse">
               ⭐ POPULAR
             </div>
@@ -158,7 +155,7 @@ const PlanCard = memo(({ plan, index, isInView }) => {
         )}
 
         {/* Card Content */}
-        <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
+        <div className="relative z-10 flex-1 flex flex-col p-8 text-white">
           {/* Speed Display */}
           <div className="text-center mb-6">
             <div className="relative inline-block">
@@ -201,15 +198,28 @@ const PlanCard = memo(({ plan, index, isInView }) => {
           </div>
 
           {/* CTA Button */}
-          <button
-            onClick={handlePlanClick}
-            className="w-full py-4 px-6 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg relative z-20"
-          >
-            <span className="flex items-center justify-center gap-2">
-              <Zap className="w-5 h-5" />
-              Assinar Agora
-            </span>
-          </button>
+          <div className="mt-auto pt-6 relative z-[1000]" style={{ pointerEvents: 'auto' }}>
+            <button
+              type="button"
+              onClick={() => {
+                console.log('CLIQUE FUNCIONANDO - Plano:', plan.megas + 'MB');
+                onOpenModal(plan);
+              }}
+              className="w-full py-4 px-6 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
+              style={{ 
+                pointerEvents: 'auto',
+                position: 'relative',
+                zIndex: 9999
+              }}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <Zap className="w-5 h-5" />
+                Assinar Agora
+              </div>
+            </button>
+          </div>
+
+
         </div>
 
         {/* 3D Depth Effect */}
@@ -238,7 +248,39 @@ const PlanCard = memo(({ plan, index, isInView }) => {
 
 const Plans = React.forwardRef(({ loading }, ref) => {
   const [isInView, setIsInView] = useState(false);
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const memoizedPlans = useMemo(() => plansData, []);
+
+  const cities = [
+    { name: 'Sumé', phone: '5583996411187' },
+    { name: 'Congo', phone: '5583999298366' },
+    { name: 'Caraúbas', phone: '5583988539424' },
+    { name: 'Camalaú', phone: '5583996784194' }
+  ];
+
+  const handleOpenModal = useCallback((plan) => {
+    console.log('Modal aberto para plano:', plan.megas + 'MB'); // DEBUG
+    setSelectedPlan(plan);
+    setShowCityModal(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    console.log('Modal fechado'); // DEBUG
+    setShowCityModal(false);
+    setSelectedPlan(null);
+  }, []);
+
+  const handleCitySelect = useCallback((whatsappNumber) => {
+    if (!selectedPlan) {
+      console.log('Erro: Nenhum plano selecionado'); // DEBUG
+      return;
+    }
+    console.log('Cidade selecionada para plano:', selectedPlan.megas + 'MB', 'WhatsApp:', whatsappNumber); // DEBUG
+    const message = `Olá! Quero assinar o plano de ${selectedPlan.megas}MB por R$ ${selectedPlan.price}/mês`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    handleCloseModal();
+  }, [selectedPlan, handleCloseModal]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -281,13 +323,15 @@ const Plans = React.forwardRef(({ loading }, ref) => {
         </div>
       </div>
 
+
+
       {/* 3D Cards Grid */}
       <div 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 lg:gap-12 justify-center items-center"
         style={{ perspective: '1000px' }}
       >
         {memoizedPlans.map((plan, index) => (
-          <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} />
+          <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} onOpenModal={handleOpenModal} />
         ))}
       </div>
 
@@ -300,6 +344,63 @@ const Plans = React.forwardRef(({ loading }, ref) => {
 
       {/* Componente recomendador */}
       <PlanRecommender />
+
+      {/* City Selection Modal */}
+      {showCityModal && selectedPlan && (
+        <div 
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm" 
+          onClick={(e) => {
+            console.log('Clique no backdrop'); // DEBUG
+            handleCloseModal();
+          }}
+        >
+          <div 
+            className="bg-slate-800/90 backdrop-blur-md rounded-3xl border border-white/20 p-8 max-w-md w-full mx-4 shadow-2xl" 
+            onClick={(e) => {
+              console.log('Clique no modal (não deve fechar)'); // DEBUG
+              e.stopPropagation();
+            }}
+          >
+            <h3 className="text-2xl font-bold text-white mb-2 text-center">Escolha sua cidade</h3>
+            <p className="text-white/70 text-center mb-6">Plano {selectedPlan.megas}MB - R$ {selectedPlan.price}/mês</p>
+            <div className="space-y-3">
+              {cities.map((city) => (
+                <button
+                  key={city.name}
+                  onClick={(e) => {
+                    console.log('Clique na cidade:', city.name); // DEBUG
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleCitySelect(city.phone);
+                  }}
+                  className="w-full p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 backdrop-blur-sm border border-green-500/30 rounded-2xl text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                >
+                  📱 {city.name}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={(e) => {
+                console.log('Clique no cancelar'); // DEBUG
+                e.preventDefault();
+                e.stopPropagation();
+                handleCloseModal();
+              }}
+              className="w-full mt-4 p-3 bg-red-500/20 hover:bg-red-500/30 backdrop-blur-sm border border-red-500/30 rounded-2xl text-red-300 font-semibold transition-all duration-300 hover:scale-105"
+            >
+              ❌ Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Debug Info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 right-4 bg-black/80 text-white p-4 rounded-lg text-xs z-[10000]">
+          <div>Modal: {showCityModal ? 'ABERTO' : 'FECHADO'}</div>
+          <div>Plano: {selectedPlan ? selectedPlan.megas + 'MB' : 'NENHUM'}</div>
+        </div>
+      )}
     </section>
   );
 });

@@ -15,7 +15,7 @@ const whatsappNumbers = {
   'Caraúbas': '5583988539424',
   'Sumé': '5583996411187',
   'Camalaú': '5583996784194',
-  'Congo': '5583996703520',
+  'Congo': '5583999298366',
   'Outra Cidade': '5583996411187'
 };
 
@@ -190,10 +190,10 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
           </div>
           
           <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-emerald-200 to-cyan-200 bg-clip-text text-transparent mb-6">
-            Solicite Sua Internet
+            Solicite Sua Internet Mix Fibra
           </h2>
           <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-            Preencha os dados e envie a solicitação direto para nossa equipe no WhatsApp. É rápido, fácil e seguro!
+            Preencha seus dados e receba atendimento personalizado via WhatsApp. Instalação gratuita em 24-48h!
           </p>
         </div>
 
@@ -238,11 +238,11 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <SelectField label="Plano Desejado" name="desiredPlan" value={formData.desiredPlan} onChange={handleChange}>
             <option value="">Selecione um plano</option>
-            <option value="50MB">50MB</option>
-            <option value="100MB">100MB (Popular)</option>
-            <option value="200MB">200MB</option>
-            <option value="300MB">300MB (Recomendado)</option>
-            <option value="500MB">500MB</option>
+            <option value="50MB - R$ 39,99">50MB - R$ 39,99</option>
+            <option value="100MB - R$ 49,99 (Popular)">100MB - R$ 49,99 (Popular)</option>
+            <option value="200MB - R$ 59,99">200MB - R$ 59,99</option>
+            <option value="300MB - R$ 69,99 (Recomendado)">300MB - R$ 69,99 (Recomendado)</option>
+            <option value="500MB - R$ 89,99">500MB - R$ 89,99</option>
           </SelectField>
           <SelectField label="Melhor Dia de Pagamento" name="bestPaymentDay" value={formData.bestPaymentDay} onChange={handleChange}>
             <option value="">Selecione o dia</option>
@@ -255,9 +255,17 @@ ${formData.message ? `\n*Mensagem Adicional:*\n${formData.message}` : ''}
           </SelectField>
         </div>
 
-        <div className="mb-6">
-          <label htmlFor="message" className="block text-sm font-bold mb-2">Mensagem Adicional (opcional)</label>
-          <textarea id="message" name="message" rows="4" className="w-full p-3 rounded-lg bg-blue-900 text-white focus:ring-2 focus:ring-orange-500" value={formData.message} onChange={handleChange} placeholder="Ex: 'Entrar em contato após as 14h'..."></textarea>
+        <div className="mb-8">
+          <label htmlFor="message" className="block text-sm font-bold mb-2 text-white">Observações Adicionais (opcional)</label>
+          <textarea 
+            id="message" 
+            name="message" 
+            rows="4" 
+            className="w-full p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all duration-200" 
+            value={formData.message} 
+            onChange={handleChange} 
+            placeholder="Ex: Melhor horário para contato, referências do endereço, etc..."
+          />
         </div>
 
         <div className="relative">

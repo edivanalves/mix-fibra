@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Zap, Shield, Award } from 'lucide-react';
 
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
 import Plans from './components/Plans';
 import WhyChooseUs from './components/WhyChooseUs';
 import ImageSection from './components/ImageSection';
@@ -17,21 +16,13 @@ import SpeedTest from './components/SpeedTest';
 import Footer from './components/Footer';
 import SolicitationForm from './components/SolicitationForm';
 import ParticleBackground from './components/ParticleBackground';
-import PlanRecommender from './components/PlanRecommender';
 import IngridAssistant from './components/IngridAssistant';
 import LGPDBanner from './components/LGPDBanner';
-
 import UrgencyTimer from './components/UrgencyTimer';
-
 import ScrollProgress from './components/ScrollProgress';
-import MobileMenu from './components/MobileMenu';
 import MobileBottomNav from './components/MobileBottomNav';
-import LocationMap from './components/LocationMap';
 import ParallaxHero from './components/ParallaxHero';
-import CompactHero from './components/CompactHero';
-import CompactPlans from './components/CompactPlans';
 import LoadingScreen from './components/LoadingScreen';
-import { SkeletonSection } from './components/SkeletonLoader';
 import { initGA, measurePerformance, trackScroll, trackPageView } from './utils/analytics';
 import { conversionFunnel } from './utils/conversionFunnel';
 import { abTesting } from './utils/abTesting';

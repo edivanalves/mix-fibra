@@ -15,25 +15,25 @@ const VideoSection = React.forwardRef(({ loading }, ref) => {
 
   const videos = [
     {
-      src: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      src: "https://www.youtube.com/embed/placeholder1",
       title: "Promoção Ultra Velocidade",
-      description: "Conheça nossas ofertas especiais",
+      description: "Conheça nossas ofertas especiais de fibra óptica",
       icon: <Video className="w-6 h-6" />,
       gradient: "from-orange-500 to-orange-600",
       category: "Promoções"
     },
     {
-      src: "https://www.youtube.com/embed/videoseries?list=PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG",
+      src: "https://www.youtube.com/embed/placeholder2",
       title: "Atendimento Técnico",
-      description: "Suporte especializado 24/7",
+      description: "Suporte especializado Seg-Sáb (8h-18h)",
       icon: <Headphones className="w-6 h-6" />,
       gradient: "from-blue-500 to-blue-600",
       category: "Suporte"
     },
     {
-      src: "https://www.youtube.com/embed/5qap5aO4i9A",
+      src: "https://www.youtube.com/embed/placeholder3",
       title: "Depoimentos de Clientes",
-      description: "Experiências reais dos nossos clientes",
+      description: "Experiências reais dos nossos clientes satisfeitos",
       icon: <Users className="w-6 h-6" />,
       gradient: "from-emerald-500 to-emerald-600",
       category: "Testemunhos"

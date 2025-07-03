@@ -24,7 +24,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
     <section
       id="image-section"
       ref={ref}
-      aria-labelledby="leadership-team-heading"
+
       className={`relative w-full py-12 px-4 text-center mt-8 max-w-7xl mx-auto transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}
       onMouseMove={handleMouseMove}
     >
@@ -53,7 +53,7 @@ const ImageSection = React.forwardRef(({ loading }, ref) => {
             Liderança & Visão
           </div>
           
-          <h2 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-orange-200 to-pink-200 bg-clip-text text-transparent mb-6">
+          <h2 id="leadership-team-heading" className="text-5xl md:text-6xl font-black bg-gradient-to-r from-white via-orange-200 to-pink-200 bg-clip-text text-transparent mb-6">
             Nossa Liderança
           </h2>
         </div>
