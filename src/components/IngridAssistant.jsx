@@ -27,6 +27,33 @@ const IngridAssistant = () => {
   const conversationContext = useRef([]);
   const userProfile = useRef({ name: '', city: '', preferences: [] });
 
+  // Carregar dados salvos
+  useEffect(() => {
+    const savedData = localStorage.getItem('mixfibra-chat-data');
+    if (savedData) {
+      const data = JSON.parse(savedData);
+      setUserName(data.userName || '');
+      setUserCity(data.userCity || '');
+      setConversationStage(data.conversationStage || 'greeting');
+      userProfile.current = data.userProfile || { name: '', city: '', preferences: [] };
+      if (data.messages && data.messages.length > 1) {
+        setMessages(data.messages);
+      }
+    }
+  }, []);
+
+  // Salvar dados
+  useEffect(() => {
+    const dataToSave = {
+      userName,
+      userCity,
+      conversationStage,
+      userProfile: userProfile.current,
+      messages: messages.slice(-10) // Manter apenas últimas 10 mensagens
+    };
+    localStorage.setItem('mixfibra-chat-data', JSON.stringify(dataToSave));
+  }, [userName, userCity, conversationStage, messages]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };

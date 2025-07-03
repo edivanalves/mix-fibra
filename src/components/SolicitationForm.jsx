@@ -53,7 +53,7 @@ const SolicitationForm = React.forwardRef(({ initialDesiredPlan = '' }, ref) => 
         neighborhood: address.suburb || prev.neighborhood,
         city: workingCities.includes(address.city) ? address.city : 'Outra Cidade',
         otherCity: workingCities.includes(address.city) ? '' : address.city,
-        state: (address.state_code || prev.state).toUpperCase(),
+        state: 'PB', // Força sempre PB já que estamos na Paraíba
       }));
       setErrors(prev => ({ ...prev, zipCode: null, street: null, neighborhood: null, city: null, state: null }));
     }

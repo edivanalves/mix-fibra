@@ -1,65 +1,42 @@
 {
-  "name": "Mix Fibra - Internet de Ultra Velocidade",
+  "name": "Mix Fibra - Internet de Alta Velocidade",
   "short_name": "Mix Fibra",
-  "description": "Internet de alta velocidade com fibra óptica. Planos a partir de R$39,99. Instalação gratuita, sem fidelidade.",
-  "start_url": "/mix-fibra/",
-  "scope": "/mix-fibra/",
+  "description": "Internet fibra óptica de alta velocidade em Sumé, Congo, Caraúbas e Camalaú - PB",
+  "start_url": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#0f172a",
-  "theme_color": "#1e40af",
-  "orientation": "any",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/mix-fibra/imagens/logo-mix-fibra.png",
-      "sizes": "192x192 512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/mix-fibra/imagens/logo-mix-fibra.png",
+      "src": "/mix-fibra/logo192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/mix-fibra/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
     }
   ],
-  "categories": ["business", "utilities", "productivity"],
+  "categories": ["business", "utilities"],
   "lang": "pt-BR",
   "dir": "ltr",
-  "prefer_related_applications": false,
-  "edge_side_panel": {
-    "preferred_width": 400
-  },
-  "shortcuts": [
+  "scope": "/",
+  "screenshots": [
     {
-      "name": "Ver Planos",
-      "short_name": "Planos",
-      "description": "Veja nossos planos de internet",
-      "url": "/mix-fibra/#plans-section",
-      "icons": [{
-        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
-        "sizes": "96x96"
-      }]
+      "src": "/mix-fibra/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
     },
     {
-      "name": "WhatsApp",
-      "short_name": "Contato",
-      "description": "Fale conosco no WhatsApp",
-      "url": "/mix-fibra/",
-      "icons": [{
-        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
-        "sizes": "96x96"
-      }]
-    },
-    {
-      "name": "Central do Assinante",
-      "short_name": "Área Cliente",
-      "description": "Acesse sua área do cliente",
-      "url": "/mix-fibra/",
-      "icons": [{
-        "src": "/mix-fibra/imagens/logo-mix-fibra.png",
-        "sizes": "96x96"
-      }]
+      "src": "/mix-fibra/screenshot-narrow.png",
+      "sizes": "640x1136",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ]
 }

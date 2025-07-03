@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Zap, Shield, Award } from 'lucide-react';
-
 import Navbar from './components/Navbar';
 import Plans from './components/Plans';
 import WhyChooseUs from './components/WhyChooseUs';
@@ -188,6 +187,13 @@ function App() {
     
     // Initialize A/B testing
     console.log('A/B Tests initialized');
+    
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('SW registered'))
+        .catch(() => console.log('SW registration failed'));
+    }
     
     const timer = setTimeout(() => setLoading(false), 2000);
 
