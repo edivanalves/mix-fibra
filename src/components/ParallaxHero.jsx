@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, ArrowDown, Zap, Shield, Award } from 'lucide-react';
 import { AnimatedButton } from './AnimatedButton';
 
-const ParallaxHero = React.forwardRef(({ scrollToPlans }, ref) => {
+const ParallaxHero = React.forwardRef(({ scrollToSolicitation }, ref) => {
   const [scrollY, setScrollY] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef(null);
@@ -155,13 +155,13 @@ const ParallaxHero = React.forwardRef(({ scrollToPlans }, ref) => {
           style={{ animationDelay: '1s' }}
         >
           <AnimatedButton
-            onClick={scrollToPlans}
+            onClick={scrollToSolicitation}
             variant="primary"
             size="lg"
             icon={Play}
             className="text-xl px-8 py-4"
           >
-            Ver Planos
+            Solicitação Rápida
           </AnimatedButton>
           
           <div className="relative group">
@@ -194,7 +194,7 @@ const ParallaxHero = React.forwardRef(({ scrollToPlans }, ref) => {
         <div 
           className="animate-bounce cursor-pointer animate-slide-up"
           style={{ animationDelay: '1.2s' }}
-          onClick={scrollToPlans}
+          onClick={scrollToSolicitation}
         >
           <div className="flex flex-col items-center gap-2 text-white/60 hover:text-white/80 transition-colors">
             <span className="text-sm font-medium">Descubra mais</span>

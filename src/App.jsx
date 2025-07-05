@@ -262,7 +262,7 @@ function App() {
       />
 
       <div className="relative z-10">
-        <ParallaxHero ref={homeRef} scrollToPlans={() => scrollToSection(plansRef)} />
+        <ParallaxHero ref={homeRef} scrollToSolicitation={() => scrollToSection(solicitationRef)} />
         <Plans ref={plansRef} loading={loading} />
         <SolicitationForm ref={solicitationRef} />
         <Contact ref={contactRef} loading={loading} />
