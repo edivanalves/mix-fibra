@@ -161,7 +161,7 @@ const ParallaxHero = React.forwardRef(({ scrollToSolicitation }, ref) => {
             icon={Play}
             className="text-xl px-8 py-4"
           >
-            Solicitação Rápida
+            Assine Agora
           </AnimatedButton>
           
           <div className="relative group">
