@@ -15,26 +15,25 @@ const CentralAssinante = React.forwardRef(({ loading }, ref) => {
 
   const features = [
     {
-      icon: <FileText className="w-6 h-6" />,
-      title: "2ª Via de Boleto",
-      description: "Acesse e baixe suas faturas"
-    },
-    {
       icon: <CreditCard className="w-6 h-6" />,
-      title: "Formas de Pagamento",
-      description: "Gerencie seus métodos de pagamento"
-    },
-    {
-      icon: <History className="w-6 h-6" />,
-      title: "Histórico",
-      description: "Consulte seu histórico completo"
-    },
-    {
-      icon: <Settings className="w-6 h-6" />,
-      title: "Configurações",
-      description: "Altere dados e preferências"
+      title: "Pagamento PIX",
+      description: "Chave PIX: 83996095270",
+      subtitle: "Romildo de Oliveira Feitosa"
     }
   ];
+
+  const cities = [
+    { name: "Sumé", whatsapp: "5583996411187" },
+    { name: "Congo", whatsapp: "5583999298366" },
+    { name: "Caraúbas", whatsapp: "5583988539424" },
+    { name: "Camalaú", whatsapp: "5583996784194" }
+  ];
+
+  const sendReceipt = (city) => {
+    const message = `Olá! Segue comprovante de pagamento PIX da minha fatura Mix Fibra.`;
+    const url = `https://wa.me/${city.whatsapp}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+  };
 
   return (
     <section
@@ -76,21 +75,40 @@ const CentralAssinante = React.forwardRef(({ loading }, ref) => {
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 hover:-translate-y-1"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                {feature.icon}
+        {/* PIX Payment Section */}
+        <div className="mb-12">
+          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 max-w-2xl mx-auto">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <CreditCard className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-white font-bold text-lg mb-2">{feature.title}</h3>
-              <p className="text-white/70 text-sm">{feature.description}</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Pagamento via PIX</h3>
+              <div className="bg-green-500/20 rounded-2xl p-4 border border-green-500/30">
+                <div className="text-green-300 font-bold text-lg mb-1">Chave PIX</div>
+                <div className="text-white font-mono text-xl mb-2">83996095270</div>
+                <div className="text-green-200 text-sm">Romildo de Oliveira Feitosa</div>
+              </div>
             </div>
-          ))}
+            
+            <div className="bg-orange-500/20 rounded-2xl p-4 border border-orange-500/30 mb-6">
+              <div className="text-orange-300 font-bold mb-2">⚠️ Importante:</div>
+              <div className="text-white/90 text-sm">
+                Após realizar o pagamento, envie o comprovante para o WhatsApp da sua cidade.
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              {cities.map((city, index) => (
+                <button
+                  key={index}
+                  onClick={() => sendReceipt(city)}
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 hover:scale-105 text-sm"
+                >
+                  Enviar para {city.name}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Main CTA */}

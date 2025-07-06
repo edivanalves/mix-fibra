@@ -1,16 +1,19 @@
-const CACHE_NAME = 'mixfibra-v1';
+const CACHE_NAME = 'mix-fibra-v1';
 const urlsToCache = [
-  '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/mix-fibra/logo192.png',
-  '/mix-fibra/logo512.png'
+  '/mix-fibra/',
+  '/mix-fibra/imagens/logo-mix-fibra.png',
+  '/mix-fibra/imagens/mix.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
+      .then((cache) => {
+        return cache.addAll(urlsToCache.map(url => new Request(url, {cache: 'reload'})));
+      })
+      .catch(() => {
+        // Ignore cache errors
+      })
   );
 });
 
@@ -21,8 +24,10 @@ self.addEventListener('fetch', (event) => {
         if (response) {
           return response;
         }
-        return fetch(event.request);
-      }
-    )
+        return fetch(event.request).catch(() => {
+          // Return offline page or default response
+          return new Response('Offline');
+        });
+      })
   );
 });
