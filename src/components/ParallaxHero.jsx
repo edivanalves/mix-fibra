@@ -90,7 +90,7 @@ const ParallaxHero = React.forwardRef(({ scrollToSolicitation }, ref) => {
           className="w-full h-full object-cover"
           style={{ transform: `translateY(${parallaxOffset}px) scale(1.1)` }}
         >
-          <source src="/videos/hero-video.mp4" type="video/mp4" />
+          <source src="/mix-fibra/videos/hero-video.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-slate-900/40" />
       </div>

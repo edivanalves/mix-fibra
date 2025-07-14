@@ -1,4 +1,5 @@
 // A/B Testing System for Mix Fibra
+import { useState, useEffect } from 'react';
 
 class ABTesting {
   constructor() {
@@ -155,5 +156,3 @@ export const useABTest = (testName) => {
   return { variant, trackConversion };
 };
 
-// Import React hooks
-import { useState, useEffect } from 'react';

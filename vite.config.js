@@ -43,11 +43,14 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: true
+    host: true,
+    open: true,
+    cors: true
   },
   preview: {
     port: 4173,
-    host: true
+    host: true,
+    open: true
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'lucide-react']
