@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback, memo } from 'react';
 import { Menu, X, Zap, Sparkles } from 'lucide-react';
 
 const NavLink = memo(({ href, text, refLink, activeSection, scrollToSection, isMobile }) => {

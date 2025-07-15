@@ -89,6 +89,9 @@ const ParallaxHero = React.forwardRef(({ scrollToSolicitation }, ref) => {
           playsInline
           className="w-full h-full object-cover"
           style={{ transform: `translateY(${parallaxOffset}px) scale(1.1)` }}
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
         >
           <source src="/mix-fibra/videos/hero-video.mp4" type="video/mp4" />
         </video>
