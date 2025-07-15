@@ -23,15 +23,14 @@ export const lazyLoadImages = () => {
 // Preload critical resources
 export const preloadCriticalResources = () => {
   const criticalResources = [
-    '/mix-fibra/imagens/logo-mix-fibra.png',
-    '/mix-fibra/videos/hero-video.mp4'
+    '/mix-fibra/imagens/logo-mix-fibra.png'
   ];
 
   criticalResources.forEach(resource => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.href = resource;
-    link.as = resource.includes('.mp4') ? 'video' : 'image';
+    link.as = 'image';
     document.head.appendChild(link);
   });
 };

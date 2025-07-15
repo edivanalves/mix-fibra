@@ -190,7 +190,7 @@ function App() {
     
     // Register service worker for PWA
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
+      navigator.serviceWorker.register('/mix-fibra/sw.js')
         .then(() => console.log('SW registered'))
         .catch(() => console.log('SW registration failed'));
     }
