@@ -42,9 +42,9 @@
   
   <!-- Favicons -->
   <link rel="icon" href="/mix-fibra/imagens/logo-mix-fibra.png" sizes="any">
-  <link rel="icon" href="/imagens/logo-mix-fibra.svg" type="image/svg+xml">
+  <link rel="icon" href="/mix-fibra/imagens/logo-mix-fibra.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/mix-fibra/imagens/logo-mix-fibra.png">
-  <link rel="manifest" href="/mix-fibra/assets/manifest-BEZ2_Hl-.json">
+  <link rel="manifest" href="/mix-fibra/manifest.json">
   
   <!-- PWA Meta Tags -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -73,11 +73,11 @@
   <meta name="twitter:image" content="https://edivanalves.github.io/mix-fibra/imagens/logo-mix-fibra.png">
   
   <!-- Performance -->
-  <link rel="preload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsNCmltcG9ydCBSZWFjdERPTSBmcm9tICdyZWFjdC1kb20vY2xpZW50JzsNCmltcG9ydCBBcHAgZnJvbSAnLi9BcHAuanN4JzsNCmltcG9ydCAnLi9pbmRleC5jc3MnOw0KaW1wb3J0ICcuL3N0eWxlcy9hbmltYXRpb25zLmNzcyc7DQppbXBvcnQgeyBpbml0UGVyZm9ybWFuY2VPcHRpbWl6YXRpb25zIH0gZnJvbSAnLi91dGlscy9wZXJmb3JtYW5jZSc7DQoNCi8vIEluaXRpYWxpemUgcGVyZm9ybWFuY2Ugb3B0aW1pemF0aW9ucw0KaW5pdFBlcmZvcm1hbmNlT3B0aW1pemF0aW9ucygpOw0KDQovLyBQZXJmb3JtYW5jZSBtb25pdG9yaW5nDQppZiAoJ3BlcmZvcm1hbmNlJyBpbiB3aW5kb3cpIHsNCiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ2xvYWQnLCAoKSA9PiB7DQogICAgY29uc3QgcGVyZkRhdGEgPSBwZXJmb3JtYW5jZS5nZXRFbnRyaWVzQnlUeXBlKCduYXZpZ2F0aW9uJylbMF07DQogICAgY29uc29sZS5sb2coJ/CfmoAgTWl4IEZpYnJhIGxvYWRlZCBpbjonLCBwZXJmRGF0YS5sb2FkRXZlbnRFbmQgLSBwZXJmRGF0YS5uYXZpZ2F0aW9uU3RhcnQsICdtcycpOw0KICAgIA0KICAgIC8vIExvZyBwZXJmb3JtYW5jZSBtZXRyaWNzDQogICAgY29uc29sZS5sb2coJ/Cfk4ogUGVyZm9ybWFuY2UgTWV0cmljczonLCB7DQogICAgICAnRE5TIExvb2t1cCc6IHBlcmZEYXRhLmRvbWFpbkxvb2t1cEVuZCAtIHBlcmZEYXRhLmRvbWFpbkxvb2t1cFN0YXJ0LA0KICAgICAgJ1RDUCBDb25uZWN0aW9uJzogcGVyZkRhdGEuY29ubmVjdEVuZCAtIHBlcmZEYXRhLmNvbm5lY3RTdGFydCwNCiAgICAgICdSZXF1ZXN0IFRpbWUnOiBwZXJmRGF0YS5yZXNwb25zZVN0YXJ0IC0gcGVyZkRhdGEucmVxdWVzdFN0YXJ0LA0KICAgICAgJ1Jlc3BvbnNlIFRpbWUnOiBwZXJmRGF0YS5yZXNwb25zZUVuZCAtIHBlcmZEYXRhLnJlc3BvbnNlU3RhcnQsDQogICAgICAnRE9NIFByb2Nlc3NpbmcnOiBwZXJmRGF0YS5kb21Db250ZW50TG9hZGVkRXZlbnRFbmQgLSBwZXJmRGF0YS5kb21Db250ZW50TG9hZGVkRXZlbnRTdGFydCwNCiAgICAgICdUb3RhbCBMb2FkIFRpbWUnOiBwZXJmRGF0YS5sb2FkRXZlbnRFbmQgLSBwZXJmRGF0YS5uYXZpZ2F0aW9uU3RhcnQNCiAgICB9KTsNCiAgfSk7DQp9DQoNCi8vIENyZWF0ZSByb290IGFuZCByZW5kZXIgYXBwDQpjb25zdCByb290ID0gUmVhY3RET00uY3JlYXRlUm9vdChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncm9vdCcpKTsNCg0Kcm9vdC5yZW5kZXIoDQogIDxSZWFjdC5TdHJpY3RNb2RlPg0KICAgIDxBcHAgLz4NCiAgPC9SZWFjdC5TdHJpY3RNb2RlPg0KKTsNCg0KLy8gTG9nIHN1Y2Nlc3NmdWwgaW5pdGlhbGl6YXRpb24NCmNvbnNvbGUubG9nKCfwn46JIE1peCBGaWJyYSBBcHAgaW5pdGlhbGl6ZWQgc3VjY2Vzc2Z1bGx5IScpOw0KY29uc29sZS5sb2coJ/CfjJAgVmlzaXQ6IGh0dHBzOi8vZWRpdmFuYWx2ZXMuZ2l0aHViLmlvL21peC1maWJyYScpOw0KY29uc29sZS5sb2coJ/Cfk7EgV2hhdHNBcHA6ICg4MykgOTk2NDEtMTE4NycpOw==" as="script" crossorigin>
+  <link rel="preload" href="/mix-fibra/src/main.jsx" as="script" crossorigin>
   <link rel="preload" href="/mix-fibra/imagens/logo-mix-fibra.png" as="image" fetchpriority="high">
   <link rel="dns-prefetch" href="//fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="modulepreload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsNCmltcG9ydCBSZWFjdERPTSBmcm9tICdyZWFjdC1kb20vY2xpZW50JzsNCmltcG9ydCBBcHAgZnJvbSAnLi9BcHAuanN4JzsNCmltcG9ydCAnLi9pbmRleC5jc3MnOw0KaW1wb3J0ICcuL3N0eWxlcy9hbmltYXRpb25zLmNzcyc7DQppbXBvcnQgeyBpbml0UGVyZm9ybWFuY2VPcHRpbWl6YXRpb25zIH0gZnJvbSAnLi91dGlscy9wZXJmb3JtYW5jZSc7DQoNCi8vIEluaXRpYWxpemUgcGVyZm9ybWFuY2Ugb3B0aW1pemF0aW9ucw0KaW5pdFBlcmZvcm1hbmNlT3B0aW1pemF0aW9ucygpOw0KDQovLyBQZXJmb3JtYW5jZSBtb25pdG9yaW5nDQppZiAoJ3BlcmZvcm1hbmNlJyBpbiB3aW5kb3cpIHsNCiAgd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ2xvYWQnLCAoKSA9PiB7DQogICAgY29uc3QgcGVyZkRhdGEgPSBwZXJmb3JtYW5jZS5nZXRFbnRyaWVzQnlUeXBlKCduYXZpZ2F0aW9uJylbMF07DQogICAgY29uc29sZS5sb2coJ/CfmoAgTWl4IEZpYnJhIGxvYWRlZCBpbjonLCBwZXJmRGF0YS5sb2FkRXZlbnRFbmQgLSBwZXJmRGF0YS5uYXZpZ2F0aW9uU3RhcnQsICdtcycpOw0KICAgIA0KICAgIC8vIExvZyBwZXJmb3JtYW5jZSBtZXRyaWNzDQogICAgY29uc29sZS5sb2coJ/Cfk4ogUGVyZm9ybWFuY2UgTWV0cmljczonLCB7DQogICAgICAnRE5TIExvb2t1cCc6IHBlcmZEYXRhLmRvbWFpbkxvb2t1cEVuZCAtIHBlcmZEYXRhLmRvbWFpbkxvb2t1cFN0YXJ0LA0KICAgICAgJ1RDUCBDb25uZWN0aW9uJzogcGVyZkRhdGEuY29ubmVjdEVuZCAtIHBlcmZEYXRhLmNvbm5lY3RTdGFydCwNCiAgICAgICdSZXF1ZXN0IFRpbWUnOiBwZXJmRGF0YS5yZXNwb25zZVN0YXJ0IC0gcGVyZkRhdGEucmVxdWVzdFN0YXJ0LA0KICAgICAgJ1Jlc3BvbnNlIFRpbWUnOiBwZXJmRGF0YS5yZXNwb25zZUVuZCAtIHBlcmZEYXRhLnJlc3BvbnNlU3RhcnQsDQogICAgICAnRE9NIFByb2Nlc3NpbmcnOiBwZXJmRGF0YS5kb21Db250ZW50TG9hZGVkRXZlbnRFbmQgLSBwZXJmRGF0YS5kb21Db250ZW50TG9hZGVkRXZlbnRTdGFydCwNCiAgICAgICdUb3RhbCBMb2FkIFRpbWUnOiBwZXJmRGF0YS5sb2FkRXZlbnRFbmQgLSBwZXJmRGF0YS5uYXZpZ2F0aW9uU3RhcnQNCiAgICB9KTsNCiAgfSk7DQp9DQoNCi8vIENyZWF0ZSByb290IGFuZCByZW5kZXIgYXBwDQpjb25zdCByb290ID0gUmVhY3RET00uY3JlYXRlUm9vdChkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncm9vdCcpKTsNCg0Kcm9vdC5yZW5kZXIoDQogIDxSZWFjdC5TdHJpY3RNb2RlPg0KICAgIDxBcHAgLz4NCiAgPC9SZWFjdC5TdHJpY3RNb2RlPg0KKTsNCg0KLy8gTG9nIHN1Y2Nlc3NmdWwgaW5pdGlhbGl6YXRpb24NCmNvbnNvbGUubG9nKCfwn46JIE1peCBGaWJyYSBBcHAgaW5pdGlhbGl6ZWQgc3VjY2Vzc2Z1bGx5IScpOw0KY29uc29sZS5sb2coJ/CfjJAgVmlzaXQ6IGh0dHBzOi8vZWRpdmFuYWx2ZXMuZ2l0aHViLmlvL21peC1maWJyYScpOw0KY29uc29sZS5sb2coJ/Cfk7EgV2hhdHNBcHA6ICg4MykgOTk2NDEtMTE4NycpOw==">
+  <link rel="modulepreload" href="/mix-fibra/src/main.jsx">
   
   <!-- Styles -->
   <style>
@@ -90,7 +90,7 @@
     @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
     @media(max-width:768px){html{font-size:14px}}
   </style>
-  <script type="module" crossorigin src="/mix-fibra/assets/index-C88xFzwt.js"></script>
+  <script type="module" crossorigin src="/mix-fibra/assets/index-CoL4GYTd.js"></script>
   <link rel="modulepreload" crossorigin href="/mix-fibra/assets/vendor-Du_zWh8p.js">
   <link rel="modulepreload" crossorigin href="/mix-fibra/assets/particles-B_CVKcI2.js">
   <link rel="modulepreload" crossorigin href="/mix-fibra/assets/icons-DMeHh16o.js">
