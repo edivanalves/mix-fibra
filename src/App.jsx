@@ -27,6 +27,11 @@ import { conversionFunnel } from './utils/conversionFunnel';
 import { abTesting } from './utils/abTesting';
 import useSwipeNavigation from './hooks/useSwipeNavigation';
 
+import { usePullToRefresh } from './hooks/usePullToRefresh';
+import { pushNotifications } from './utils/pushNotifications';
+import { enhancedAnalytics } from './utils/enhancedAnalytics';
+import OfflineIndicator from './components/OfflineIndicator';
+
 const ContentViewer = ({ refs, loading }) => {
   const [currentContent, setCurrentContent] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -147,6 +152,14 @@ const ContentViewer = ({ refs, loading }) => {
 function App() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('');
+  
+  const handleRefresh = async () => {
+    window.location.reload();
+  };
+  
+  const { isRefreshing, pullDistance } = usePullToRefresh(handleRefresh);
+  
+
 
 
   const homeRef = useRef(null);
@@ -182,11 +195,19 @@ function App() {
     trackScroll();
     trackPageView('Home');
     
+
+    
     // Initialize conversion tracking
     conversionFunnel.trackStep('app_loaded');
     
     // Initialize A/B testing
     console.log('A/B Tests initialized');
+    
+    // Initialize push notifications
+    pushNotifications.init();
+    
+    // Initialize enhanced analytics
+    enhancedAnalytics.init();
     
     // Register service worker for PWA
     if ('serviceWorker' in navigator) {
@@ -222,7 +243,7 @@ function App() {
         }
       });
     };
-  }, []);
+  }, [sectionRefs]);
 
 
 
@@ -242,6 +263,18 @@ function App() {
 
   return (
     <div className="w-full bg-slate-900">
+
+      
+      {/* Pull to refresh indicator */}
+      {pullDistance > 0 && (
+        <div 
+          className="fixed top-0 left-0 right-0 z-50 bg-blue-500 text-white text-center py-2 transition-all duration-300"
+          style={{ transform: `translateY(${Math.min(pullDistance - 80, 0)}px)` }}
+        >
+          {pullDistance > 80 ? '↓ Solte para atualizar' : '↓ Puxe para atualizar'}
+        </div>
+      )}
+      
       <LoadingScreen loading={loading} />
       <ParticleBackground />
 

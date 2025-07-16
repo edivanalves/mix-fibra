@@ -4,11 +4,45 @@ import { toast } from 'react-hot-toast';
 export const useGeolocationAddress = () => {
     const [address, setAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [accuracy, setAccuracy] = useState(null);
 
     const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/reverse?format=json&zoom=18&addressdetails=1';
+    const CACHE_KEY = 'mixfibra-location-cache';
+    const CACHE_DURATION = 30 * 60 * 1000; // 30 minutes
+
+    const getCachedLocation = () => {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp < CACHE_DURATION) {
+                return data;
+            }
+        }
+        return null;
+    };
+
+    const setCachedLocation = (data) => {
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+            data,
+            timestamp: Date.now()
+        }));
+    };
 
     const fetchAddressByCoords = async (latitude, longitude, accuracy) => {
         setIsLoading(true);
+        setAccuracy(accuracy);
+        
+        // Check cache first
+        const cached = getCachedLocation();
+        if (cached && cached.coords && 
+            Math.abs(cached.coords.lat - latitude) < 0.001 && 
+            Math.abs(cached.coords.lng - longitude) < 0.001) {
+            setAddress(cached.address);
+            setIsLoading(false);
+            toast.success('📍 Localização carregada do cache!');
+            return;
+        }
+
         toast.loading(`🛰️ Localizando... (precisão: ${Math.round(accuracy)}m)`);
 
         try {

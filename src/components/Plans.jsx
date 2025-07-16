@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, memo, useMemo, useCallback } from '
 import PlanRecommender from './PlanRecommender';
 import { trackPlanInterest, trackButtonClick } from '../utils/analytics';
 import { Zap, Wifi, Monitor, Users, Building, Gamepad2 } from 'lucide-react';
+import { AnimatedCTA } from './MicroAnimations';
+import SkeletonCard from './SkeletonCard';
 
 const advantagesIcons = {
   wifi: <Wifi className="w-5 h-5 text-emerald-400" />,
@@ -199,24 +201,16 @@ const PlanCard = memo(({ plan, index, isInView, onOpenModal }) => {
 
           {/* CTA Button */}
           <div className="mt-auto pt-6 relative z-[1000]" style={{ pointerEvents: 'auto' }}>
-            <button
-              type="button"
+            <AnimatedCTA
               onClick={() => {
                 console.log('CLIQUE FUNCIONANDO - Plano:', plan.megas + 'MB');
                 onOpenModal(plan);
               }}
-              className="w-full py-4 px-6 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-2xl font-bold text-white text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 cursor-pointer shadow-lg"
-              style={{ 
-                pointerEvents: 'auto',
-                position: 'relative',
-                zIndex: 9999
-              }}
+              className="w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30"
             >
-              <div className="flex items-center justify-center gap-2">
-                <Zap className="w-5 h-5" />
-                Assinar Agora
-              </div>
-            </button>
+              <Zap className="w-5 h-5" />
+              Assinar Agora
+            </AnimatedCTA>
           </div>
 
 
@@ -330,9 +324,15 @@ const Plans = React.forwardRef(({ loading }, ref) => {
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 lg:gap-12 justify-center items-center"
         style={{ perspective: '1000px' }}
       >
-        {memoizedPlans.map((plan, index) => (
-          <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} onOpenModal={handleOpenModal} />
-        ))}
+        {loading ? (
+          Array.from({ length: 5 }).map((_, index) => (
+            <SkeletonCard key={index} variant="plan" />
+          ))
+        ) : (
+          memoizedPlans.map((plan, index) => (
+            <PlanCard key={`${plan.megas}-${index}`} plan={plan} index={index} isInView={isInView} onOpenModal={handleOpenModal} />
+          ))
+        )}
       </div>
 
       {/* Floating Elements */}

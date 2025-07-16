@@ -106,8 +106,7 @@ const LoadingScreen = ({ loading }) => {
       
 
       
-      <style>
-        {`
+      <style dangerouslySetInnerHTML={{__html: `
         @keyframes speedLoad {
           0% { stroke-dashoffset: 314; }
           50% { stroke-dashoffset: 0; }
@@ -124,8 +123,7 @@ const LoadingScreen = ({ loading }) => {
           0%, 100% { transform: scaleY(0.3); opacity: 0.5; }
           50% { transform: scaleY(1); opacity: 1; }
         }
-        `}
-      </style>
+        `}} />
     </div>
   );
 };
